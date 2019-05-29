@@ -1,0 +1,10 @@
+{
+  "name": "roguef",
+  "version": "0.0.1",
+  "factorio_version": "0.14",
+  "title": "Roguelike Factorio",
+  "author": "kij336",
+  "contact": "kij336@naver.com",
+  "description": "Roguelike Factorio - shooting action roguelike game mode. ! only can play with custom scenario (only single play)",
+  "dependencies": "base >= 0.14.0"
+}
