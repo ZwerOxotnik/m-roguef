@@ -1,16 +1,14 @@
-for i=1,100 do
-	data:extend(
-	{
+for i = 1, 100 do
+	data:extend({
 		{
-		 type = "ammo-category",
-		 name = "ammo-"..i
+      type = "ammo-category",
+      name = "ammo-" .. i
 		},
 	})
 end
 
 data:extend(
 {
-
 --damage-type
   {
     type = "damage-type",
@@ -23,20 +21,21 @@ data:extend(
 
 --ammo-category
 	{
-	 type = "ammo-category",
-	 name = "ammo-enemy"
+    type = "ammo-category",
+    name = "ammo-enemy"
 	},
 	{
-	 type = "ammo-category",
-	 name = "rf_robot"
+    type = "ammo-category",
+    name = "rf_robot"
 	},
-	
+
 --item-group
   {
     type = "item-group",
     name = "roguef",
     order = "g",
-    icon = "__roguef__/graphics/icons/roguef.png",
+    icon = "__m-roguef__/graphics/icons/roguef.png",
+    icon_size = 32, -- TODO: CHECK THIS
   },
   {
     type = "item-subgroup",
@@ -92,6 +91,4 @@ data:extend(
     group = "roguef",
     order = "i"
   },
-  
-}
-)
+})

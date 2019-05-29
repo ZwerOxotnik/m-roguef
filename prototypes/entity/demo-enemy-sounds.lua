@@ -84,37 +84,54 @@ end
 function make_spitter_roars(volume)
   return
   {
+    layers =
     {
-      filename = "__base__/sound/creatures/spitter-1.ogg",
-      volume = volume
-    },
-    {
-      filename = "__base__/sound/creatures/spitter-2.ogg",
-      volume = volume
-    },
-    {
-      filename = "__base__/sound/creatures/spitter-3.ogg",
-      volume = volume
-    },
-    {
-      filename = "__base__/sound/creatures/spitter-4.ogg",
-      volume = volume
-    },
-    {
-      filename = "__base__/sound/creatures/spitter-5.ogg",
-      volume = volume
-    },
-    {
-      filename = "__base__/sound/creatures/spitter-6.ogg",
-      volume = volume
-    },
-    {
-      filename = "__base__/sound/creatures/spitter-7.ogg",
-      volume = volume
-    },
-    {
-      filename = "__base__/sound/creatures/spitter-8.ogg",
-      volume = volume
+      [0] =
+      {
+        {
+          filename = "__base__/sound/creatures/Spiters_1_1.ogg",
+          volume = volume
+        },
+        {
+          filename = "__base__/sound/creatures/Spiters_2_1.ogg",
+          volume = volume
+        },
+        {
+          filename = "__base__/sound/creatures/Spiters_3_1.ogg",
+          volume = volume
+        },
+        {
+          filename = "__base__/sound/creatures/Spiters_4_1.ogg",
+          volume = volume
+        },
+        {
+          filename = "__base__/sound/creatures/Spiters_5_1.ogg",
+          volume = volume
+        }
+      },
+      [1] =
+      {
+        {
+          filename = "__base__/sound/creatures/Spiters_1_2.ogg",
+          volume = volume
+        },
+        {
+          filename = "__base__/sound/creatures/Spiters_2_2.ogg",
+          volume = volume
+        },
+        {
+          filename = "__base__/sound/creatures/Spiters_3_2.ogg",
+          volume = volume
+        },
+        {
+          filename = "__base__/sound/creatures/Spiters_4_2.ogg",
+          volume = volume
+        },
+        {
+          filename = "__base__/sound/creatures/Spiters_5_2.ogg",
+          volume = volume
+        }
+      }
     }
   }
 end

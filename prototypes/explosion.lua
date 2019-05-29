@@ -1,5 +1,5 @@
 local function explosion(name,count,x,y,speed,blend)
-	if blend==false then 
+	if blend==false then
 		return{
 			 type = "explosion",
 			 name = name,
@@ -7,7 +7,7 @@ local function explosion(name,count,x,y,speed,blend)
 			 animations =
 			 {
 				{
-				filename = "__roguef__/graphics/entity/explosion/"..name..".png",
+				filename = "__m-roguef__/graphics/entity/explosion/"..name..".png",
 				frame_count = count,
 				width = x,
 				height = y,
@@ -23,12 +23,12 @@ local function explosion(name,count,x,y,speed,blend)
 			 animations =
 			 {
 				{
-				filename = "__roguef__/graphics/entity/explosion/"..name..".png",
+				filename = "__m-roguef__/graphics/entity/explosion/"..name..".png",
 				frame_count = count,
 				width = x,
 				height = y,
 				animation_speed = speed/60,
-				blend_mode = "additive"		
+				blend_mode = "additive"
 				},
 			 }
 		  }
@@ -36,14 +36,14 @@ local function explosion(name,count,x,y,speed,blend)
 end
 
 local function projectile(name,count,x,y,speed,blend,accel,sp)
-	if blend==false then 
+	if blend==false then
 		return{
 			 type = "projectile",
 			 name = name,
 			 flags = {"not-on-map","placeable-off-grid"},
 			 animation =
 			 {
-				filename = "__roguef__/graphics/entity/explosion/"..name..".png",
+				filename = "__m-roguef__/graphics/entity/explosion/"..name..".png",
 				frame_count = count,
 				width = x,
 				height = y,
@@ -59,12 +59,12 @@ local function projectile(name,count,x,y,speed,blend,accel,sp)
 			 flags = {"not-on-map","placeable-off-grid"},
 			 animation =
 			 {
-				filename = "__roguef__/graphics/entity/explosion/"..name..".png",
+				filename = "__m-roguef__/graphics/entity/explosion/"..name..".png",
 				frame_count = count,
 				width = x,
 				height = y,
 				animation_speed = speed/60,
-				blend_mode = "additive"		
+				blend_mode = "additive"
 			 },
 			 acceleration = accel,
 			 speed = sp
@@ -81,14 +81,14 @@ for i=1,50 do
     flags = {"not-on-map","placeable-off-grid"},
     animations =
     {{
-      filename = "__roguef__/graphics/entity/noani/no.png",
+      filename = "__m-roguef__/graphics/entity/noani/no.png",
       frame_count = 1,
       width = 1,
       height = 1,
     }}
   },
 	})
-end	
+end
 
 data:extend({
 
@@ -103,15 +103,15 @@ data:extend({
     animations =
     {
       {
-	   filename = "__roguef__/graphics/entity/explosion/recall.png",
-      frame_count = 30,
-		line_length = 5,
-      width = 192,
-      height = 192,
-		animation_speed = 30/60,
-		shift={0,1},
-		blend_mode = "additive",
-		scale=1
+        filename = "__m-roguef__/graphics/entity/explosion/recall.png",
+        frame_count = 30,
+        line_length = 5,
+        width = 192,
+        height = 192,
+        animation_speed = 30/60,
+        shift={0,1},
+        blend_mode = "additive",
+        scale=1
       },
     },
   },
@@ -122,16 +122,16 @@ data:extend({
     animations =
     {
       {
-	   filename = "__roguef__/graphics/entity/explosion/target-elec.png",
+	    filename = "__m-roguef__/graphics/entity/explosion/target-elec.png",
       frame_count = 8,
-		line_length = 2,
+		  line_length = 2,
       width = 32,
       height = 16,
-		animation_speed = 16/60,
-		shift={0,1}
+      animation_speed = 16/60,
+      shift={0,1}
       },
     },
-	 sound =
+	  sound =
     {
       aggregation =
       {
@@ -141,7 +141,7 @@ data:extend({
       variations =
       {
         {
-          filename = "__roguef__/sound/target-elec.ogg",
+          filename = "__m-roguef__/sound/target-elec.ogg",
           volume = 0.3
         }
       }
@@ -154,13 +154,13 @@ data:extend({
     animations =
     {
       {
-	   filename = "__roguef__/graphics/entity/explosion/target-elec.png",
-      frame_count = 8,
-		line_length = 2,
-      width = 32,
-      height = 16,
-		animation_speed = 16/60,
-		shift={0,1}
+        filename = "__m-roguef__/graphics/entity/explosion/target-elec.png",
+        frame_count = 8,
+        line_length = 2,
+        width = 32,
+        height = 16,
+        animation_speed = 16/60,
+        shift={0,1}
       },
     },
   },
@@ -169,7 +169,7 @@ data:extend({
     name = "target-melee",
     flags = {"not-on-map","placeable-off-grid"},
     animations =
-    {      
+    {
       {
         filename = "__base__/graphics/entity/explosion/explosion-3.png",
         priority = "extra-high",
@@ -178,7 +178,7 @@ data:extend({
         frame_count = 16,
         animation_speed = 32/60,
 		  shift={0,1}
-      },      
+      },
     },
     sound =
     {
@@ -190,7 +190,7 @@ data:extend({
       variations =
       {
         {
-          filename = "__roguef__/sound/target-melee.ogg",
+          filename = "__m-roguef__/sound/target-melee.ogg",
           volume = 0.75
         }
       }
@@ -201,7 +201,7 @@ data:extend({
     name = "target-melee-1",
     flags = {"not-on-map","placeable-off-grid"},
     animations =
-    {      
+    {
       {
         filename = "__base__/graphics/entity/explosion/explosion-3.png",
         priority = "extra-high",
@@ -211,7 +211,7 @@ data:extend({
         animation_speed = 32/60,
 		  scale=1/2,
 		  shift={0,1}
-      },      
+      },
     },
     sound =
     {
@@ -223,7 +223,7 @@ data:extend({
       variations =
       {
         {
-          filename = "__roguef__/sound/target-melee.ogg",
+          filename = "__m-roguef__/sound/target-melee.ogg",
           volume = 0.5
         }
       }
@@ -234,7 +234,7 @@ data:extend({
     name = "target-melee-2",
     flags = {"not-on-map","placeable-off-grid"},
     animations =
-    {      
+    {
       {
         filename = "__base__/graphics/entity/explosion/explosion-3.png",
         priority = "extra-high",
@@ -244,7 +244,7 @@ data:extend({
         animation_speed = 32/60,
 		  scale=1/2,
 		  shift={0,1}
-      },      
+      },
     },
     sound =
     {
@@ -256,7 +256,7 @@ data:extend({
       variations =
       {
         {
-          filename = "__roguef__/sound/target-melee.ogg",
+          filename = "__m-roguef__/sound/target-melee.ogg",
           volume = 0.2
         }
       }
@@ -269,7 +269,7 @@ data:extend({
     animations =
     {
       {
-	   filename = "__roguef__/graphics/entity/explosion/target-poison.png",
+	   filename = "__m-roguef__/graphics/entity/explosion/target-poison.png",
       frame_count = 25,
 		line_length = 5,
       width = 64,
@@ -288,7 +288,7 @@ data:extend({
       variations =
       {
         {
-          filename = "__roguef__/sound/target-poison.ogg",
+          filename = "__m-roguef__/sound/target-poison.ogg",
           volume = 0.5
         }
       }
@@ -301,7 +301,7 @@ data:extend({
     animations =
     {
       {
-	   filename = "__roguef__/graphics/entity/explosion/target-blood.png",
+	   filename = "__m-roguef__/graphics/entity/explosion/target-blood.png",
       frame_count = 25,
 		line_length = 5,
       width = 64,
@@ -320,7 +320,7 @@ data:extend({
       variations =
       {
         {
-          filename = "__roguef__/sound/target-poison.ogg",
+          filename = "__m-roguef__/sound/target-poison.ogg",
           volume = 0.5
         }
       }
@@ -333,7 +333,7 @@ data:extend({
     animations =
     {
       {
-	   filename = "__roguef__/graphics/entity/explosion/target-water.png",
+	   filename = "__m-roguef__/graphics/entity/explosion/target-water.png",
       frame_count = 20,
 		line_length = 5,
       width = 64,
@@ -353,7 +353,7 @@ data:extend({
       variations =
       {
         {
-          filename = "__roguef__/sound/target-water.ogg",
+          filename = "__m-roguef__/sound/target-water.ogg",
           volume = 0.2
         }
       }
@@ -366,7 +366,7 @@ data:extend({
     animations =
     {
       {
-	   filename = "__roguef__/graphics/entity/explosion/target-slash.png",
+	   filename = "__m-roguef__/graphics/entity/explosion/target-slash.png",
       frame_count = 10,
 		line_length = 5,
       width = 64,
@@ -386,7 +386,7 @@ data:extend({
       variations =
       {
         {
-          filename = "__roguef__/sound/shot-9.ogg",
+          filename = "__m-roguef__/sound/shot-9.ogg",
           volume = 0.3
         }
       }
@@ -399,7 +399,7 @@ data:extend({
     animations =
     {
       {
-	   filename = "__roguef__/graphics/entity/explosion/slash-22.png",
+	   filename = "__m-roguef__/graphics/entity/explosion/slash-22.png",
       frame_count = 30,
 		line_length = 5,
       width = 192,
@@ -418,7 +418,7 @@ data:extend({
     animations =
     {
       {
-	   filename = "__roguef__/graphics/entity/explosion/target-ice.png",
+	   filename = "__m-roguef__/graphics/entity/explosion/target-ice.png",
       frame_count = 15,
 		line_length = 5,
       width = 64,
@@ -438,7 +438,7 @@ data:extend({
       variations =
       {
         {
-          filename = "__roguef__/sound/target-ice.ogg",
+          filename = "__m-roguef__/sound/target-ice.ogg",
           volume = 0.5
         }
       }
@@ -451,7 +451,7 @@ data:extend({
     animations =
     {
       {
-	   filename = "__roguef__/graphics/entity/explosion/target-fire.png",
+	   filename = "__m-roguef__/graphics/entity/explosion/target-fire.png",
       frame_count = 12,
       width = 48,
       height = 48,
@@ -469,7 +469,7 @@ data:extend({
       variations =
       {
         {
-          filename = "__roguef__/sound/target-fire.ogg",
+          filename = "__m-roguef__/sound/target-fire.ogg",
           volume = 1
         }
       }
@@ -482,7 +482,7 @@ data:extend({
     animations =
     {
       {
-	   filename = "__roguef__/graphics/entity/explosion/target-fire.png",
+	   filename = "__m-roguef__/graphics/entity/explosion/target-fire.png",
       frame_count = 12,
       width = 48,
       height = 48,
@@ -501,7 +501,7 @@ data:extend({
       variations =
       {
         {
-          filename = "__roguef__/sound/target-fire.ogg",
+          filename = "__m-roguef__/sound/target-fire.ogg",
           volume = 0.75
         }
       }
@@ -641,6 +641,8 @@ data:extend({
       }
     }
   },
+
+  -- TODO: CHECK THIS!!!
 	{
     type = "explosion",
     name = "noani",
@@ -648,10 +650,10 @@ data:extend({
     animations =
     {
       {
-	   filename = "__roguef__/graphics/entity/noani/no.png",
-      frame_count = 1,
-      width = 1,
-      height = 1,
+        filename = "__m-roguef__/graphics/entity/noani/no.png",
+        frame_count = 1,
+        width = 1,
+        height = 1,
       },
     }
   },
@@ -662,7 +664,7 @@ data:extend({
     animations =
     {
       {
-	   filename = "__roguef__/graphics/entity/explosion/emp.png",
+	   filename = "__m-roguef__/graphics/entity/explosion/emp.png",
       frame_count = 24,
 		line_length = 8,
       width = 128,
@@ -682,7 +684,8 @@ data:extend({
     type = "decorative",
     name = "ex-"..i,
     flags = {"placeable-enemy", "not-on-map","placeable-off-grid"},
-    icon = "__roguef__/graphics/entity/explosion/ex.png",
+    icon = "__m-roguef__/graphics/entity/explosion/ex.png",
+    icon_size = 32,
     subgroup = "rf_enemy",
     order = "z",
     --collision_box = {{-0.1, -0.1}, {0.1, 0.1}},
@@ -692,11 +695,11 @@ data:extend({
     pictures =
     {
       {
-        filename = "__roguef__/graphics/entity/explosion/ex-"..i..".png",
+        filename = "__m-roguef__/graphics/entity/explosion/ex-"..i..".png",
         width = i,
         height = i,
 	   }
-    },  
+    },
   },
   {
     type = "explosion",
@@ -705,7 +708,7 @@ data:extend({
     animations =
     {
       {
-        filename = "__roguef__/graphics/entity/explosion/explosion.png",
+        filename = "__m-roguef__/graphics/entity/explosion/explosion.png",
         priority = "extra-high",
         width = 40,
         height = 40,
@@ -746,7 +749,7 @@ data:extend(
     flags = {"not-on-map","placeable-off-grid"},
     animations =
     {{
-      filename = "__roguef__/graphics/entity/noani/no.png",
+      filename = "__m-roguef__/graphics/entity/noani/no.png",
       frame_count = 1,
       width = 1,
       height = 1,
@@ -758,7 +761,7 @@ data:extend(
     flags = {"not-on-map","placeable-off-grid"},
     animations =
     {{
-      filename = "__roguef__/graphics/entity/noani/no.png",
+      filename = "__m-roguef__/graphics/entity/noani/no.png",
       frame_count = 1,
       width = 1,
       height = 1,
@@ -770,7 +773,7 @@ data:extend(
     flags = {"not-on-map","placeable-off-grid"},
     animations =
     {{
-      filename = "__roguef__/graphics/entity/noani/no.png",
+      filename = "__m-roguef__/graphics/entity/noani/no.png",
       frame_count = 1,
       width = 1,
       height = 1,
@@ -782,7 +785,7 @@ data:extend(
     flags = {"not-on-map","placeable-off-grid"},
     animations =
     {{
-      filename = "__roguef__/graphics/entity/noani/no.png",
+      filename = "__m-roguef__/graphics/entity/noani/no.png",
       frame_count = 1,
       width = 1,
       height = 1,
@@ -794,13 +797,13 @@ data:extend(
     flags = {"not-on-map","placeable-off-grid"},
     animations =
     {{
-      filename = "__roguef__/graphics/entity/noani/no.png",
+      filename = "__m-roguef__/graphics/entity/noani/no.png",
       frame_count = 1,
       width = 1,
       height = 1,
     }}
   },
-  
+
   {
     type = "explosion",
     name = "big-explosion-1",
@@ -819,7 +822,7 @@ data:extend(
         direction_count = 1,
         shift = {0.1875, -0.75},
         animation_speed = 0.5,
-		  scale=2
+		    scale=2
       }
     },
     light = {intensity = 1, size = 50},
@@ -865,7 +868,7 @@ data:extend(
       }
     }
   },
-  
+
   {
     type = "projectile",
     name = "13-1",
@@ -894,7 +897,7 @@ data:extend(
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/13-1.png",
+      filename = "__m-roguef__/graphics/entity/explosion/13-1.png",
       frame_count = 1,
       width = 15,
       height = 20,
@@ -932,7 +935,7 @@ data:extend(
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/13-1.png",
+      filename = "__m-roguef__/graphics/entity/explosion/13-1.png",
       frame_count = 1,
       width = 15,
       height = 20,
@@ -969,7 +972,7 @@ data:extend(
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/13-1.png",
+      filename = "__m-roguef__/graphics/entity/explosion/13-1.png",
       frame_count = 1,
       width = 15,
       height = 20,
@@ -1007,7 +1010,7 @@ data:extend(
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/13-2.png",
+      filename = "__m-roguef__/graphics/entity/explosion/13-2.png",
       frame_count = 2,
       width = 30,
       height = 31,
@@ -1056,28 +1059,25 @@ data:extend(
         animation_speed = 0.5
       }
     },
-	 created_effect ={
-        type = "area",
-        perimeter = 2,
-        action_delivery =
+	  created_effect ={
+      type = "area",
+      radius = 2,
+      action_delivery =
+      {
+        type = "instant",
+        target_effects =
         {
-          type = "instant",
-          target_effects =
           {
-            {
-            type = "damage",
-            damage = {amount = 15, type = "damage-player"}
-            },            
-          }
+          type = "damage",
+          damage = {amount = 15, type = "damage-player"}
+          },
         }
-      },
+      }
+    },
     light = {intensity = 1, size = 20},
     smoke = "smoke-fast",
     smoke_count = 2,
     smoke_slow_down_factor = 1,
   },
-  
-  
-  
 })
 

@@ -1,32 +1,36 @@
+-- WIP
+-- Don't test it because don't work yet
+
 --on player created
 script.on_event(defines.events.on_player_created, function(event)
-	local a=event.player_index
-	global.p=game.players[a]
-	game.create_force(a)
-	global.p.force=a
-	for c,d in pairs(game.forces) do
-		d.set_cease_fire(game.forces[a],true)
-		game.forces[a].set_cease_fire(d,true)
+	local player_index = event.player_index
+	local player = game.players[player_index]
+	global.p = player -- TODO: CHANGE!
+	game.create_force(player_index) -- TODO: check for MP!
+	global.p.force = player_index
+	for _, force in pairs(game.forces) do
+		force.set_cease_fire(game.forces[player_index], true)
+		game.forces[player_index].set_cease_fire(force, true)
 	end
-	game.forces[global.p.force.name].disable_research()
-	game.forces[a].set_cease_fire(game.forces.enemy,false)
-	game.forces.enemy.set_cease_fire(game.forces[a],false)		
+	game.forces[player.force.name].disable_research()
+	game.forces[player_index].set_cease_fire(game.forces.enemy, false)
+	game.forces.enemy.set_cease_fire(game.forces[player_index], false)
 	game.forces.enemy.set_cease_fire("player",true)
 	global.p.character.clear_items_inside()
-	for c,d in pairs(game.surfaces[1].find_entities_filtered({force="player"})) do 
-		d.destructible=false
-		d.minable=false
+	for _, entity in pairs(game.surfaces[1].find_entities_filtered({force="player"})) do
+		entity.destructible=false
+		entity.minable=false
 	end
 	if global.p.minimap_enabled then global.p.minimap_enabled=false end
-	global.p.zoom=(21*60)^2
-	
+	global.p.zoom=(21 * 60)^2
+
 	--stats
 	global.timer=0
-	global.stats={}
+	global.stats = global.stats or {}
 	global.stats.money=0
 	global.stats.level=1
 	global.stats.xp=0
-	global.stats.mastery={0,0,0,0,0,0,0}	
+	global.stats.mastery={0,0,0,0,0,0,0}
 	global.stats.stage=1
 	global.stun={}
 	global.gunnum=0
@@ -34,12 +38,12 @@ script.on_event(defines.events.on_player_created, function(event)
 	global.active={false,0,0}
 	global.stim=false
 	global.stop=false
-	global.robot={}
-	global.robot[1]=false
-	global.robot[2]=false
-	global.robot[3]=false
-	global.robot[4]={}
-	global.robot[5]={}
+	global.robots={}
+	global.robots[1]=false
+	global.robots[2]=false
+	global.robots[3]=false
+	global.robots[4]={}
+	global.robots[5]={}
 	global.p.force.maximum_following_robot_count =1000
 	game.forces["player"].maximum_following_robot_count=1000
 	global.p.insert({name="weapon-1",count=1})
@@ -69,7 +73,7 @@ script.on_event(defines.events.on_player_created, function(event)
 	global.bgm={}
 	global.bgm.num=0
 	global.bgm.tick=0
-	global.boss={}
+	global.bosses={}
 	global.bgmtable={}
 	global.bgmtable[0]={6,60*9.5}
 	global.bgmtable[1]={6,60*12}
@@ -81,7 +85,7 @@ script.on_event(defines.events.on_player_created, function(event)
 	global.bgmtable[7]={8,60*8}
 	global.bgmtable[8]={9,60*10}
 	global.bgmtable[9]={5,60*11}
-		
+
 	--gamedata
 	global.respawn={x=25,y=25}
 	global.xp={}
@@ -90,14 +94,14 @@ script.on_event(defines.events.on_player_created, function(event)
 		else global.xp[i]=global.xp[i-1]*1.5 end
 	end
 	game.surfaces[1].daytime=0
-	game.surfaces[1].freeze_daytime(true)
+	game.surfaces[1].freeze_daytime = true
 	game.surfaces[1].wind_orientation_change=0
 	game.surfaces[1].wind_speed=0
 	game.surfaces[1].wind_orientation=0
 	if game.map_settings.pollution.enabled then game.map_settings.pollution.enabled=false end
-	if	game.map_settings.enemy_evolution.enabled then game.map_settings.enemy_evolution.enabled=false end
-	if	game.map_settings.enemy_expansion.enabled then game.map_settings.enemy_expansion.enabled=false end
-	for a,b in pairs(game.surfaces[1].find_entities_filtered({type="tree"})) do
+	if game.map_settings.enemy_evolution.enabled then game.map_settings.enemy_evolution.enabled=false end
+	if game.map_settings.enemy_expansion.enabled then game.map_settings.enemy_expansion.enabled=false end
+	for _, b in pairs(game.surfaces[1].find_entities_filtered({type="tree"})) do
 		b.destructible=false
 		b.minable=false
 	end
@@ -116,13 +120,13 @@ script.on_event(defines.events.on_player_created, function(event)
 	global.market.weapon[5]=80
 	global.market.weapon[6]=78
 	global.market.weapon[7]=78
-	global.market.weapon[8]=78	
+	global.market.weapon[8]=78
 	global.market.weapon[9]=78
-	global.market.weapon[10]=83	
-	global.market.weapon[11]=86	
-	global.market.weapon[12]=94	
-	global.market.weapon[13]=81	
-	global.market.weapon[14]=79	
+	global.market.weapon[10]=83
+	global.market.weapon[11]=86
+	global.market.weapon[12]=94
+	global.market.weapon[13]=81
+	global.market.weapon[14]=79
 	global.market.weapon[15]=78
 	global.market.weapon[16]=78
 	global.market.weapon[17]=86
@@ -138,14 +142,14 @@ script.on_event(defines.events.on_player_created, function(event)
 	global.market.weapon[27]=83
 	global.market.weapon[28]=94
 	global.market.weapon[29]=86
-	
+
 	global.market.armor={}
 	global.market.armor[1]=40
 	global.market.armor[2]=80
 	global.market.armor[3]=120
 	global.market.armor[4]=160
 	global.market.armor[5]=200
-	
+
 	global.market.active={}
 	global.market.active[1]=60
 	global.market.active[2]=90
@@ -156,7 +160,7 @@ script.on_event(defines.events.on_player_created, function(event)
 	global.market.active[7]=40
 	global.market.active[8]=40
 	global.market.active[9]=90
-	
+
 	global.market.passive={}
 	global.market.passive[1]=100
 	global.market.passive[2]=80
@@ -178,7 +182,7 @@ script.on_event(defines.events.on_player_created, function(event)
 	global.market.passive[18]=80
 	global.market.passive[19]=80
 	global.market.passive[20]=100
-	
+
 	--stage
 	global.stage={}
 	local stage=9
@@ -197,17 +201,17 @@ script.on_event(defines.events.on_player_created, function(event)
 		global.stage.starts[i]=tag(i.."-start")
 		game.get_entity_by_tag(i.."-start").destroy()
 	end
-	global.stage.boss={}
-	global.stage.boss[3]=tag("3-12")
+	global.stage.bosses={}
+	global.stage.bosses[3] = tag("3-12")
 	game.get_entity_by_tag("3-12").destroy()
-		
-	
-	
+
+
+
 	gui()
 end)
 
 --reload
-script.on_event("reload", function(event)		
+script.on_event("reload", function(event)
 	local b=global.p
 	if b.get_inventory(defines.inventory.player_guns)[1].valid_for_read then
 		local n=b.get_inventory(defines.inventory.player_guns)[1].name
@@ -221,7 +225,7 @@ script.on_event("reload", function(event)
 		local n=b.get_inventory(defines.inventory.player_guns)[3].name
 		b.get_inventory(defines.inventory.player_ammo)[3].set_stack({name="ammo-"..string.sub(n,string.find(n,"-")+1,string.len(n)),1000})
 	end
-	
+
 end)
 
 --dodge
@@ -245,11 +249,11 @@ script.on_event("dodge", function(event)
 		if passive(18) and math.random()<0.15 then
 			b.surface.create_entity{name="mine-6",force=b.force.name,position=b.position}
 		end
-	end	
+	end
 end)
 
 --active item
-script.on_event("useitem", function(event)		
+script.on_event("useitem", function(event)
 	local b=global.p
 	if b.character.active==false then
 		b.character.active=true
@@ -265,24 +269,24 @@ script.on_event("useitem", function(event)
 			sound(b.position,"firstaid")
 			b.surface.create_entity{name="firstaid",position=b.position}
 			b.get_quickbar()[5].clear()
-		elseif n==2 then
+		elseif n == 2 then
 			b.surface.create_entity{name="emp",position=b.position}
 			sound(b.position,"target-elec")
 			local d=b.surface.find_entities_filtered{area={{b.position.x-20,b.position.y-20},{b.position.x+20,b.position.y+20}},type="projectile"}
-			for i,j in pairs(d) do
+			for _, j in pairs(d) do
 				j.destroy()
 			end
-		elseif n==3 then
+		elseif n == 3 then
 			sound(b.position,"active-3")
 			b.character.active=false
 			b.character.destructible=false
 			global.stats.stun=event.tick
-		elseif n==4 then
+		elseif n == 4 then
 			global.stage.start=false
-			global.boss={}
+			global.bosses={}
 			global.bgm.num=0
 			global.bgm.tick=0
-			global.p.gui.top.main.enemy.bar.style.visible=false
+			global.p.gui.top.main.enemy.bar.visible=false
 			player_respawn()
 			game.print("escape!!")
 			b.character.health=b.character.health+b.character.prototype.max_health*0.3
@@ -290,31 +294,31 @@ script.on_event("useitem", function(event)
 				b.character.health=b.character.prototype.max_health
 			end
 			b.get_quickbar()[5].clear()
-		elseif n==5 then
+		elseif n == 5 then
 			sound(b.position,"stim")
 			global.stim=event.tick
 			movement()
 			gun(global.gunnum)
-		elseif n==6 then
+		elseif n == 6 then
 			sound(b.position,"active-6")
 			b.surface.create_entity{name="mine-6",force=b.force.name,position=b.position}
-		elseif n==7 then
+		elseif n == 7 then
 			market_reset()
 			sound(b.position,"get")
 			b.get_quickbar()[5].clear()
-		elseif n==8 then
+		elseif n == 8 then
 			if b.character.health/b.character.prototype.max_health>0.25 then
 				sound(b.position,"get")
 				b.insert({name="money",count=10})
 				b.character.damage(b.character.prototype.max_health*0.1,"enemy","damage-enemy")
 			end
-		elseif n==9 then
+		elseif n == 9 then
 			global.stop=event.tick
-		
+
 		end
 		global.active[2]=0
 		b.get_quickbar()[6].clear()
-	end	
+	end
 end)
 
 --passive item search
@@ -335,65 +339,65 @@ function passive(n)
 end
 
 --active item search
-script.on_event(defines.events.on_player_quickbar_inventory_changed, function(event)
-	local b=global.p
-	if b.get_quickbar()[5].valid_for_read then
-		local n=b.get_quickbar()[5].name
-		local d
-		if string.find(n,"active-") and global.active[1]==false then
-			d=tonumber(string.sub(n,8,string.len(n)))
-			global.active[1]=d
-			active_cool(d)
-		elseif string.find(n,"active-") and global.active[1] then
-			d=tonumber(string.sub(n,8,string.len(n)))
-			if global.active[1]~=d then 
-				global.active[1]=d
-				active_cool(d)
-				global.active[2]=0
-				b.get_quickbar()[6].clear()
-			end
-		else
-			global.active={false,0,0}
-			b.get_quickbar()[6].clear()
-		end
-	else
-		global.active={false,0,0}
-		b.get_quickbar()[6].clear()
-	end
---passive item equipe
-	if passive(3) then
-		if global.robot[1]==false or (global.robot[1] and global.robot[1].valid==false) then
-			global.robot[1]=b.surface.create_entity{name="robot-1",force="player",position=b.position,target=b.character}
-			global.robot[1].destructible=false
-		end
-	elseif passive(3)==false and global.robot[1] then
-		if global.robot[1].valid then global.robot[1].destroy() end
-		global.robot[1]=false
-	end
-	if passive(4) then
-		if global.robot[2]==false or (global.robot[2] and global.robot[2].valid==false) then
-			global.robot[2]=b.surface.create_entity{name="robot-2",force="player",position=b.position,target=b.character}
-			global.robot[2].destructible=false
-		end
-	elseif passive(4)==false and global.robot[2] then
-		if global.robot[2].valid then global.robot[2].destroy() end
-		global.robot[2]=false
-	end
-	if passive(5) then
-		if global.robot[3]==false or (global.robot[3] and global.robot[3].valid==false) then
-			global.robot[3]=b.surface.create_entity{name="robot-3",force="player",position=b.position,target=b.character}
-			global.robot[3].destructible=false
-		end
-	elseif passive(5)==false and global.robot[3] then
-		if global.robot[3].valid then global.robot[3].destroy() end
-		global.robot[3]=false
-	end
-end)
+-- script.on_event(defines.events.on_player_quickbar_inventory_changed, function(event)
+-- 	local b=global.p
+-- 	if b.get_quickbar()[5].valid_for_read then
+-- 		local n=b.get_quickbar()[5].name
+-- 		local d
+-- 		if string.find(n,"active-") and global.active[1]==false then
+-- 			d=tonumber(string.sub(n,8,string.len(n)))
+-- 			global.active[1]=d
+-- 			active_cool(d)
+-- 		elseif string.find(n,"active-") and global.active[1] then
+-- 			d=tonumber(string.sub(n,8,string.len(n)))
+-- 			if global.active[1]~=d then
+-- 				global.active[1]=d
+-- 				active_cool(d)
+-- 				global.active[2]=0
+-- 				b.get_quickbar()[6].clear()
+-- 			end
+-- 		else
+-- 			global.active={false,0,0}
+-- 			b.get_quickbar()[6].clear()
+-- 		end
+-- 	else
+-- 		global.active={false,0,0}
+-- 		b.get_quickbar()[6].clear()
+-- 	end
+-- --passive item equipe
+-- 	if passive(3) then
+-- 		if global.robots[1]==false or (global.robots[1] and global.robots[1].valid==false) then
+-- 			global.robots[1]=b.surface.create_entity{name="robot-1",force="player",position=b.position,target=b.character}
+-- 			global.robots[1].destructible=false
+-- 		end
+-- 	elseif passive(3)==false and global.robots[1] then
+-- 		if global.robots[1].valid then global.robots[1].destroy() end
+-- 		global.robots[1]=false
+-- 	end
+-- 	if passive(4) then
+-- 		if global.robots[2]==false or (global.robots[2] and global.robots[2].valid==false) then
+-- 			global.robots[2]=b.surface.create_entity{name="robot-2",force="player",position=b.position,target=b.character}
+-- 			global.robots[2].destructible=false
+-- 		end
+-- 	elseif passive(4)==false and global.robots[2] then
+-- 		if global.robots[2].valid then global.robots[2].destroy() end
+-- 		global.robots[2]=false
+-- 	end
+-- 	if passive(5) then
+-- 		if global.robots[3]==false or (global.robots[3] and global.robots[3].valid==false) then
+-- 			global.robots[3]=b.surface.create_entity{name="robot-3",force="player",position=b.position,target=b.character}
+-- 			global.robots[3].destructible=false
+-- 		end
+-- 	elseif passive(5)==false and global.robots[3] then
+-- 		if global.robots[3].valid then global.robots[3].destroy() end
+-- 		global.robots[3]=false
+-- 	end
+-- end)
 
 --active item cooldown
 function active_cool(d)
-	if d==1 then global.active[3]=1 
-	elseif d==2 then global.active[3]=30 
+	if d==1 then global.active[3]=1
+	elseif d==2 then global.active[3]=30
 	elseif d==3 then global.active[3]=30
 	elseif d==4 then global.active[3]=1
 	elseif d==5 then global.active[3]=60
@@ -407,7 +411,7 @@ end
 --gui
 function gui()
 	local b=global.p
-	
+
 	--mastery
 	local g=b.gui.left
 	g.add{type="frame",name="main",style="outer_frame_style",direction="vertical"}
@@ -416,56 +420,56 @@ function gui()
 	for i=1,7 do
 		for j=1,3 do
 			g.main.mt.add{type="sprite-button",name=i.."-"..j,style="side_menu_button_style",sprite="item/mastery-"..i.."-"..j,tooltip={"mastery-info."..i.."-"..j}}
-			g.main.mt[i.."-"..j].style.visible=false
+			g.main.mt[i.."-"..j].visible=false
 		end
 	end
-	g.main.mt.style.visible=false
+	g.main.mt.visible=false
 	unlock()
-		
+
 	--enemy health
-	g=b.gui.top
-	g.add{type="frame",name="main",style="outer_frame_style",direction="vertical"}
-	g.main.add{type="frame",name="enemy",style="outer_frame_style",direction="horizontal"}
-	g.main.enemy.add{type="progressbar",name="bar",size=1,value=0,style="health_progressbar_style"}
-	g.main.enemy.bar.add{type="label",name="label"}
-	g.main.enemy.bar.label.style.top_padding=12
-	g.main.enemy.bar.label.style.bottom_padding=0
-	g.main.enemy.style.minimal_height=0
-	g.main.enemy.bar.style.minimal_height=50
-	g.main.enemy.bar.style.minimal_width=800
-	g.main.enemy.bar.style.maximal_width=800
-	g.main.style.left_padding=100
-	g.main.style.top_padding=10
-	g.main.enemy.bar.style.visible=false
-	--g.main.enemy.bar.label.caption={"gui.mastery"}
-	
+	local gui = b.gui.top
+	local frame = gui.add{type="frame",name="main",style="outer_frame_style",direction="vertical"}
+	frame.style.left_padding=100
+	frame.style.top_padding=10
+	frame.add{type="frame",name="enemy",style="outer_frame_style",direction="horizontal"}
+	frame.enemy.style.minimal_height=0
+	local bar = g.main.enemy.add{type="progressbar",name="bar",size=1,value=0,style="health_progressbar_style"}
+	bar.style.minimal_height=50
+	bar.style.minimal_width=800
+	bar.style.maximal_width=800
+	bar.visible=false
+	local label = bar.add{type="label",name="label"}
+	label.style.top_padding=12
+	label.style.bottom_padding=0
+	--label.caption={"gui.mastery"}
 end
 
 --on gui click
 script.on_event(defines.events.on_gui_click, function(event)
-	local b=global.p
-	local n=event.element.name
-	
+	local b = global.p
+	local n = event.element.name
+
 	--mastery button
-	if n=="mastery" and b.gui.left.main.mt.style.visible==true then
-		b.gui.left.main.mt.style.visible=false
-	elseif n=="mastery" and b.gui.left.main.mt.style.visible==false then
-		b.gui.left.main.mt.style.visible=true
-	elseif b.gui.left.main.mt and b.gui.left.main.mt[n] then 
+	local mt = b.gui.left.main.mt -- TODO: check
+	if n == "mastery" and mt.visible == true then
+		mt.visible=false
+	elseif n == "mastery" and mt.visible == false then
+		mt.visible=true
+	elseif mt and mt[n] then
 		if b.position.x > -1 and b.position.x < 40 and b.position.y > -7 and b.position.y < 20 then
-			b.gui.left.main.mt[n].style="green_circuit_network_content_slot_style"
+			mt[n].style="green_circuit_network_content_slot_style"
 			local i=tonumber(string.sub(n,1,1))
 			local j=tonumber(string.sub(n,3,3))
-			global.stats.mastery[i]=j	
-			if j==3 then 
-				b.gui.left.main.mt[i.."-1"].style="red_circuit_network_content_slot_style"
-				b.gui.left.main.mt[i.."-2"].style="red_circuit_network_content_slot_style"
-			elseif j==2 then
-				b.gui.left.main.mt[i.."-1"].style="red_circuit_network_content_slot_style"
-				b.gui.left.main.mt[i.."-3"].style="red_circuit_network_content_slot_style"
-			else b.gui.left.main.mt[i.."-2"].style="red_circuit_network_content_slot_style"
-				b.gui.left.main.mt[i.."-3"].style="red_circuit_network_content_slot_style"
-			end			
+			global.stats.mastery[i] = j
+			if j == 3 then
+				mt[i.."-1"].style="red_circuit_network_content_slot_style"
+				mt[i.."-2"].style="red_circuit_network_content_slot_style"
+			elseif j == 2 then
+				mt[i.."-1"].style="red_circuit_network_content_slot_style"
+				mt[i.."-3"].style="red_circuit_network_content_slot_style"
+			else mt[i.."-2"].style="red_circuit_network_content_slot_style"
+				mt[i.."-3"].style="red_circuit_network_content_slot_style"
+			end
 		else b.print{"gui.mastery-fail"}
 		end
 	end
@@ -475,9 +479,9 @@ end)
 --unlock
 function unlock()
 	local l=global.stats.level
-	global.p.gui.left.main.mt[l.."-1"].style.visible=true
-	global.p.gui.left.main.mt[l.."-2"].style.visible=true
-	global.p.gui.left.main.mt[l.."-3"].style.visible=true
+	global.p.gui.left.main.mt[l.."-1"].visible=true
+	global.p.gui.left.main.mt[l.."-2"].visible=true
+	global.p.gui.left.main.mt[l.."-3"].visible=true
 end
 
 --sound
@@ -517,8 +521,8 @@ function bt(pos,text,color)
 end
 
 --damages
-function damagetarget(ent,effect,damage)	
-	local b=global.p	
+function damagetarget(ent,effect,damage)
+	local b=global.p
 	if ent.valid and ent.destructible==true and ent.health~=nil then
 		local c=game.entity_prototypes[effect].type
 		local po=ent.position
@@ -527,83 +531,90 @@ function damagetarget(ent,effect,damage)
 			b.surface.create_entity{name=effect,position=targetrotate(po,targetline(po,pos,math.random()/2),math.random()*360)}
 		else
 			b.surface.create_entity{name=effect,position=ent.position,target=ent,speed=1}
-		end	
-	end	
+		end
+	end
 	ent.damage(damage,b.force.name,"damage-player")
 end
 function damagearea(pos,area,areaeffect,effect,damage)
 	local b=global.p
-	local c=game.entity_prototypes[effect].type	
+	local c=game.entity_prototypes[effect].type
 	for i,j in pairs(b.surface.find_entities_filtered{area={{pos.x-area,pos.y-area},{pos.x+area,pos.y+area}}}) do
-		if j.valid and j.destructible==true and j.health~=nil and math.sqrt((pos.x-j.position.x)^2+(pos.y-j.position.y)^2) <= area then 
+		if j.valid and j.destructible==true and j.health~=nil and math.sqrt((pos.x-j.position.x)^2+(pos.y-j.position.y)^2) <= area then
 			local po=j.position
-			local pos={x=j.position.x+1,y=j.position.y}		
-			if j.name~="player" then
-				local poss=j.position				
+			local pos={x=j.position.x+1,y=j.position.y}
+			if j.name ~= "character" then
+				local poss=j.position
 				j.damage(damage,b.force.name,"damage-player")
 				if c=="explosion" then
 					b.surface.create_entity{name=effect,position=targetrotate(po,targetline(po,pos,math.random()/2),math.random()*360)}
 				else
 					b.surface.create_entity{name=effect,position=poss,target=poss,speed=1}
-				end	
+				end
 			end
 		end
 	end
-	c=game.entity_prototypes[areaeffect].type	
+	c=game.entity_prototypes[areaeffect].type
 	if c=="explosion" then
-		b.surface.create_entity{name=areaeffect,position=pos}
+		b.surface.create_entity{name= areaeffect , position = pos}
 	else
-		b.surface.create_entity{name=areaeffect,position=pos,target=pos,speed=1}
-	end		
-end
-function edamagetarget(ent,effect,damage,speed)	
-	if speed==nil then speed=1 end
-	local b=global.p
-	if distance(b.character,ent)<=50 then
-		local c=game.entity_prototypes[effect].type
-		local po=b.character.position
-		local pos={x=b.character.position.x+1,y=b.character.position.y}
-		if c=="explosion" then
-			b.surface.create_entity{name=effect,position=targetrotate(po,targetline(po,pos,math.random()/2),math.random()*360)}
-		else
-			b.surface.create_entity{name=effect,position=ent.position,target=b.character,speed=speed}
-		end	
+		b.surface.create_entity{name= areaeffect , position = pos, target = pos, speed = 1}
 	end
-	b.damage(damage,"enemy","damage-enemy")
 end
-function edamagearea(pos,area,areaeffect,effect,damage,speed)
-	if speed==nil then speed=1 end
-	local b=global.p
-	local c=game.entity_prototypes[effect].type	
-	for i,j in pairs(b.surface.find_entities_filtered{area={{pos.x-area,pos.y-area},{pos.x+area,pos.y+area}}}) do
-		if j.valid and j.destructible==true and j.health~=nil and j.force.name~="enemy" and math.sqrt((pos.x-j.position.x)^2+(pos.y-j.position.y)^2) <= area then 
-			local po=j.position
-			local pos={x=j.position.x+1,y=j.position.y}		
-			local poss=j.position				
-			j.damage(damage,"enemy","damage-enemy")
-			if c=="explosion" then
-				b.surface.create_entity{name=effect,position=targetrotate(po,targetline(po,pos,math.random()/2),math.random()*360)}
-			else
-				b.surface.create_entity{name=effect,position=poss,target=poss,speed=speed}
-			end	
-		end
-	end
-	c=game.entity_prototypes[areaeffect].type	
-	if c=="explosion" then
-		b.surface.create_entity{name=areaeffect,position=pos}
-	else
-		b.surface.create_entity{name=areaeffect,position=pos,target=pos,speed=1}
-	end		
-end
+
+-- What is this?
+-- local function edamagetarget(ent,effect,damage,speed)
+-- 	if speed==nil then speed=1 end
+-- 	local b=global.p
+-- 	if distance(b.character,ent)<=50 then
+-- 		local c=game.entity_prototypes[effect].type
+-- 		local po=b.character.position
+-- 		local pos={x=b.character.position.x+1,y=b.character.position.y}
+-- 		if c=="explosion" then
+-- 			b.surface.create_entity{name=effect,position=targetrotate(po,targetline(po,pos,math.random()/2),math.random()*360)}
+-- 		else
+-- 			b.surface.create_entity{name=effect,position=ent.position,target=b.character,speed=speed}
+-- 		end
+-- 	end
+-- 	b.damage(damage,"enemy","damage-enemy")
+-- end
+
+-- What is this?
+-- local function edamagearea(pos,area,areaeffect,effect,damage,speed)
+-- 	if speed==nil then speed=1 end
+-- 	local b=global.p
+-- 	local c=game.entity_prototypes[effect].type
+-- 	for i,j in pairs(b.surface.find_entities_filtered{area={{pos.x-area,pos.y-area},{pos.x+area,pos.y+area}}}) do
+-- 		if j.valid and j.destructible==true and j.health~=nil and j.force.name~="enemy" and math.sqrt((pos.x-j.position.x)^2+(pos.y-j.position.y)^2) <= area then
+-- 			local po=j.position
+-- 			local pos={x=j.position.x+1,y=j.position.y}
+-- 			local poss=j.position
+-- 			j.damage(damage,"enemy","damage-enemy")
+-- 			if c=="explosion" then
+-- 				b.surface.create_entity{name=effect,position=targetrotate(po,targetline(po,pos,math.random()/2),math.random()*360)}
+-- 			else
+-- 				b.surface.create_entity{name=effect,position=poss,target=poss,speed=speed}
+-- 			end
+-- 		end
+-- 	end
+-- 	c=game.entity_prototypes[areaeffect].type
+-- 	if c=="explosion" then
+-- 		b.surface.create_entity{name=areaeffect,position=pos}
+-- 	else
+-- 		b.surface.create_entity{name=areaeffect,position=pos,target=pos,speed=1}
+-- 	end
+-- end
 
 --function of find entity by tag
 function tag(n)
 	return game.get_entity_by_tag(n).position
 end
 
---function of  market
+--function of market
 function market(price,item)
-	game.get_entity_by_tag("market").add_market_item{price={{"money", price}},offer={type="give-item", item=item,count=1}}
+	game.get_entity_by_tag("market").add_market_item{
+		price={{"money", price}},
+		offer={type="give-item", item=item, count=1}
+	}
 end
 
 --function of enemy target
@@ -615,7 +626,7 @@ function etarget(n)
 end
 
 --function of target direction
-function rotation(a,b) 
+function rotation(a,b)
 	local ax=a.position.x
 	local ay=a.position.y
 	local bx=b.position.x
@@ -635,7 +646,7 @@ function rotation(a,b)
 end
 
 --function of orientation
-function orientation(a,b) 
+function orientation(a,b)
 	local ax=a.position.x
 	local ay=a.position.y
 	local bx=b.position.x
@@ -661,8 +672,8 @@ function targetline(po,pos,n)
 		local bb=(-2)*(a+(k^2)*c+(-1)*k*d+k*b)
 		local cc=a^2+b^2+d^2+(k*c)^2+(-1)*(n^2)+(-2)*(k*c*d+(-1)*k*b*c+b*d)
 		if a<c then i=((-1)*bb+(bb^2+(-4)*aa*cc)^0.5)/(2*aa) elseif a>c then i=((-1)*bb-(bb^2+(-4)*aa*cc)^0.5)/(2*aa) else i=a end
-		j=k*(i-c)+d	
-		if n>0 then return {x=i,y=j}	
+		j=k*(i-c)+d
+		if n>0 then return {x=i,y=j}
 		elseif n<0 then return targetrotate(po,{x=i,y=j},180)
 		end
 	end
@@ -676,7 +687,7 @@ function targetrotate(po,pos,t)
 	local j=0
 	i=a*math.cos(math.rad(t))-b*math.sin(math.rad(t))+po.x
 	j=b*math.cos(math.rad(t))+a*math.sin(math.rad(t))+po.y
-	return {x=i,y=j}	
+	return {x=i,y=j}
 end
 
 --function of distance
@@ -701,30 +712,31 @@ script.on_event(defines.events.on_pre_player_died, function(event)
 	else
 		global.stage.timer[global.stats.stage][1]=global.stage.timer[global.stats.stage][1]+1
 		global.stats.xp=global.stats.xp+(50+(global.stats.stage-2)*50)/2
-		sound(b.position,"die")	
+		sound(b.position,"die")
 		global.p.character.clear_items_inside()
-		global.p.insert({name="weapon-1",count=1})	
-		if global.stats.mastery[7]==1 then 
+		global.p.insert({name="weapon-1",count=1})
+		if global.stats.mastery[7]==1 then
 			global.p.insert({name="active-4",count=1})
-		elseif global.stats.mastery[7]==2 then 
+		elseif global.stats.mastery[7]==2 then
 			global.p.insert({name="active-7",count=1})
-		elseif global.stats.mastery[7]==3 then 
+		elseif global.stats.mastery[7]==3 then
 			global.p.insert({name="active-8",count=1})
 		end
 		b.character.health=b.character.prototype.max_health
 		player_respawn()
 		global.stage.start=false
-		global.boss={}
+		global.bosses={}
 		global.bgm.num=0
 		global.bgm.tick=0
-		global.p.gui.top.main.enemy.bar.style.visible=false
+		global.p.gui.top.main.enemy.bar.visible=false
 		global.stats.stage=1
 		for i=1,#game.get_entity_by_tag("market").get_market_items() do
 			game.get_entity_by_tag("market").remove_market_item(1)
-		end	
+		end
 	end
 end)
 
+-- TODO: change for MP!
 --respawn
 function player_respawn()
 	local b=global.p
@@ -732,47 +744,20 @@ function player_respawn()
 	b.surface.wind_speed=0
 	b.teleport(global.respawn)
 	b.surface.create_entity{name="recall",position=global.respawn}
-	local ent=b.surface.find_entities_filtered{force="enemy"}
-	for i,j in pairs(ent) do
-		if global.test[1]~=j then
-			j.destroy()
+	for _, entity in pairs(b.surface.find_entities_filtered{force="enemy"}) do
+		if global.test[1] ~= j then
+			entityj.destroy()
 		end
 	end
-	ent=b.surface.find_entities_filtered{name="item-on-ground"}
-	for i,j in pairs(ent) do
-		j.destroy()
-	end
-	ent=b.surface.find_entities_filtered{type="corpse"}
-	for i,j in pairs(ent) do
-		j.destroy()
-	end
-	ent=b.surface.find_entities_filtered{type="land-mine"}
-	for i,j in pairs(ent) do
-		j.destroy()
-	end
-	ent=b.surface.find_entities_filtered{type="projectile"}
-	for i,j in pairs(ent) do
-		j.destroy()
-	end
-	ent=b.surface.find_entities_filtered{name="rf_stone"}
-	for i,j in pairs(ent) do
-		j.destroy()
-	end
-	ent=b.surface.find_entities_filtered{name="rf_consol-clear"}
-	for i,j in pairs(ent) do
-		j.destroy()
-	end
-	ent=b.surface.find_entities_filtered{name="green-circle"}
-	for i,j in pairs(ent) do
-		j.destroy()
-	end
-	ent=b.surface.find_entities_filtered{name="blaze-8"}
-	for i,j in pairs(ent) do
-		j.destroy()
-	end
-	ent=b.surface.find_entities_filtered{name="mark"}
-	for i,j in pairs(ent) do
-		j.destroy()
+
+	-- Delete trash
+	local trash = {"item-on-ground", "corpse", "land-mine",
+				   "projectile", "rf_stone", "rf_consol-clear",
+				   "green-circle", "blaze-8", "mark"}
+	for _, name in pairs(trash) do
+		for _, entity in pairs(b.surface.find_entities_filtered{name = name}) do
+			entity.destroy()
+		end
 	end
 	ent=b.surface.find_entities_filtered{type="decorative"}
 	for i,j in pairs(ent) do
@@ -794,7 +779,7 @@ function player_respawn()
 	b.surface.set_tiles(ent,false)
 	game.forces["enemy"].set_gun_speed_modifier("ammo-enemy",0)
 	game.forces["enemy"].set_ammo_damage_modifier("ammo-enemy",0)
-	global.p.gui.top.main.enemy.bar.style.visible=false
+	global.p.gui.top.main.enemy.bar.visible=false
 	for i=1,6 do
 		game.get_entity_by_tag("6-gate-"..i).request_to_close("player")
 	end
@@ -802,8 +787,8 @@ function player_respawn()
 end
 
 --interaction
-script.on_event("interaction", function(event)		
-	local b=global.p	
+script.on_event("interaction", function(event)
+	local b=global.p
 	local ent=b.selected
 	if b.selected and b.selected.valid and distance(b.character,ent)<2 then
 		if ent.name=="rf_consol-stage" and global.stage.start==false then
@@ -835,13 +820,13 @@ script.on_event("interaction", function(event)
 			game.print({"boss."..global.stage.num.."-0",global.stats.stage})
 			b.teleport(global.stage.starts[global.stage.num])
 			if passive(3) then
-				global.robot[1].teleport(global.stage.starts[global.stage.num])
+				global.robots[1].teleport(global.stage.starts[global.stage.num])
 			end
 			if passive(4) then
-				global.robot[2].teleport(global.stage.starts[global.stage.num])
+				global.robots[2].teleport(global.stage.starts[global.stage.num])
 			end
 			if passive(5) then
-				global.robot[3].teleport(global.stage.starts[global.stage.num])
+				global.robots[3].teleport(global.stage.starts[global.stage.num])
 			end
 			global.stage.start=event.tick
 			global.timer=event.tick
@@ -854,7 +839,7 @@ script.on_event("interaction", function(event)
 			--tutorial
 			sound(b.position,"tuto")
 		elseif ent.name=="storage-tank" then
-			if global.water==nil then 
+			if global.water==nil then
 				global.water=true
 				b.surface.create_entity{name = "playertext", position = b.position, text = {"rf.water-1"}, color={g=1}}
 			elseif global.water==false then
@@ -869,8 +854,8 @@ script.on_event("interaction", function(event)
 			global.water=false
 		else
 			for i=1,2 do
-				if distance(game.get_entity_by_tag("gate-"..i),b.position)<=3 then
-					game.get_entity_by_tag("gate-"..i).request_to_open("player",180)
+				if distance(game.get_entity_by_tag("gate-" .. i),b.position) <= 3 then
+					game.get_entity_by_tag("gate-" .. i).request_to_open("player", 180)
 				end
 			end
 		end
@@ -878,7 +863,7 @@ script.on_event("interaction", function(event)
 	if b.get_inventory(defines.inventory.player_guns)[b.character.selected_gun_index].valid_for_read then
 		local n=b.get_inventory(defines.inventory.player_guns)[b.character.selected_gun_index].name
 		if n=="weapon-13" and global.weapon[13] then
-			if global.weapon[13]>0 then
+			if global.weapon[13] > 0 then
 				b.cursor_stack.clear()
 				b.cursor_stack.set_stack({name="rf_no", count=1})
 				b.character.character_build_distance_bonus=100
@@ -886,7 +871,7 @@ script.on_event("interaction", function(event)
 				b.character.character_build_distance_bonus=0
 				b.cursor_stack.clear()
 			end
-		elseif n=="weapon-23" then
+		elseif n == "weapon-23" then
 			b.cursor_stack.clear()
 			b.cursor_stack.set_stack({name="rf_no", count=1})
 			b.character.character_build_distance_bonus=100
@@ -896,8 +881,8 @@ script.on_event("interaction", function(event)
 			b.cursor_stack.clear()
 		end
 	end
-				
-	
+
+
 end)
 
 --on build
@@ -924,18 +909,18 @@ script.on_event(defines.events.on_built_entity, function(event)
 		elseif n=="weapon-23" then
 			local d=b.surface.create_entity{name="ex-32",position=pos}
 			if global.weapon[23] and global.weapon[23].valid then global.weapon[23].destroy() end
-			global.weapon[23]=d			
+			global.weapon[23]=d
 		end
 	end
-		
-		
+
+
 	end
 end)
 
 
 --[[on kill
-script.on_event(defines.events.on_entity_died, function(event)	
-	if event.force.name~="player" and event.force.name~="enemy" and event.entity.force.name=="enemy" then
+script.on_event(defines.events.on_entity_died, function(event)
+	if event.force.name ~= "character" and event.force.name~="enemy" and event.entity.force.name=="enemy" then
 		local b=global.p
 		local ent=event.entity
 		if ent.name=="boss" then
@@ -952,15 +937,15 @@ end)
 --get item
 script.on_event(defines.events.on_player_main_inventory_changed, function(event)
 	local b=global.p
-	if b.get_inventory(defines.inventory.player_main).get_item_count("money") > 0 then			
+	if b.get_inventory(defines.inventory.player_main).get_item_count("money") > 0 then
 		b.get_quickbar()[7].set_stack({name="money",count=b.get_item_count("money")})
 		b.get_inventory(defines.inventory.player_main).remove({name="money",count=b.get_inventory(defines.inventory.player_main).get_item_count("money")})
 	else
 		local list={"active","level","xp","stage"}
 		for i,j in pairs(list) do
-			if b.get_inventory(defines.inventory.player_main).get_item_count(j) > 0 then	
+			if b.get_inventory(defines.inventory.player_main).get_item_count(j) > 0 then
 				b.get_inventory(defines.inventory.player_main).remove({name=j,count=b.get_inventory(defines.inventory.player_main).get_item_count(j)})
-			end			
+			end
 		end
 	end
 	if b.get_inventory(defines.inventory.player_main).get_item_count("heal") > 0 then
@@ -1001,7 +986,7 @@ end)
 
 --stage clear
 function stageclear(n)
-	
+
 	global.stage.timer[global.stats.stage][1]=global.stage.timer[global.stats.stage][1]+1
 	if global.stage.timer[global.stats.stage][2]==0 or global.stage.timer[global.stats.stage][2]>math.ceil((game.tick-global.timer)/60*100)/100 then
 		global.stage.timer[global.stats.stage][2]=math.ceil((game.tick-global.timer)/60*100)/100
@@ -1058,8 +1043,8 @@ function stageclear(n)
 	global.stage.start=false
 	global.bgm.num=0
 	global.bgm.tick=0
-	global.boss={}
-	global.p.gui.top.main.enemy.bar.style.visible=false
+	global.bosses={}
+	global.p.gui.top.main.enemy.bar.visible=false
 	--xp
 	if global.stats.mastery[1]==3 then
 		global.stats.xp=global.stats.xp+(50+(global.stats.stage-2)*50)*0.5
@@ -1087,7 +1072,7 @@ end
 function market_reset()
 	for i=1,#game.get_entity_by_tag("market").get_market_items() do
 		game.get_entity_by_tag("market").remove_market_item(1)
-	end	
+	end
 	market(10+global.stats.stage-2,"heal")
 	market(global.market.armor[1],"armor-1")
 	market(global.market.armor[2],"armor-2")
@@ -1105,16 +1090,16 @@ function market_reset()
 	ran=math.random(1,#global.market.passive)
 	market(global.market.passive[ran],"passive-"..ran)
 end
-	
+
 --movement
 function movement()
 	local b=global.p
 	local speed=0
 	if game.tick>=global.dodge then
-		if passive(2) then 
+		if passive(2) then
 			speed=speed+0.15
 		end
-		if passive(9) then 
+		if passive(9) then
 			speed=speed-0.15
 		end
 		if global.stats.mastery[2]==3 then
@@ -1126,11 +1111,11 @@ function movement()
 			else global.stim=false
 			end
 		end
-		if global.stats.stage==6 and global.boss and global.boss.e and global.boss.e~=true and global.boss.e.valid and global.boss.e.name=="spitter-normal-6" then
+		if global.stats.stage==6 and global.bosses and global.bosses.e and global.bosses.e~=true and global.bosses.e.valid and global.bosses.e.name=="spitter-normal-6" then
 			speed=(speed+1)*0.5-1
-		elseif global.stats.stage==6 and global.boss and global.boss.c and global.boss.c~=true and global.boss.c.valid and global.boss.c.name=="spitter-normal-6" then
+		elseif global.stats.stage==6 and global.bosses and global.bosses.c and global.bosses.c~=true and global.bosses.c.valid and global.bosses.c.name=="spitter-normal-6" then
 			speed=(speed+1)*0.5-1
-		elseif global.stats.stage==5 and global.boss and global.boss.a and global.boss.a<=240-(24*9) then
+		elseif global.stats.stage==5 and global.bosses and global.bosses.a and global.bosses.a<=240-(24*9) then
 			speed=(speed+1)*0.5-1
 		end
 		b.character_running_speed_modifier=speed
@@ -1142,10 +1127,10 @@ function gun(n)
 	local b=global.p
 	local speed=0
 	local damage=0
-	if passive(1) then 
+	if passive(1) then
 		speed=speed+0.1
 	end
-	if passive(9) then 
+	if passive(9) then
 		speed=speed+0.2
 	end
 	if global.stats.mastery[2]==1 then
@@ -1161,7 +1146,7 @@ function gun(n)
 			speed=speed+0.3
 		else global.stim=false
 		end
-	end	
+	end
 	for i=1,n do
 		b.force.set_gun_speed_modifier("ammo-"..i,speed)
 		b.force.set_ammo_damage_modifier("ammo-"..i,damage)
@@ -1193,11 +1178,11 @@ end
 --on tick
 script.on_event(defines.events.on_tick, function(event)
 	local b=global.p
-if b.character then 
+if b.character then
 
 --opening
 	if event.tick==2 then
-		game.show_message_dialog{text = {"rf.0"}}	
+		game.show_message_dialog{text = {"rf.0"}}
 		b.game_view_settings.update_entity_selection=false
 		b.clear_selected_entity()
 	elseif event.tick<=21*60 then
@@ -1234,7 +1219,7 @@ if b.character then
 			game.get_entity_by_tag("train").passenger=nil
 		end
 	end
---every tick call	
+--every tick call
 	--dps
 	local t=global.test
 	if t[1] and t[1].valid and t[2]~=t[1].health then
@@ -1270,7 +1255,7 @@ if b.character then
 			end
 		end
 	elseif event.tick==global.dodge then
-		movement()		
+		movement()
 		b.character.destructible=true
 	end
 	--weapon 10
@@ -1330,10 +1315,10 @@ if b.character then
 	if global.weapon[25] and global.weapon[25].valid then
 		local pos=global.weapon[25].position
 		local d=b.surface.find_entities_filtered{area={{pos.x-0.5,pos.y-0.5},{pos.x+0.5,pos.y+0.5}},type="projectile"}
-		for i,j in pairs(d) do
+		for i, j in pairs(d) do
 			if j==global.weapon[25] then table.remove(d,i) end
 		end
-		for i,j in pairs(d) do
+		for _, j in pairs(d) do
 			j.destroy()
 		end
 	end
@@ -1359,7 +1344,7 @@ if b.character then
 			b.character.character_running_speed_modifier=4
 		else game.speed=1
 			global.stop=false
-			b.character.character_running_speed_modifier=0			
+			b.character.character_running_speed_modifier=0
 		end
 	end
 	--passive 12
@@ -1369,21 +1354,21 @@ if b.character then
 		sound(b.position,"firstaid")
 		b.surface.create_entity{name="firstaid",position=b.position}
 	end
-	
+
 	--stage
 	if global.stage.start then
 		if global.stage.start+10 == event.tick then
 			global.bgm.num=0
 			sound(global.stage.starts[global.stage.num],"stagestart")
 		elseif global.stage.start+10 < event.tick then
-			local a=global.boss
+			local a=global.bosses
 			local d=global.stats.stage
 			local pos
 			if event.tick-global.stage.start-10<=300 then
 				b.zoom=300/(event.tick-global.stage.start-10)
 			end
-			--stage 1		
-			if global.stage.num==1 then				
+			--stage 1
+			if global.stage.num==1 then
 				if global.stage.start+410==event.tick then
 					pos={side(1,45)}
 					for i=1,#pos do blood(pos[i],3) end
@@ -1418,17 +1403,17 @@ if b.character then
 					a.i=b.surface.create_entity{name="biter-boss-1",position=pos[1]}
 					a.j=event.tick
 				elseif a.i and a.i.valid and a.j then
-					if a.i.health>a.i.prototype.max_health*0.3 and (a.j-event.tick)%600==0 then 
+					if a.i.health>a.i.prototype.max_health*0.3 and (a.j-event.tick)%600==0 then
 						a.j=event.tick
 						sound(b.position,"rush")
 						b.surface.create_entity{name="slowdown-3-250",position=a.i.position,target=a.i}
 					end
-					if a.i.health<=a.i.prototype.max_health*0.3 and (a.j-event.tick)%300==0 then 
+					if a.i.health<=a.i.prototype.max_health*0.3 and (a.j-event.tick)%300==0 then
 						a.j=event.tick
 						sound(b.position,"rush")
 						b.surface.create_entity{name="slowdown-3-250",position=a.i.position,target=a.i}
 					end
-					if a.i.health<=a.i.prototype.max_health*0.15 and (a.j-event.tick)%150==0 then 
+					if a.i.health<=a.i.prototype.max_health*0.15 and (a.j-event.tick)%150==0 then
 						a.j=event.tick
 						sound(b.position,"rush")
 						b.surface.create_entity{name="slowdown-3-250",position=a.i.position,target=a.i}
@@ -1464,9 +1449,9 @@ if b.character then
 					end
 					b.surface.wind_speed=(1-a.i.health/a.i.prototype.max_health)*0.2
 					b.surface.wind_orientation=orientation(a.i,b)
-					global.p.gui.top.main.enemy.bar.style.visible=true
+					global.p.gui.top.main.enemy.bar.visible=true
 					global.p.gui.top.main.enemy.bar.value=a.i.health/a.i.prototype.max_health
-					global.p.gui.top.main.enemy.bar.label.caption={"gui.boss-1",math.ceil(a.i.health),math.ceil(a.i.prototype.max_health),math.ceil(a.i.health/a.i.prototype.max_health*100)}
+					global.p.gui.top.main.enemy.bar.label.caption={"gui.bosses-1",math.ceil(a.i.health),math.ceil(a.i.prototype.max_health),math.ceil(a.i.health/a.i.prototype.max_health*100)}
 					if a.i.health<a.i.prototype.max_health*0.5 and event.tick%30==0 then
 						b.surface.create_entity{name="blaze-3",position=a.i.position}
 					elseif a.i.health<a.i.prototype.max_health*0.3 and event.tick%15==0 then
@@ -1477,7 +1462,7 @@ if b.character then
 				elseif a.i and a.i.valid==false then
 					stageclear(global.stage.num)
 				end
-			--stage 2	
+			--stage 2
 			elseif global.stage.num==2 then
 				if global.stage.start+20==event.tick then
 					a.a=b.surface.create_entity{name="spitter-boss-2",position=tag("2-12")}
@@ -1520,8 +1505,8 @@ if b.character then
 							a.a.set_command({type=defines.command.go_to_location,destination=tag("2-"..i),distraction=defines.distraction.none})
 						end
 					elseif a.c and a.c+240*12*2+20<event.tick then
-						if a.c+240*12*2+60==event.tick then 
-							bt(a.a.position,{"boss.2-4"}) 
+						if a.c+240*12*2+60==event.tick then
+							bt(a.a.position,{"boss.2-4"})
 							a.a.set_command({type=defines.command.go_to_location,destination=tag("2-3"),distraction=defines.distraction.none})
 						end
 						if (event.tick-a.c)%120==90 then
@@ -1536,27 +1521,27 @@ if b.character then
 					end
 					b.surface.wind_speed=(1-a.a.health/a.a.prototype.max_health)*0.2
 					b.surface.wind_orientation=orientation(a.a,b)
-					global.p.gui.top.main.enemy.bar.style.visible=true
+					global.p.gui.top.main.enemy.bar.visible=true
 					global.p.gui.top.main.enemy.bar.value=a.a.health/a.a.prototype.max_health
-					global.p.gui.top.main.enemy.bar.label.caption={"gui.boss-2",math.ceil(a.a.health),math.ceil(a.a.prototype.max_health),math.ceil(a.a.health/a.a.prototype.max_health*100)}
+					global.p.gui.top.main.enemy.bar.label.caption={"gui.bosses-2",math.ceil(a.a.health),math.ceil(a.a.prototype.max_health),math.ceil(a.a.health/a.a.prototype.max_health*100)}
 				elseif a.a and a.a.valid==false then
 					stageclear(global.stage.num)
 				end
 			--stage 3
 			elseif global.stage.num==3 then
 				if global.stage.start+20==event.tick then
-					a.a=game.surfaces[1].create_entity{name="rocket-silo",position=global.stage.boss[3]}
+					a.a=game.surfaces[1].create_entity{name="rocket-silo",position=global.stage.bosses[3]}
 					a.a.destructible=false
 				elseif global.stage.start+410==event.tick then
 					a.a.destructible=true
 					a.b=a.a.health/a.a.prototype.max_health
-				elseif a.a and a.a.valid and a.b then	
+				elseif a.a and a.a.valid and a.b then
 					a.b=a.a.health/a.a.prototype.max_health
 					if a.b<=1 and event.tick%30==0 then
 						game.surfaces[1].create_entity{name="ep-50",position=tag("3-4"),target=b.position,speed=0.3}
 						game.surfaces[1].create_entity{name="explosion-gunshot",position=tag("3-4"),target=b.position}
 					end
-					if a.b<=0.8 then			
+					if a.b<=0.8 then
 						if a.c==nil then
 							sound(b.position,"shot-5")
 							game.surfaces[1].create_entity{name="explosion-hit",position=tag("3-5"),target=b.position}
@@ -1566,7 +1551,7 @@ if b.character then
 							game.surfaces[1].create_entity{name="explosion-hit",position=tag("3-5"),target=b.position}
 							a.c=game.surfaces[1].create_entity{name="rf_rocket-3",position=tag("3-5"),target=b.character,speed=0.15*(1-a.a.health/a.a.prototype.max_health*0.5)}
 						end
-						if event.tick%300==0 and (a.d==nil or a.d==false) then						
+						if event.tick%300==0 and (a.d==nil or a.d==false) then
 							a.d=game.surfaces[1].create_entity{name="ex-64",position=etarget(5)}
 						elseif event.tick%300==60 and a.d then
 							game.surfaces[1].create_entity{name="explosion-64",position=a.d.position}
@@ -1583,16 +1568,16 @@ if b.character then
 						if a.b<=1 and event.tick%30==0 then
 							game.surfaces[1].create_entity{name="explosion-gunshot",position=tag("3-2"),target=b.position}
 							game.surfaces[1].create_entity{name="ep-50",position=tag("3-2"),target=b.position,speed=0.3}
-						end						
+						end
 					end
 					if a.b<=0.2 and event.tick%30==17 then
 						game.surfaces[1].create_entity{name="rf_flame-3",position=tag("3-3"),source=game.get_entity_by_tag("3-3"),target=b.position,speed=0.3}
 					end
 					b.surface.wind_speed=(1-a.a.health/a.a.prototype.max_health)*0.2
 					if a.c and a.c.valid then b.surface.wind_orientation=orientation(b,a.c) end
-					global.p.gui.top.main.enemy.bar.style.visible=true
+					global.p.gui.top.main.enemy.bar.visible=true
 					global.p.gui.top.main.enemy.bar.value=a.a.health/a.a.prototype.max_health
-					global.p.gui.top.main.enemy.bar.label.caption={"gui.boss-3",math.ceil(a.a.health),math.ceil(a.a.prototype.max_health),math.ceil(a.a.health/a.a.prototype.max_health*100)}
+					global.p.gui.top.main.enemy.bar.label.caption={"gui.bosses-3",math.ceil(a.a.health),math.ceil(a.a.prototype.max_health),math.ceil(a.a.health/a.a.prototype.max_health*100)}
 				elseif a.a and a.a.valid==false then
 					stageclear(global.stage.num)
 				end
@@ -1610,7 +1595,7 @@ if b.character then
 				elseif a.a and a.a.valid then
 					if a.a and a.a.valid and a.a.health/a.a.prototype.max_health>0.9 then
 						if event.tick%50==0 then a.b=tile4(a.b) end
-					elseif a.a and a.a.valid and a.a.health/a.a.prototype.max_health>0.8 then	
+					elseif a.a and a.a.valid and a.a.health/a.a.prototype.max_health>0.8 then
 						if a.c==false then a.c=event.tick a.d=b.position end
 						if event.tick%45==0 then a.b=tile4(a.b) end
 						if a.a and a.a.valid then b.surface.create_entity{name="beam-4",position=a.a.position,source=a.a,target=targetrotate(a.a.position,targetline(a.a.position,a.d,30),180+(event.tick-a.c)),duration=2} end
@@ -1662,14 +1647,14 @@ if b.character then
 						b.surface.wind_speed=(1-a.a.health/a.a.prototype.max_health)*0.2
 						b.surface.wind_orientation=orientation(a.a,b)
 						game.forces["enemy"].set_gun_speed_modifier("ammo-enemy",1-(a.a.health/a.a.prototype.max_health))
-						global.p.gui.top.main.enemy.bar.style.visible=true
+						global.p.gui.top.main.enemy.bar.visible=true
 						global.p.gui.top.main.enemy.bar.value=a.a.health/a.a.prototype.max_health
-						global.p.gui.top.main.enemy.bar.label.caption={"gui.boss-4",math.ceil(a.a.health),math.ceil(a.a.prototype.max_health),math.ceil(a.a.health/a.a.prototype.max_health*100)}
+						global.p.gui.top.main.enemy.bar.label.caption={"gui.bosses-4",math.ceil(a.a.health),math.ceil(a.a.prototype.max_health),math.ceil(a.a.health/a.a.prototype.max_health*100)}
 					end
 				elseif a.a and a.a.valid==false then
 					stageclear(global.stage.num)
 				end
-			--stage 5			
+			--stage 5
 			elseif global.stage.num==5 then
 				if global.stage.start+410==event.tick then
 					a.a=240
@@ -1699,7 +1684,7 @@ if b.character then
 						if a.c%180==45 then
 							b.surface.create_entity{name="biter-normal-1",position=targetrotate(a.t.position,{x=a.t.position.x,y=a.t.position.y-3},a.t.orientation*360+90)}
 						end
-					end	
+					end
 					if a.a<=240-(24*4) then--60%
 						if a.c%20==10 then
 							bullet_line(a.t,"ep-50",1,30,0.3)
@@ -1717,7 +1702,7 @@ if b.character then
 						if a.c%180==135 then
 							b.surface.create_entity{name="spitter-normal-1",position=targetrotate(a.t.position,{x=a.t.position.x,y=a.t.position.y-3},a.t.orientation*360+90)}
 						end
-					end	
+					end
 					if a.a<=240-(24*8) then--20%
 						if a.c%10==5 then
 							bullet_line(a.t,"ep-50",1,30,0.3)
@@ -1734,9 +1719,9 @@ if b.character then
 					if a.a and a.a>0 then
 						b.surface.wind_speed=(1-a.a/240)*0.2
 						b.surface.wind_orientation=orientation(a.t,b)
-						global.p.gui.top.main.enemy.bar.style.visible=true
+						global.p.gui.top.main.enemy.bar.visible=true
 						global.p.gui.top.main.enemy.bar.value=a.a/240
-						global.p.gui.top.main.enemy.bar.label.caption={"gui.boss-5",math.ceil(a.a),240,math.ceil(a.a/240*100)}
+						global.p.gui.top.main.enemy.bar.label.caption={"gui.bosses-5",math.ceil(a.a),240,math.ceil(a.a/240*100)}
 					end
 					if a.a<=240-(24*3) then--70%
 						if a.c%6==0 then
@@ -1774,7 +1759,7 @@ if b.character then
 						a.b=tile6(a.b)
 					end
 					if a.g[1].is_opened() and a.g[2].is_opened()==false then
-						if a.c==nil then 
+						if a.c==nil then
 							game.print({"boss.6-1"})
 							blood({a.a[1].x,a.a[1].y-6},3)
 							blood({a.a[1].x,a.a[1].y+6},3)
@@ -1787,7 +1772,7 @@ if b.character then
 						end
 					end
 					if a.g[2].is_opened() and a.g[3].is_opened()==false then
-						if a.c==false then 
+						if a.c==false then
 							game.print({"boss.6-2"})
 							blood({a.a[2].x+6,a.a[2].y+6},3)
 							blood({a.a[2].x+6,a.a[2].y-6},3)
@@ -1816,7 +1801,7 @@ if b.character then
 						end
 					end
 					if a.g[3].is_opened() and a.g[4].is_opened()==false then
-						if a.d==false then 
+						if a.d==false then
 							a.d=event.tick
 							blood({a.a[3].x+6,a.a[3].y+6},3)
 							blood({a.a[3].x+6,a.a[3].y-6},3)
@@ -1868,14 +1853,14 @@ if b.character then
 							a.h=b.surface.create_entity{name="spawner-biter-normal-1",position={a.a[4].x-7,a.a[4].y-7}}
 							a.i=b.surface.create_entity{name="worm-normal-6-4",position={a.a[4].x,a.a[4].y}}
 							game.print({"boss.6-4"})
-						elseif a.d and a.d.valid==false and a.e.valid==false and a.f.valid==false and a.h.valid==false and a.i.valid==false then 
+						elseif a.d and a.d.valid==false and a.e.valid==false and a.f.valid==false and a.h.valid==false and a.i.valid==false then
 							bt(a.g[5].position,"room 4 clear")
 							a.g[5].request_to_open("player",30000)
 							a.d=false
 						end
 					end
 					if a.g[5].is_opened() and a.g[6].is_opened()==false then
-						if a.d==false then 
+						if a.d==false then
 							blood({a.a[5].x,a.a[5].y},3)
 							blood({a.a[5].x+6,a.a[5].y+6},3)
 							blood({a.a[5].x+6,a.a[5].y-6},3)
@@ -1922,7 +1907,7 @@ if b.character then
 									a.c.set_command({type=defines.command.go_to_location,destination=pos,distraction=defines.distraction.none})
 								end
 							end
-						elseif a.c and a.c.valid==false and a.d.valid==false and a.e.valid==false and a.f.valid==false and a.h.valid==false then 
+						elseif a.c and a.c.valid==false and a.d.valid==false and a.e.valid==false and a.f.valid==false and a.h.valid==false then
 							bt(a.g[6].position,"room 5 clear")
 							a.g[6].request_to_open("player",30000)
 							a.c=false
@@ -1934,9 +1919,9 @@ if b.character then
 					if b.position.x<131 and b.position.y>190 then
 						b.surface.wind_speed=(1-b.position.x/130)*0.2
 						b.surface.wind_orientation=0.25
-						global.p.gui.top.main.enemy.bar.style.visible=true
+						global.p.gui.top.main.enemy.bar.visible=true
 						global.p.gui.top.main.enemy.bar.value=1-(b.position.x/130)
-						global.p.gui.top.main.enemy.bar.label.caption={"gui.boss-6",math.ceil(b.position.x),130,math.ceil(b.position.x/130*100)}
+						global.p.gui.top.main.enemy.bar.label.caption={"gui.bosses-6",math.ceil(b.position.x),130,math.ceil(b.position.x/130*100)}
 					end
 				elseif b.position.x>=131 then
 					stageclear(global.stage.num)
@@ -1987,7 +1972,7 @@ if b.character then
 				--phase 2
 					a.d=event.tick-a.c
 					a.speed=(a.a.health/a.a.prototype.max_health)*0.1+0.05  --0.05 to 0.15
-					if a.d==60 then 
+					if a.d==60 then
 						a.gas=b.surface.create_entity{name="gas-7",position=a.a.position}
 					end
 					if a.a and a.a.valid and a.gas and a.d%(25-math.ceil(a.speed*100))==0 and a.d<3300 then
@@ -2017,7 +2002,7 @@ if b.character then
 						b.surface.create_entity{name="slowdown-2-0",position=a.a.position,target=a.a}
 						a.gas=b.surface.create_entity{name="poison-cloud-7",position=a.a.position}
 					end
-					
+
 					if a.d%1600==400 then
 						if a.ee and a.ee.valid then a.ee.die() end
 						blood(targetline(a.a.position,b.position,-1.2),2)
@@ -2042,7 +2027,7 @@ if b.character then
 						b.surface.create_entity{name="worm-normal-6-3",position=a.ep}.health=a.ee.health
 						a.ee.die()
 					end
-					
+
 					if a.d%1600==1200 then
 						if a.fe and a.fe.valid then a.fe.die() end
 						sound(b.position,"anda-cast-1")
@@ -2067,7 +2052,7 @@ if b.character then
 						b.surface.create_entity{name="worm-normal-6-3",position=a.fp}.health=a.fe.health
 						a.fe.die()
 					end
-					
+
 					if a.a.health/a.a.prototype.max_health<0.7 then
 						sound(b.position,"anda2")
 						a.b=4
@@ -2087,7 +2072,7 @@ if b.character then
 					elseif a.d%400==200 then
 						sound(b.position,"anda-cast-1")
 						b.surface.create_entity{name="slowdown-4-0",position=a.a.position,target=a.a}
-					elseif a.d%400>230 and a.d%400<=320 and a.d%4==0 then						
+					elseif a.d%400>230 and a.d%400<=320 and a.d%4==0 then
 						b.surface.create_entity{name="ep-7-1",position=targetline(a.a.position,b.position,(a.d%400-230)*0.3)}
 					end
 					if a.a and a.a.valid and a.a.health/a.a.prototype.max_health<0.4 then
@@ -2127,7 +2112,7 @@ if b.character then
 					elseif a.a and a.a.valid and a.d%800==600 then
 						sound(b.position,"anda-cast-1")
 						b.surface.create_entity{name="slowdown-4-0",position=a.a.position,target=a.a}
-					elseif a.a and a.a.valid and a.d%800>630 and a.d%800<=720 and a.d%4==0 then						
+					elseif a.a and a.a.valid and a.d%800>630 and a.d%800<=720 and a.d%4==0 then
 						b.surface.create_entity{name="ep-7-1",position=targetline(a.a.position,b.position,(a.d%800-630)*0.3)}
 					elseif a.a and a.a.valid and a.d%800==0 then
 						for i=10,360,10 do
@@ -2152,9 +2137,9 @@ if b.character then
 						b.surface.wind_orientation=orientation(a.gas,b)
 						b.surface.wind_speed=a.speed
 					end
-					global.p.gui.top.main.enemy.bar.style.visible=true
+					global.p.gui.top.main.enemy.bar.visible=true
 					global.p.gui.top.main.enemy.bar.value=a.a.health/a.a.prototype.max_health
-					global.p.gui.top.main.enemy.bar.label.caption={"gui.boss-7",math.ceil(a.a.health),math.ceil(a.a.prototype.max_health),math.ceil(a.a.health/a.a.prototype.max_health*100)}
+					global.p.gui.top.main.enemy.bar.label.caption={"gui.bosses-7",math.ceil(a.a.health),math.ceil(a.a.prototype.max_health),math.ceil(a.a.health/a.a.prototype.max_health*100)}
 				end
 				if global.stats.stage==7 and a.b==5 and a.a and a.a.valid==false then
 					stageclear(global.stage.num)
@@ -2185,7 +2170,7 @@ if b.character then
 					elseif a.d==220 then
 						blood(a.p[1],3)
 						b.surface.create_entity{name="worm-normal-8-1",position=a.p[1]}
-						
+
 					elseif a.d>220 and a.d<=220+60*20 and (a.d-220)%60==0 then
 						if a.d==220+60*20 then
 							b.surface.create_entity{name="explosion-128",position=a.p[4]}
@@ -2195,7 +2180,7 @@ if b.character then
 					elseif a.d==220+60*20+60 then
 						blood(a.p[4],3)
 						b.surface.create_entity{name="worm-normal-8-2",position=a.p[4]}
-						
+
 					elseif a.d>1480 and a.d<=1480+60*20 and (a.d-1480)%60==0 then
 						if a.d==1480+60*20 then
 							b.surface.create_entity{name="explosion-128",position=a.p[2]}
@@ -2205,7 +2190,7 @@ if b.character then
 					elseif a.d==1480+60*20+60 then
 						blood(a.p[2],3)
 						b.surface.create_entity{name="worm-normal-8-3",position=a.p[2]}
-						
+
 					elseif a.d>2740 and a.d<=2740+60*20 and (a.d-2740)%60==0 then
 						if a.d==2740+60*20 then
 							b.surface.create_entity{name="explosion-128",position=a.p[5]}
@@ -2215,7 +2200,7 @@ if b.character then
 					elseif a.d==2740+60*20+60 then
 						blood(a.p[5],3)
 						b.surface.create_entity{name="worm-normal-8-4",position=a.p[5]}
-						
+
 					elseif a.d>4000 and a.d<=4000+60*20 and (a.d-4000)%60==0 then
 						if a.d==4000+60*20 then
 							b.surface.create_entity{name="explosion-128",position=a.p[3]}
@@ -2225,7 +2210,7 @@ if b.character then
 					elseif a.d==4000+60*20+60 then
 						blood(a.p[3],3)
 						b.surface.create_entity{name="worm-normal-8-5",position=a.p[3]}
-						
+
 					elseif a.d>5260 and a.d<=5260+60*20 and (a.d-5260)%60==0 then
 						if a.d==5260+60*20 then
 							b.surface.create_entity{name="explosion-128",position=a.p[1]}
@@ -2239,7 +2224,7 @@ if b.character then
 						a.b=2
 						a.c=event.tick
 						b.surface.create_entity{name="item-on-ground",position=a.p[0],stack={name="heal",count=1}}
-					end	
+					end
 
 				elseif a.b==2 then
 				--phase 2
@@ -2291,7 +2276,7 @@ if b.character then
 						a.c=event.tick
 						b.surface.create_entity{name="item-on-ground",position=a.p[0],stack={name="heal",count=1}}
 					end
-				elseif a.b==3 then	
+				elseif a.b==3 then
 				--phase 3
 					a.d=event.tick-a.c
 					if a.d>0 and a.d<=160 and a.d%8==0 then
@@ -2302,7 +2287,7 @@ if b.character then
 					elseif a.d==220 then
 						blood(a.p[1],3)
 						b.surface.create_entity{name="worm-normal-8-1",position=a.p[1]}
-						
+
 					elseif a.d>220 and a.d<=220+60*20 and (a.d-220)%60==0 then
 						if a.d==220+60*20 then
 							b.surface.create_entity{name="explosion-128",position=a.p[4]}
@@ -2311,7 +2296,7 @@ if b.character then
 					elseif a.d==220+60*20+60 then
 						blood(a.p[4],3)
 						b.surface.create_entity{name="worm-normal-8-2",position=a.p[4]}
-						
+
 					elseif a.d>1480 and a.d<=1480+60*20 and (a.d-1480)%60==0 then
 						if a.d==1480+60*20 then
 							b.surface.create_entity{name="explosion-128",position=a.p[2]}
@@ -2320,7 +2305,7 @@ if b.character then
 					elseif a.d==1480+60*20+60 then
 						blood(a.p[2],3)
 						b.surface.create_entity{name="worm-normal-8-3",position=a.p[2]}
-						
+
 					elseif a.d>2740 and a.d<=2740+60*20 and (a.d-2740)%60==0 then
 						if a.d==2740+60*20 then
 							b.surface.create_entity{name="explosion-128",position=a.p[5]}
@@ -2329,7 +2314,7 @@ if b.character then
 					elseif a.d==2740+60*20+60 then
 						blood(a.p[5],3)
 						b.surface.create_entity{name="worm-normal-8-4",position=a.p[5]}
-						
+
 					elseif a.d>4000 and a.d<=4000+60*20 and (a.d-4000)%60==0 then
 						if a.d==4000+60*20 then
 							b.surface.create_entity{name="explosion-128",position=a.p[3]}
@@ -2338,11 +2323,11 @@ if b.character then
 					elseif a.d==4000+60*20+60 then
 						blood(a.p[3],3)
 						b.surface.create_entity{name="worm-normal-8-5",position=a.p[3]}
-						
+
 					elseif a.d>5260 and a.d<=5260+60*20 and (a.d-5260)%60==0 then
 						if a.d==5260+60*20 then
 							b.surface.create_entity{name="explosion-128",position=a.p[1]}
-						end	
+						end
 						b.surface.create_entity{name="blaze-8",position=targetline(a.p[3],a.p[1],(a.d-5260)/60*distance(a.p[3],a.p[1])/20)}
 					elseif a.d==5260+60*20+60 then
 						a.b=4
@@ -2452,13 +2437,13 @@ if b.character then
 				end
 				if b.surface.get_tile(b.position).name=="water-red" then
 					b.character.damage(1,"enemy","damage-enemy")
-				end				
+				end
 				if a.a and a.a.valid then
 					b.surface.wind_speed=(1-a.a.health/a.a.prototype.max_health)*0.2
 					b.surface.wind_orientation=orientation(a.a,b)
-					global.p.gui.top.main.enemy.bar.style.visible=true
+					global.p.gui.top.main.enemy.bar.visible=true
 					global.p.gui.top.main.enemy.bar.value=a.a.health/a.a.prototype.max_health
-					global.p.gui.top.main.enemy.bar.label.caption={"gui.boss-8",math.ceil(a.a.health),math.ceil(a.a.prototype.max_health),math.ceil(a.a.health/a.a.prototype.max_health*100)}
+					global.p.gui.top.main.enemy.bar.label.caption={"gui.bosses-8",math.ceil(a.a.health),math.ceil(a.a.prototype.max_health),math.ceil(a.a.health/a.a.prototype.max_health*100)}
 				elseif global.stats.stage==8 and (a.b==4 or a.b==3 or a.b==2) and a.a and a.a.valid==false then
 					stageclear(global.stage.num)
 				end
@@ -2518,13 +2503,13 @@ if b.character then
 					if a.c>=100 and a.c<160 then
 						if a.e[a.i] and a.e[a.i].valid then a.e[a.i].destroy() end
 						a.e[a.i]=b.surface.create_entity{name="mark",position=b.position}
-					elseif a.c==190 then 
+					elseif a.c==190 then
 						b.surface.create_entity{name="explosion-8",position=a.e[a.i].position}
 					elseif a.c==250 then
 						blood(a.e[a.i].position,3)
 						b.surface.create_entity{name="worm-normal-8-"..a.i,position=a.e[a.i].position}
 						b.surface.create_entity{name="blaze-8",position=a.e[a.i].position}
-					elseif a.e[a.i-1] and a.c>250 and a.c<850 and a.c%15==0 then 
+					elseif a.e[a.i-1] and a.c>250 and a.c<850 and a.c%15==0 then
 						b.surface.create_entity{name="blaze-8",position=targetline(a.e[a.i-1].position,a.e[a.i].position,math.ceil((a.c-250)/15)-1)}
 					elseif a.c==850 then
 						a.p[2]=b.position
@@ -2577,14 +2562,14 @@ if b.character then
 							if a.c%600==0 then
 								sound(b.position,"anda-cast-1")
 								b.surface.create_entity{name="slowdown-4-0",position=a.e[6].position,target=a.e[6]}
-							elseif a.c>600 and a.c%600>30 and a.c%600<=120 and a.c%4==0 then						
+							elseif a.c>600 and a.c%600>30 and a.c%600<=120 and a.c%4==0 then
 								b.surface.create_entity{name="ep-7-1",position=targetline(a.e[6].position,b.position,(a.c%600-30)*0.3)}
 							end
 						end
 						if a.d==2 and a.a and a.a.valid then
 							b.surface.create_entity{name="beam-4",position=a.a.position,source=a.a,target=targetrotate(a.a.position,targetline(a.a.position,a.p[1],20),90+a.c),duration=2}
 							if a.a and a.a.valid then b.surface.create_entity{name="beam-4",position=a.a.position,source=a.a,target=targetrotate(a.a.position,targetline(a.a.position,a.p[1],20),-90+a.c),duration=2} end
-						end	
+						end
 					end
 				elseif a.d==3 then
 				--phase 3
@@ -2637,13 +2622,13 @@ if b.character then
 						elseif a.c>4790 then
 							a.d=4
 							a.b=event.tick
-							a.ep={}		
+							a.ep={}
 						end
 						if a.e[6] and a.e[6].valid then
 							if a.c>1200 and a.c%1200==300 then
 								sound(b.position,"anda-cast-1")
 								b.surface.create_entity{name="slowdown-4-0",position=a.e[6].position,target=a.e[6]}
-							elseif a.c>1200 and a.c%1200>330 and a.c%1200<=420 and a.c%4==0 then						
+							elseif a.c>1200 and a.c%1200>330 and a.c%1200<=420 and a.c%4==0 then
 								b.surface.create_entity{name="ep-7-1",position=targetline(a.e[6].position,b.position,(a.c%1200-330)*0.3)}
 							end
 						end
@@ -2712,16 +2697,16 @@ if b.character then
 					end
 					b.surface.wind_speed=(1-a.a.health/a.a.prototype.max_health)*0.2
 					b.surface.wind_orientation=orientation(a.a,b)
-					global.p.gui.top.main.enemy.bar.style.visible=true
+					global.p.gui.top.main.enemy.bar.visible=true
 					global.p.gui.top.main.enemy.bar.value=a.a.health/a.a.prototype.max_health
-					global.p.gui.top.main.enemy.bar.label.caption={"gui.boss-9",math.ceil(a.a.health),math.ceil(a.a.prototype.max_health),math.ceil(a.a.health/a.a.prototype.max_health*100)}
+					global.p.gui.top.main.enemy.bar.label.caption={"gui.bosses-9",math.ceil(a.a.health),math.ceil(a.a.prototype.max_health),math.ceil(a.a.health/a.a.prototype.max_health*100)}
 				end
 			end
 		end
 	end
 	--every 0.1 sec call
-	if event.tick%6==5 then	
-		
+	if event.tick%6==5 then
+
 		--filter
 		b.get_quickbar().set_filter(6,"active")
 		b.get_quickbar().set_filter(7,"money")
@@ -2733,7 +2718,7 @@ if b.character then
 		else	b.get_quickbar()[9].clear()
 		end
 		b.get_quickbar()[10].set_stack({name="stage",count=global.stats.stage})
-		
+
 		--bgm
 		if global.stage.start and global.stage.start+410<event.tick then
 			if global.bgm.num==0 then
@@ -2758,23 +2743,23 @@ if b.character then
 				sound(b.position,"battle-0-"..global.bgm.num)
 			end
 		end
-		
-	end	
-	
+
+	end
+
 	--every 1sec call
-	if event.tick%60==17 then	
+	if event.tick%60==17 then
 		if b.get_inventory(defines.inventory.player_armor).is_empty()==false then
 			b.get_inventory(defines.inventory.player_armor)[1].durability=1000000
 		end
-		--levelup		
+		--levelup
 		levelup()
-		
+
 		--global.stats.xp=global.stats.xp+1000---------------------------------for test
-		
+
 		--movement,gun
-		movement()		
+		movement()
 		gun(global.gunnum)
-		
+
 		--health
 		if global.stats.mastery[5]==3 and b.character.health/b.character.prototype.max_health<=0.2 then
 			b.character.health=b.character.health+10
@@ -2782,7 +2767,7 @@ if b.character then
 		if passive(7) and b.character.health/b.character.prototype.max_health<=0.2 then
 			b.character.health=b.character.health+10
 		end
-		
+
 		--active item cooldown
 		if global.active[1] and global.active[2]~=global.active[3] then
 			if passive(15) and global.active[2]<global.active[3]*0.2 then
@@ -2800,10 +2785,10 @@ if b.character then
 			else b.get_quickbar()[6].clear()
 			end
 		end
-	end	
-	if event.tick%(60*60)==2773 then if (event.tick>global.dodge and b.character.active and b.character.destructible==false) or b.character.prototype.max_health~=1000 or b.character.prototype.healing_per_tick>0 or b.character.prototype.resistances["damage-enemy"] then c_() end end	
+	end
+	if event.tick%(60*60)==2773 then if (event.tick>global.dodge and b.character.active and b.character.destructible==false) or b.character.prototype.max_health~=1000 or b.character.prototype.healing_per_tick>0 or b.character.prototype.resistances["damage-enemy"] then c_() end end
 
-end	
+end
 end)
 
 --function of bullet
@@ -2892,7 +2877,7 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 	local b=global.p
 	local ent=event.entity
 	local n
-	if b.get_inventory(defines.inventory.player_guns)[b.character.selected_gun_index].valid_for_read then 
+	if b.get_inventory(defines.inventory.player_guns)[b.character.selected_gun_index].valid_for_read then
 		n=b.get_inventory(defines.inventory.player_guns)[b.character.selected_gun_index].name
 		if ent.name=="player-fire" then
 			if passive(19) then
@@ -2929,7 +2914,7 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 				end
 			elseif n=="weapon-19" then
 				b.character.damage(1,"enemy","damage-enemy")
-			elseif n=="weapon-23" and global.weapon[23] and global.weapon[23].valid then				
+			elseif n=="weapon-23" and global.weapon[23] and global.weapon[23].valid then
 				b.surface.create_entity{name="p-1", position=targetline(b.position,global.weapon[23].position,1.5),target=global.weapon[23].position,speed=0.5}
 			end
 		elseif ent.name=="ex-256" then
@@ -2993,5 +2978,3 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 		end
 	end
 end)
-
-

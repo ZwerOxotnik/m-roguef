@@ -1,4 +1,3 @@
-
 function make_heavy_gunshot_sounds(volume)
     return
     {

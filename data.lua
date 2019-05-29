@@ -2,14 +2,20 @@ require("prototypes.category")
 require("prototypes.sound")
 require("prototypes.enemy")
 require("prototypes.explosion")
-require("prototypes.entity")
+require("prototypes.entity") -- TODO: refactor, fix, remake those consoles there
 require("prototypes.item")
-require("prototypes.recipe")
-require("prototypes.technology")
 require("prototypes.tile")
-for a,b in pairs(data.raw.corpse) do
-	b.time_before_removed=60*30
+
+-- TODO: change \/
+for _, corpse in pairs(data.raw.corpse) do
+	corpse.time_before_removed = 60 * 30
 end
+
+-- for _, recipe in pairs(data.raw.recipe) do
+--   recipe.enabled = false
+-- end
+
+-- TODO: change \/
 data:extend({
   {
     type = "custom-input",

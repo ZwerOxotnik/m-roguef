@@ -1,25 +1,28 @@
 require ("prototypes.entity.demo-gunshot-sounds")
-data.raw["explosion"]["explosion-gunshot"].flags={"not-on-map","placeable-off-grid"}
+data.raw["explosion"]["explosion-gunshot"].flags = {"not-on-map","placeable-off-grid"}
+
 --weapon
 function weapon(n,cooldown,range,sound)
-if sound==nil then
-	sound=make_light_gunshot_sounds()
-end
-return{
+  if sound==nil then
+    sound=make_light_gunshot_sounds()
+  end
+
+  return {
     type = "gun",
     name = "weapon-"..n,
-	 localised_name = {"weapon-name."..n},
-	 localised_description = {"weapon-info."..n},
-    icon = "__roguef__/graphics/icons/weapon/"..n..".png",
-    flags = {"goes-to-main-inventory"},
+    localised_name = {"weapon-name."..n},
+    localised_description = {"weapon-info."..n},
+    icon = "__m-roguef__/graphics/icons/weapon/"..n..".png",
+    icon_size = 32,
+    flags = {},
     subgroup = "rf_weapon",
     order = "a",
     attack_parameters =
-	 {
+    {
       type = "projectile",
       ammo_category = "ammo-"..n,
       cooldown = cooldown,
-		movement_slow_down_cooldown =cooldown,
+      movement_slow_down_cooldown =cooldown,
       movement_slow_down_factor = 0,
       projectile_creation_distance = 0.8,
       range = range,
@@ -31,34 +34,35 @@ end
 
 data:extend(
 {
---point=dps*range*FACTOR
-weapon(1,15,30),--62.4
-weapon(2,60,15,{{filename = "__base__/sound/pump-shotgun.ogg",volume = 0.4}}),--80.5
-weapon(3,4,20,{{filename = "__roguef__/sound/target-elec.ogg",volume = 0.2}}),--86.4
-weapon(4,60,30,{{filename = "__base__/sound/fight/rocket-launcher.ogg",volume = 0.7}}),--85.8
-weapon(5,60,30,{{filename = "__roguef__/sound/shot-5.ogg",volume = 0.5}}),--80
-weapon(6,1,30,{{filename = "__base__/sound/fight/light-gunshot-1.ogg",volume = 0.2}}),--78
-weapon(7,12,20),--78
-weapon(8,15,30,{{filename = "__base__/sound/walking/dirt-03.ogg",volume = 0.7}}),--78
-weapon(9,25,30,{{filename = "__roguef__/sound/shot-9.ogg",volume = 0.5}}),--78
-weapon(10,180,30,{{filename = "__roguef__/sound/firecast.ogg",volume = 1}}),--83.33
-weapon(11,60,20,{{filename = "__roguef__/sound/shot-11.ogg",volume = 0.7}}),--86.4
-weapon(12,30,30,{{filename = "__roguef__/sound/shot-12.ogg",volume = 0.5}}),--93.6
-weapon(13,6,30,{{filename = "__roguef__/sound/shot-12.ogg",volume = 0}}),--81
-weapon(14,30,20),--79.2
-weapon(15,15,30),--78
-weapon(16,30,30,{{filename = "__roguef__/sound/target-elec.ogg",volume = 0.5}}),--78
-weapon(17,15,30),--85.8
-weapon(18,10,30,{{filename = "__base__/sound/fight/light-gunshot-1.ogg",volume = 0.2}}),--75.82
-weapon(19,10,30,{{filename = "__base__/sound/walking/dirt-03.ogg",volume = 0.5}}),--83.2
-weapon(20,60,30,{{filename = "__roguef__/sound/get.ogg",volume = 0.5}}),--104
+  --point=dps*range*FACTOR
+  weapon(1,15,30),--62.4
+  weapon(2,60,15,{{filename = "__base__/sound/pump-shotgun.ogg",volume = 0.4}}),--80.5
+  weapon(3,4,20,{{filename = "__m-roguef__/sound/target-elec.ogg",volume = 0.2}}),--86.4
+  weapon(4,60,30,{{filename = "__base__/sound/fight/rocket-launcher.ogg",volume = 0.7}}),--85.8
+  weapon(5,60,30,{{filename = "__m-roguef__/sound/shot-5.ogg",volume = 0.5}}),--80
+  weapon(6,1,30,{{filename = "__base__/sound/fight/light-gunshot-1.ogg",volume = 0.2}}),--78
+  weapon(7,12,20),--78
+  weapon(8,15,30,{{filename = "__base__/sound/walking/dirt-03.ogg",volume = 0.7}}),--78
+  weapon(9,25,30,{{filename = "__m-roguef__/sound/shot-9.ogg",volume = 0.5}}),--78
+  weapon(10,180,30,{{filename = "__m-roguef__/sound/firecast.ogg",volume = 1}}),--83.33
+  weapon(11,60,20,{{filename = "__m-roguef__/sound/shot-11.ogg",volume = 0.7}}),--86.4
+  weapon(12,30,30,{{filename = "__m-roguef__/sound/shot-12.ogg",volume = 0.5}}),--93.6
+  weapon(13,6,30,{{filename = "__m-roguef__/sound/shot-12.ogg",volume = 0}}),--81
+  weapon(14,30,20),--79.2
+  weapon(15,15,30),--78
+  weapon(16,30,30,{{filename = "__m-roguef__/sound/target-elec.ogg",volume = 0.5}}),--78
+  weapon(17,15,30),--85.8
+  weapon(18,10,30,{{filename = "__base__/sound/fight/light-gunshot-1.ogg",volume = 0.2}}),--75.82
+  weapon(19,10,30,{{filename = "__base__/sound/walking/dirt-03.ogg",volume = 0.5}}),--83.2
+  weapon(20,60,30,{{filename = "__m-roguef__/sound/get.ogg",volume = 0.5}}),--104
 	{--weapon 21,1,30 --78
     type = "gun",
     name = "weapon-21",
-	 localised_name = {"weapon-name.21"},
-	 localised_description = {"weapon-info.21"},
-    icon = "__roguef__/graphics/icons/weapon/21.png",
-    flags = {"goes-to-main-inventory"},
+    localised_name = {"weapon-name.21"},
+    localised_description = {"weapon-info.21"},
+    icon = "__m-roguef__/graphics/icons/weapon/21.png",
+    icon_size = 32,
+    flags = {},
     subgroup = "rf_weapon",
     order = "a",
     attack_parameters =
@@ -66,12 +70,12 @@ weapon(20,60,30,{{filename = "__roguef__/sound/get.ogg",volume = 0.5}}),--104
       type = "stream",
       ammo_category = "ammo-21",
       cooldown = 1,
-		movement_slow_down_factor = 0,
+		  movement_slow_down_factor = 0,
       projectile_creation_distance = 0.6,
-		gun_barrel_length = 0.8,
+		  gun_barrel_length = 0.8,
       gun_center_shift = { 0, -1 },
       range = 30,
-		min_range = 1,
+		  min_range = 1,
       cyclic_sound =
       {
         begin_sound =
@@ -84,7 +88,7 @@ weapon(20,60,30,{{filename = "__roguef__/sound/get.ogg",volume = 0.5}}),--104
         middle_sound =
         {
           {
-            filename = "__roguef__/sound/shot-21.ogg",
+            filename = "__m-roguef__/sound/shot-21.ogg",
             volume = 0.5
           }
         },
@@ -100,7 +104,7 @@ weapon(20,60,30,{{filename = "__roguef__/sound/get.ogg",volume = 0.5}}),--104
     stack_size = 1
   },
 
-weapon(22,30,0,{{filename = "__roguef__/sound/shot-9.ogg",volume = 0.5}}),--84.7
+weapon(22,30,0,{{filename = "__m-roguef__/sound/shot-9.ogg",volume = 0.5}}),--84.7
 weapon(23,12,30,{{filename = "__base__/sound/fight/light-gunshot-1.ogg",volume = 0.2}}),--93.6
 weapon(24,20,30),--78
 weapon(25,120,30),--90
@@ -109,10 +113,11 @@ weapon(27,15,30),--83.2
 	{--weapon 28,60,30 --94.38
     type = "gun",
     name = "weapon-28",
-	 localised_name = {"weapon-name.28"},
-	 localised_description = {"weapon-info.28"},
-    icon = "__roguef__/graphics/icons/weapon/28.png",
-    flags = {"goes-to-main-inventory"},
+    localised_name = {"weapon-name.28"},
+    localised_description = {"weapon-info.28"},
+    icon = "__m-roguef__/graphics/icons/weapon/28.png",
+    icon_size = 32,
+    flags = {},
     subgroup = "rf_weapon",
     order = "a",
     attack_parameters =
@@ -120,17 +125,17 @@ weapon(27,15,30),--83.2
       type = "stream",
       ammo_category = "ammo-28",
       cooldown = 60,
-		movement_slow_down_factor = 0,
+		  movement_slow_down_factor = 0,
       projectile_creation_distance = 0.6,
-		gun_barrel_length = 0.8,
+		  gun_barrel_length = 0.8,
       gun_center_shift = { 0, -1 },
       range = 30,
-		min_range = 1,
-      sound={{filename = "__roguef__/sound/shot-5.ogg",volume = 0.5}}
+		  min_range = 1,
+      sound={{filename = "__m-roguef__/sound/shot-5.ogg",volume = 0.5}}
     },
     stack_size = 1
   },
-weapon(29,60,20,{{filename = "__roguef__/sound/icecast.ogg",volume = 1}}),--86.4
+weapon(29,60,20,{{filename = "__m-roguef__/sound/icecast.ogg",volume = 1}}),--86.4
   })
 
 --ammo  (n,target_type(entity,position,direction),source(shot effect),
@@ -138,24 +143,25 @@ function ammo(n,target,source,e)
 return{
     type = "ammo",
     name = "ammo-"..n,
-	 localised_name = " ",
-    icon = "__base__/graphics/icons/firearm-magazine.png",
-    flags = {"goes-to-main-inventory"},
+    localised_name = " ",
+    icon = "__0_16_graphics__/graphics/icons/firearm-magazine.png",
+    icon_size = 32,
+    flags = {},
     subgroup = "rf_ammo",
     order = "a",
     ammo_type =
 	 {
       category = "ammo-"..n,
       target_type = target,
-		clamp_position=true,
+		  clamp_position=true,
       action =
       {
         {
           type = "direct",
-          action_delivery = 
+          action_delivery =
           {
             type = "instant",
-            source_effects = 
+            source_effects =
             {
               {
                 type = "create-explosion",
@@ -181,7 +187,7 @@ data:extend(
 {
 
 ammo(1,"direction","explosion-gunshot",
-	{	
+	{
 	 type = "direct",
 	 --repeat_count = 1,
 	 action_delivery =
@@ -194,9 +200,9 @@ ammo(1,"direction","explosion-gunshot",
 		max_range = 30
 	 }
   }),
-  
+
 ammo(2,"direction","explosion-gunshot",
-	{	
+	{
 	 type = "direct",
 	 repeat_count = 10,
 	 action_delivery =
@@ -209,9 +215,9 @@ ammo(2,"direction","explosion-gunshot",
 		max_range = 15
 	 }
   }),
-  
+
 ammo(3,"direction","shot-3",
-	{	
+	{
 	 type = "line",
 	 range=20,
 	 width=0.5,
@@ -240,7 +246,7 @@ ammo(3,"direction","shot-3",
 		--range_deviation = 0.3,
 	 }
   }),
-  
+
   {
     type = "explosion",
     name = "beam-3",
@@ -251,7 +257,7 @@ ammo(3,"direction","shot-3",
     animations =
     {
       {
-        filename = "__roguef__/graphics/entity/explosion/beam-3.png",
+        filename = "__m-roguef__/graphics/entity/explosion/beam-3.png",
         priority = "extra-high",
         width = 62,
         height = 1,
@@ -265,15 +271,15 @@ ammo(3,"direction","shot-3",
   },
 
 ammo(4,"direction","explosion-hit",
-  {	
+  {
 	 type = "direct",
 	 --repeat_count = 1,
 	 action_delivery =
 	  {
-		 type = "projectile",
-		 projectile = "p-4",
-		 starting_speed = 0.1,
-		 max_range=30,
+      type = "projectile",
+      projectile = "p-4",
+      starting_speed = 0.1,
+      max_range=30,
 	  },
 		--starting_speed = 0.1,
 		--direction_deviation = 0.3,
@@ -281,7 +287,7 @@ ammo(4,"direction","explosion-hit",
   }),
 
 ammo(5,"direction","explosion-hit",
-  {	
+  {
 	 type = "direct",
 	 --repeat_count = 1,
 	 action_delivery =
@@ -295,9 +301,9 @@ ammo(5,"direction","explosion-hit",
 		--direction_deviation = 0.3,
 		--range_deviation = 0.3,
   }),
-  
+
   ammo(6,"direction","explosion-gunshot",
-	{	
+	{
 	 type = "direct",
 	 --repeat_count = 1,
 	 action_delivery =
@@ -310,9 +316,9 @@ ammo(5,"direction","explosion-hit",
 		max_range = 30
 	 }
   }),
-  
+
   ammo(7,"direction","explosion-gunshot",
-	{	
+	{
 	 type = "direct",
 	 --repeat_count = 1,
 	 action_delivery =
@@ -325,9 +331,9 @@ ammo(5,"direction","explosion-hit",
 		max_range = 20
 	 }
   }),
-  
+
   ammo(8,"direction","explosion-gunshot",
-	{	
+	{
 	 type = "direct",
 	 --repeat_count = 1,
 	 action_delivery =
@@ -340,9 +346,9 @@ ammo(5,"direction","explosion-hit",
 		max_range = 30
 	 }
   }),
-  
+
   ammo(9,"direction","explosion-gunshot",
-	{	
+	{
 	 type = "direct",
 	 --repeat_count = 1,
 	 action_delivery =
@@ -355,109 +361,107 @@ ammo(5,"direction","explosion-hit",
 		max_range = 30
 	 }
   }),
-  
+
   {
     type = "ammo",
     name = "ammo-10",
-	 localised_name = " ",
-    icon = "__base__/graphics/icons/firearm-magazine.png",
-    flags = {"goes-to-main-inventory"},
+	  localised_name = " ",
+    icon = "__0_16_graphics__/graphics/icons/firearm-magazine.png",
+    icon_size = 32,
+    flags = {},
     subgroup = "rf_ammo",
     order = "a",
     ammo_type =
-	 {
+	  {
       category = "ammo-10",
       target_type = "position",
-		clamp_position=false,
+		  clamp_position=false,
       action =
       {
         {
           type = "direct",
-          action_delivery = 
+          action_delivery =
           {
             type = "instant",
-            source_effects = 
+            source_effects =
             {
               {
                 type = "create-explosion",
                 entity_name = "explosion-gunshot"
               },
-				  {
-					 type = "create-entity",
-					 entity_name = "player-fire",
-					 trigger_created_entity="true"
-				  }
+              {
+                type = "create-entity",
+                entity_name = "player-fire",
+                trigger_created_entity="true"
+              }
             }
           }
         },
-		  {	
+		  {
 			 type = "direct",
 			 --repeat_count = 1,
 			 action_delivery =
 			 {
-				type = "projectile",
-				projectile = "p-10",
-				starting_speed = 3,
-				--direction_deviation = 0.3,
-				--range_deviation = 0.3,
-				max_range = 30
-			 }
-		  }
+          type = "projectile",
+          projectile = "p-10",
+          starting_speed = 3,
+          --direction_deviation = 0.3,
+          --range_deviation = 0.3,
+          max_range = 30
+        }
       }
+    }
     },
     magazine_size = 1000000,
     stack_size = 1000
   },
-  
+
 ammo(11,"entity","explosion-hit",
-	{	
-	 type = "direct",
-	 --repeat_count = 1,
-	 action_delivery =
-	 {
-		type = "projectile",
-		projectile = "p-11",
-		starting_speed = 0.3,
-		--direction_deviation = 0.3,
-		--range_deviation = 0.3,
-		max_range = 20
-	 }
+	{
+    type = "direct",
+    --repeat_count = 1,
+    action_delivery =
+    {
+      type = "projectile",
+      projectile = "p-11",
+      starting_speed = 0.3,
+      --direction_deviation = 0.3,
+      --range_deviation = 0.3,
+      max_range = 20
+    }
   }),
-  
+
   ammo(12,"direction","explosion-gunshot",
-	{	
-	 type = "direct",
-	 --repeat_count = 1,
-	 action_delivery =
-	 {
-		type = "projectile",
-		projectile = "p-12",
-		starting_speed = 0.7,
-		--direction_deviation = 0.3,
-		--range_deviation = 0.3,
-		max_range = 30
-	 }
+  {
+    type = "direct",
+    --repeat_count = 1,
+    action_delivery =
+    {
+      type = "projectile",
+      projectile = "p-12",
+      starting_speed = 0.7,
+      --direction_deviation = 0.3,
+      --range_deviation = 0.3,
+      max_range = 30
+    }
   }),
-  
   ammo(13,"direction","shot-13"),
-  
-ammo(14,"direction","explosion-gunshot",
-	{	
-	 type = "direct",
-	 --repeat_count = 1,
-	 action_delivery =
-	 {
-		type = "projectile",
-		projectile = "p-14",
-		starting_speed = 1000,
-		--direction_deviation = 0.2,
-		--range_deviation = 0.2,
-		--max_range = 30
-	 }
+  ammo(14,"direction","explosion-gunshot",
+	{
+    type = "direct",
+    --repeat_count = 1,
+    action_delivery =
+    {
+      type = "projectile",
+      projectile = "p-14",
+      starting_speed = 1000,
+      --direction_deviation = 0.2,
+      --range_deviation = 0.2,
+      --max_range = 30
+    }
   }),
-  
-ammo(15,"direction","explosion-gunshot",
-	{	
+  ammo(15,"direction","explosion-gunshot",
+	{
 	 type = "direct",
 	 --repeat_count = 1,
 	 action_delivery =
@@ -469,7 +473,7 @@ ammo(15,"direction","explosion-gunshot",
 	 }
   }),
 ammo(16,"direction","explosion-gunshot",
-	{	
+	{
 	 type = "direct",
 	 --repeat_count = 1,
 	 action_delivery =
@@ -481,7 +485,7 @@ ammo(16,"direction","explosion-gunshot",
 	 }
   }),
 ammo(17,"direction","explosion-gunshot",
-	{	
+	{
 	 type = "direct",
 	 --repeat_count = 1,
 	 action_delivery =
@@ -493,7 +497,7 @@ ammo(17,"direction","explosion-gunshot",
 	 }
   }),
 ammo(18,"direction","explosion-gunshot",
-	{	
+	{
 	 type = "direct",
 	 --repeat_count = 1,
 	 action_delivery =
@@ -507,7 +511,7 @@ ammo(18,"direction","explosion-gunshot",
 	 }
   }),
 ammo(19,"direction","explosion-gunshot",
-	{	
+	{
 	 type = "direct",
 	 --repeat_count = 1,
 	 action_delivery =
@@ -519,7 +523,7 @@ ammo(19,"direction","explosion-gunshot",
 	 }
   }),
 ammo(20,"direction","explosion-gunshot",
-	{	
+	{
 	 type = "direct",
 	 --repeat_count = 1,
 	 action_delivery =
@@ -531,7 +535,7 @@ ammo(20,"direction","explosion-gunshot",
 	 }
   }),
 ammo(21,"position","explosion-gunshot",
-	{	
+	{
 	 type = "direct",
 	 --repeat_count = 1,
 	 action_delivery =
@@ -543,7 +547,7 @@ ammo(21,"position","explosion-gunshot",
 	 }
   }),
 ammo(22,"position","slash-22",
-	{	
+	{
 	 type = "direct",
 	 --repeat_count = 1,
 	 action_delivery =
@@ -556,7 +560,7 @@ ammo(22,"position","slash-22",
   }),
 ammo(23,"direction","explosion-gunshot"),
 ammo(24,"direction","explosion-gunshot",
-	{	
+	{
 	 type = "direct",
 	 --repeat_count = 1,
 	 action_delivery =
@@ -566,9 +570,9 @@ ammo(24,"direction","explosion-gunshot",
 		starting_speed = 1000,
 		max_range = 30
 	 }
-  }),  
+  }),
 ammo(25,"direction","explosion-gunshot",
-	{	
+	{
 	 type = "direct",
 	 --repeat_count = 1,
 	 action_delivery =
@@ -580,7 +584,7 @@ ammo(25,"direction","explosion-gunshot",
 	 }
   }),
 ammo(26,"direction","explosion-gunshot",
-	{	
+	{
 	 type = "direct",
 	 repeat_count = 8,
 	 action_delivery =
@@ -594,7 +598,7 @@ ammo(26,"direction","explosion-gunshot",
 	 }
   }),
 ammo(27,"direction","explosion-gunshot",
-	{	
+	{
 	 type = "direct",
 	 repeat_count = 2,
 	 action_delivery =
@@ -608,7 +612,7 @@ ammo(27,"direction","explosion-gunshot",
 	 }
   }),
 ammo(28,"position","shot-5-sound",
-	{	
+	{
 	 type = "direct",
 	 --repeat_count = 1,
 	 action_delivery =
@@ -619,7 +623,7 @@ ammo(28,"position","shot-5-sound",
 	 }
   }),
 ammo(29,"direction","explosion-gunshot",
-	{	
+	{
 	 type = "direct",
 	 --repeat_count = 1,
 	 action_delivery =
@@ -668,7 +672,7 @@ data:extend(
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-1.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-1.png",
       frame_count = 4,
       width = 16,
       height = 16,
@@ -705,7 +709,7 @@ data:extend(
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-2.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-2.png",
       frame_count = 1,
       width = 16,
       height = 16,
@@ -714,7 +718,7 @@ data:extend(
 		--animation_speed = 15/60
     },
   },
-  
+
   {
     type = "projectile",
     name = "p-4",
@@ -739,7 +743,7 @@ data:extend(
             action =
             {
               type = "area",
-              perimeter = 2,
+              radius = 2,
               action_delivery =
               {
                 type = "instant",
@@ -813,16 +817,16 @@ data:extend(
             type = "create-entity",
             entity_name = "explosion-128"
           },
-			 {
+			    {
             type = "create-entity",
             entity_name = "blaze-5"
-          },			 
+          },
           {
             type = "nested-result",
             action =
             {
               type = "area",
-              perimeter = 2,
+              radius = 2,
               action_delivery =
               {
                 type = "instant",
@@ -846,7 +850,7 @@ data:extend(
     light = {intensity = 0.5, size = 4},
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-5.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-5.png",
       frame_count = 1,
       --line_length = 8,
       width = 32,
@@ -869,7 +873,7 @@ data:extend(
       }
     }
   },
-  
+
 	{
 	  type = "fire",
 	  name = "blaze-5",
@@ -881,7 +885,7 @@ data:extend(
 	  end_scale = 0.01,
 	  color = {r=1, g=0.9, b=0, a=0.5},
 	  damage_per_tick = {amount = 1/2, type = "damage-player"},
-	  spawn_entity = "noani",
+	  -- spawn_entity = "noani",
 	  spread_delay = 300,
 	  spread_delay_deviation = 180,
 	  maximum_spread_count = 100,
@@ -898,10 +902,10 @@ data:extend(
 	  lifetime_increase_cooldown = 10,
 	  delay_between_initial_flames = 10,
 	  burnt_patch_lifetime = 0,
-	   
-	  pictures = 
+
+	  pictures =
 	  { {
-			filename = "__roguef__/graphics/entity/explosion/blaze.png",
+			filename = "__m-roguef__/graphics/entity/explosion/blaze.png",
 			line_length = 8,
 			width = 30,
 			height = 59,
@@ -915,14 +919,14 @@ data:extend(
 			flags = fire_flags,
 			shift = { -0.0390625/2*2, -0.90625/2*2 }
 		 }},
-	  light = {intensity = 1, size = 20},  
+	  light = {intensity = 1, size = 20},
 	  working_sound =
 	  {
 		 sound = { filename = "__base__/sound/furnace.ogg" },
 		 max_sounds_per_type = 3
-	  },	  
+	  },
 	},
-	
+
 	{
     type = "projectile",
     name = "p-6",
@@ -937,30 +941,29 @@ data:extend(
       {
         type = "instant",
         target_effects =
-		  {
-			  {
-				 type = "damage",
-				 damage = {amount = 1, type = "damage-player"}
-			  },
-			  {
-				 type = "create-entity",
-				 entity_name = "target-melee-2"
-			  },
-		  }
+        {
+          {
+            type = "damage",
+            damage = {amount = 1, type = "damage-player"}
+          },
+          {
+            type = "create-entity",
+            entity_name = "target-melee-2"
+          },
+        }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-6.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-6.png",
       frame_count = 4,
       width = 16,
       height = 16,
       priority = "high",
-		blend_mode = "additive",
-		animation_speed = 30/60
+      blend_mode = "additive",
+      animation_speed = 30/60
     },
   },
-  
   {
     type = "projectile",
     name = "p-7",
@@ -1000,22 +1003,22 @@ data:extend(
           direction_deviation = 0.6,
           starting_speed = 0.25,
           starting_speed_deviation = 0.3,
-			 max_range=5
+			    max_range=5
         }
       }
-	 },
+	  },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-7.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-7.png",
       frame_count = 1,
       width = 19,
       height = 18,
       priority = "high",
-		blend_mode = "additive",
-		--animation_speed = 30/60
+      blend_mode = "additive",
+      --animation_speed = 30/60
     },
   },
-  
+
   {
     type = "projectile",
     name = "p-8",
@@ -1050,18 +1053,18 @@ data:extend(
 	 },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-8.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-8.png",
       frame_count = 32,
-		line_length = 8,
+		  line_length = 8,
       width = 64,
       height = 64,
       priority = "high",
-		blend_mode = "additive",
-		animation_speed = 32/60,
-		scale=1/2
+      blend_mode = "additive",
+      animation_speed = 32/60,
+      scale=1/2
     },
   },
-  
+
   {
     type = "smoke-with-trigger",
     name = "cloud-8",
@@ -1098,7 +1101,7 @@ data:extend(
           action =
           {
             type = "area",
-            perimeter = 11/3,
+            radius = 11/3,
             --entity_flags = {"breaths-air"},
             action_delivery =
             {
@@ -1115,7 +1118,7 @@ data:extend(
     },
     action_frequency = 10
   },
-  
+
   {
     type = "projectile",
     name = "p-9",
@@ -1143,7 +1146,7 @@ data:extend(
 			  }
 			}
 		 },
-		 {	
+		 {
 		 type = "direct",
 		 --repeat_count = 1,
 		 action_delivery =
@@ -1159,7 +1162,7 @@ data:extend(
 	 },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-9.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-9.png",
       frame_count = 1,
 		--line_length = 8,
       width = 16,
@@ -1200,7 +1203,7 @@ data:extend(
 	 },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-9.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-9.png",
       frame_count = 1,
 		--line_length = 8,
       width = 16,
@@ -1239,13 +1242,13 @@ data:extend(
 	 },
 	 animation =
     {
-      filename = "__roguef__/graphics/entity/noani/no.png",
+      filename = "__m-roguef__/graphics/entity/noani/no.png",
       frame_count = 1,
       width = 1,
       height = 1,
-    }   
+    }
   },
-  
+
   {
     type = "projectile",
     name = "p-100",
@@ -1263,52 +1266,52 @@ data:extend(
 			  target_effects =
 			  {
 				  {
-					 type = "create-entity",
-					 entity_name = "big-explosion-1",
+            type = "create-entity",
+            entity_name = "big-explosion-1",
 				  }
 			  }
 			}
 		 },
 		 {
-        type = "area",
-        perimeter = 4,
-        action_delivery =
+      type = "area",
+      radius = 4,
+      action_delivery =
+      {
+        type = "instant",
+        target_effects =
         {
-          type = "instant",
-          target_effects =
           {
-            {
             type = "damage",
             damage = {amount = 250, type = "damage-player"}
-            },
-          }
-        }
-      },
-		{
-        type = "cluster",
-        cluster_count = 7,
-        distance = 4,
-        distance_deviation = 3,
-        action_delivery =
-        {
-          type = "projectile",
-          projectile = "grenade-10",
-          direction_deviation = 0.6,
-          starting_speed = 0.25,
-          starting_speed_deviation = 0.3
+          },
         }
       }
+    },
+		{
+      type = "cluster",
+      cluster_count = 7,
+      distance = 4,
+      distance_deviation = 3,
+      action_delivery =
+      {
+        type = "projectile",
+        projectile = "grenade-10",
+        direction_deviation = 0.6,
+        starting_speed = 0.25,
+        starting_speed_deviation = 0.3
+      }
+    }
 	 },
 	 animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-100.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-100.png",
       frame_count = 9,
       width = 78,
       height = 119,
-		animation_speed = 9/60,
-    }   
+		  animation_speed = 9/60,
+    }
   },
-  
+
   {
     type = "projectile",
     name = "grenade-10",
@@ -1324,32 +1327,32 @@ data:extend(
           target_effects =
           {
             {
-            type = "create-entity",
-            entity_name = "medium-explosion"
+              type = "create-entity",
+              entity_name = "medium-explosion"
             },
             {
-            type = "create-entity",
-            entity_name = "small-scorchmark",
-            check_buildability = true
+              type = "create-entity",
+              entity_name = "small-scorchmark",
+              check_buildability = true
             }
           }
         }
       },
       {
         type = "area",
-        perimeter = 2,
+        radius = 2,
         action_delivery =
         {
           type = "instant",
           target_effects =
           {
             {
-            type = "damage",
-            damage = {amount = 50, type = "damage-player"}
+              type = "damage",
+              damage = {amount = 50, type = "damage-player"}
             },
             {
-            type = "create-entity",
-            entity_name = "explosion"
+              type = "create-entity",
+              entity_name = "explosion"
             }
           }
         }
@@ -1369,11 +1372,11 @@ data:extend(
       filename = "__base__/graphics/entity/grenade/grenade-shadow.png",
       frame_count = 1,
       width = 24,
-      height = 32,
+      height = 24,
       priority = "high"
     }
   },
-  
+
   {
     type = "projectile",
     name = "p-11",
@@ -1391,47 +1394,47 @@ data:extend(
 			  target_effects =
 			  {
 				  {
-					 type = "create-entity",
-					 entity_name = "explosion"
+            type = "create-entity",
+            entity_name = "explosion"
 				  },
 			  }
 			},
 		 },
 		 {
 		  type = "area",
-		  perimeter = 2,
+		  radius = 2,
 		  action_delivery =
 		  {
-			 type = "instant",
-			 target_effects =
-			 {
-				{
-				type = "damage",
-				damage = {amount = 40, type = "damage-player"}
-				},
-				{
-				type = "create-entity",
-				entity_name = "target-melee-2"
-				}
-			 }
+        type = "instant",
+        target_effects =
+        {
+          {
+            type = "damage",
+            damage = {amount = 40, type = "damage-player"}
+          },
+          {
+            type = "create-entity",
+            entity_name = "target-melee-2"
+          }
+        }
 		  }
 		}
 	 },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-11.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-11.png",
       frame_count = 1,
       width = 60,
       height = 111,
       priority = "high",
-		blend_mode = "additive",
-		--animation_speed = 10/60,
-		scale=1/2
+      blend_mode = "additive",
+      --animation_speed = 10/60,
+      scale = 1/2
     },
-	 smoke =
+	  smoke =
     {
       {
-        name = "smoke-11",
+        name = "smoke",
         deviation = {0.15, 0.15},
         frequency = 1,
         position = {0, -1},
@@ -1443,25 +1446,26 @@ data:extend(
       }
     }
   },
-  
-  {
-    type = "smoke",
-    name = "smoke-11",
-    flags = {"not-on-map"},
-    animation =
-    {
-      filename = "__roguef__/graphics/entity/explosion/p-6.png",
-      priority = "high",
-      width = 16,
-      height = 16,
-      frame_count = 4,
-      animation_speed = 8 / 60,
-      duration = 60,
-      fade_away_duration = 60,
-		blend_mode = "additive",
-    }
-  },
-  
+
+  -- TODO: CHECK THIS
+  -- {
+  --   type = "smoke",
+  --   name = "smoke-11",
+  --   flags = {"not-on-map"},
+  --   animation =
+  --   {
+  --     filename = "__m-roguef__/graphics/entity/explosion/p-6.png",
+  --     priority = "high",
+  --     width = 16,
+  --     height = 16,
+  --     frame_count = 4,
+  --     animation_speed = 8 / 60,
+  --     duration = 60,
+  --     fade_away_duration = 60,
+	--   	blend_mode = "additive",
+  --   }
+  -- },
+
 	{
     type = "projectile",
     name = "p-12",
@@ -1481,10 +1485,10 @@ data:extend(
             type = "create-entity",
             entity_name = "laser-bubble"
           },
-			 {
-				type = "damage",
-				damage = {amount = 40, type = "damage-player"}
-			 },
+          {
+            type = "damage",
+            damage = {amount = 40, type = "damage-player"}
+          },
         }
 		}
 	 },
@@ -1497,8 +1501,8 @@ data:extend(
       height = 14,
       priority = "high",
       --blend_mode = "additive"
-		scale=2
-    },  
+		  scale=2
+    },
   },
 	{
     type = "projectile",
@@ -1525,7 +1529,7 @@ data:extend(
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/noani/no.png",
+      filename = "__m-roguef__/graphics/entity/noani/no.png",
       frame_count = 1,
       width = 1,
       height = 1,
@@ -1547,30 +1551,30 @@ data:extend(
         target_effects =
 		  {
 			  {
-				 type = "damage",
-				 damage = {amount = 10, type = "damage-player"}
+          type = "damage",
+          damage = {amount = 10, type = "damage-player"}
 			  },
 			  {
-				 type = "create-entity",
-				 entity_name = "target-melee-1"
+          type = "create-entity",
+          entity_name = "target-melee-1"
 			  },
 			  {
-				 type = "create-entity",
-				 entity_name = "hit-p-15",
-				 trigger_created_entity="true"
+          type = "create-entity",
+          entity_name = "hit-p-15",
+          trigger_created_entity="true"
 			  }
 		  }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-15.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-15.png",
       frame_count = 6,
       width = 19,
       height = 18,
       priority = "high",
-		blend_mode = "additive",
-		animation_speed = 12/60
+      blend_mode = "additive",
+      animation_speed = 12/60
     },
   },
   {
@@ -1587,27 +1591,27 @@ data:extend(
       {
         type = "instant",
         target_effects =
-		  {
-			  {
-				 type = "damage",
-				 damage = {amount = 5, type = "damage-player"}
-			  },
-			  {
-				 type = "create-entity",
-				 entity_name = "target-melee-1"
-			  },
-		  }
+		    {
+			    {
+            type = "damage",
+            damage = {amount = 5, type = "damage-player"}
+          },
+          {
+            type = "create-entity",
+            entity_name = "target-melee-1"
+          },
+        }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-155.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-155.png",
       frame_count = 12,
       width = 19,
       height = 18,
       priority = "high",
-		blend_mode = "additive",
-		animation_speed = 12/60
+      blend_mode = "additive",
+      animation_speed = 12/60
     },
   },
 	{
@@ -1626,33 +1630,33 @@ data:extend(
         target_effects =
 		  {
 			  {
-				 type = "damage",
-				 damage = {amount = 20, type = "damage-player"}
+          type = "damage",
+          damage = {amount = 20, type = "damage-player"}
 			  },
 			  {
-				 type = "create-entity",
-				 entity_name = "target-elec-1"
+          type = "create-entity",
+          entity_name = "target-elec-1"
 			  },
 			  {
-				 type = "create-entity",
-				 entity_name = "hit-p-16-1",
-				 trigger_created_entity="true"
+          type = "create-entity",
+          entity_name = "hit-p-16-1",
+          trigger_created_entity="true"
 			  }
 		  }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-16.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-16.png",
       frame_count = 10,
       width = 43,
       height = 117,
       priority = "high",
-		blend_mode = "additive",
-		animation_speed = 20/60
+      blend_mode = "additive",
+      animation_speed = 20/60
     },
   },
-  	{
+  {
     type = "projectile",
     name = "p-16-1",
     flags = {"not-on-map","placeable-off-grid"},
@@ -1668,34 +1672,34 @@ data:extend(
         target_effects =
 		  {
 			  {
-				 type = "damage",
-				 damage = {amount = 10, type = "damage-player"}
+          type = "damage",
+          damage = {amount = 10, type = "damage-player"}
 			  },
 			  {
-				 type = "create-entity",
-				 entity_name = "target-elec-1"
+          type = "create-entity",
+          entity_name = "target-elec-1"
 			  },
 			  {
-				 type = "create-entity",
-				 entity_name = "hit-p-16-2",
-				 trigger_created_entity="true"
+          type = "create-entity",
+          entity_name = "hit-p-16-2",
+          trigger_created_entity="true"
 			  }
 		  }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-16.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-16.png",
       frame_count = 10,
       width = 43,
       height = 117,
       priority = "high",
-		blend_mode = "additive",
-		animation_speed = 20/60,
-		scale=1/2
+      blend_mode = "additive",
+      animation_speed = 20/60,
+      scale=1/2
     },
   },
-  	{
+  {
     type = "projectile",
     name = "p-16-2",
     flags = {"not-on-map","placeable-off-grid"},
@@ -1707,36 +1711,36 @@ data:extend(
       {
         type = "instant",
         target_effects =
-		  {
-			  {
-				 type = "damage",
-				 damage = {amount = 5, type = "damage-player"}
-			  },
-			  {
-				 type = "create-entity",
-				 entity_name = "target-elec-1"
-			  },
-			  {
-				 type = "create-entity",
-				 entity_name = "hit-p-16-3",
-				 trigger_created_entity="true"
-			  }
-		  }
+        {
+          {
+            type = "damage",
+            damage = {amount = 5, type = "damage-player"}
+          },
+          {
+            type = "create-entity",
+            entity_name = "target-elec-1"
+          },
+          {
+            type = "create-entity",
+            entity_name = "hit-p-16-3",
+            trigger_created_entity="true"
+          }
+        }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-16.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-16.png",
       frame_count = 10,
       width = 43,
       height = 117,
       priority = "high",
-		blend_mode = "additive",
-		animation_speed = 20/60,
-		scale=1/3
+      blend_mode = "additive",
+      animation_speed = 20/60,
+      scale=1/3
     },
   },
-  	{
+  {
     type = "projectile",
     name = "p-16-3",
     flags = {"not-on-map","placeable-off-grid"},
@@ -1750,28 +1754,28 @@ data:extend(
       {
         type = "instant",
         target_effects =
-		  {
-			  {
-				 type = "damage",
-				 damage = {amount = 2.5, type = "damage-player"}
-			  },
-			  {
-				 type = "create-entity",
-				 entity_name = "target-elec-1"
-			  },
-		  }
+        {
+          {
+            type = "damage",
+            damage = {amount = 2.5, type = "damage-player"}
+          },
+          {
+            type = "create-entity",
+            entity_name = "target-elec-1"
+          },
+        }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-16.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-16.png",
       frame_count = 10,
       width = 43,
       height = 117,
       priority = "high",
-		blend_mode = "additive",
-		animation_speed = 20/60,
-		scale=1/4
+		  blend_mode = "additive",
+      animation_speed = 20/60,
+      scale=1/4
     },
   },
 	{
@@ -1802,13 +1806,13 @@ data:extend(
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-17.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-17.png",
       frame_count = 4,
       width = 32,
       height = 64,
       priority = "high",
-		--blend_mode = "additive",
-		animation_speed = 8/60
+      --blend_mode = "additive",
+      animation_speed = 8/60
     },
   },
 	{
@@ -1825,31 +1829,31 @@ data:extend(
       {
         type = "instant",
         target_effects =
-		  {
-			  {
-				 type = "damage",
-				 damage = {amount = 12, type = "damage-player"}
-			  },
-			  {
-				 type = "create-entity",
-				 entity_name = "target-fire-1"
-			  },
-			  {
-				 type = "create-entity",
-				 entity_name = "hit-p-18",
-				 trigger_created_entity="true"
-			  }
-		  }
+        {
+          {
+            type = "damage",
+            damage = {amount = 12, type = "damage-player"}
+          },
+          {
+            type = "create-entity",
+            entity_name = "target-fire-1"
+          },
+          {
+            type = "create-entity",
+            entity_name = "hit-p-18",
+            trigger_created_entity="true"
+          }
+        }
       }
     },
     animation =
     {
-		filename = "__roguef__/graphics/entity/explosion/ep-1.png",
-		frame_count = 1,
-		width = 17,
-		height = 17,
-		priority = "high",
-	 }
+      filename = "__m-roguef__/graphics/entity/explosion/ep-1.png",
+      frame_count = 1,
+      width = 17,
+      height = 17,
+      priority = "high",
+    }
   },
 	{
     type = "projectile",
@@ -1865,33 +1869,33 @@ data:extend(
       {
         type = "instant",
         target_effects =
-		  {
-			  {
-				 type = "damage",
-				 damage = {amount = 20/3, type = "damage-player"}
-			  },
-			  {
-				 type = "create-entity",
-				 entity_name = "target-blood"
-			  },
-			  {
-				 type = "create-entity",
-				 entity_name = "hit-p-19",
-				 trigger_created_entity="true"
-			  }
-		  }
+        {
+          {
+            type = "damage",
+            damage = {amount = 20/3, type = "damage-player"}
+          },
+          {
+            type = "create-entity",
+            entity_name = "target-blood"
+          },
+          {
+            type = "create-entity",
+            entity_name = "hit-p-19",
+            trigger_created_entity="true"
+          }
+        }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-19.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-19.png",
       frame_count = 1,
       width = 32,
       height = 52,
       priority = "high",
-		--blend_mode = "additive",
-		scale=1/2
-		--animation_speed = 10/60
+      --blend_mode = "additive",
+      scale=1/2
+      --animation_speed = 10/60
     },
   },
   {
@@ -1910,22 +1914,22 @@ data:extend(
         target_effects =
 		  {
 			  {
-				 type = "damage",
-				 damage = {amount = 20/3, type = "damage-player"}
+          type = "damage",
+          damage = {amount = 20/3, type = "damage-player"}
 			  },
 		  }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-19.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-19.png",
       frame_count = 1,
       width = 32,
       height = 52,
       priority = "high",
-		--blend_mode = "additive",
-		scale=1/2
-		--animation_speed = 10/60
+      --blend_mode = "additive",
+      scale=1/2
+      --animation_speed = 10/60
     },
   },
 	{
@@ -1942,18 +1946,18 @@ data:extend(
       {
         type = "instant",
         target_effects =
-		  {
-			  {
-				 type = "create-entity",
-				 entity_name = "hit-p-20",
-				 trigger_created_entity="true"
-			  }
-		  }
+        {
+          {
+            type = "create-entity",
+            entity_name = "hit-p-20",
+            trigger_created_entity="true"
+          }
+        }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/noani/no.png",
+      filename = "__m-roguef__/graphics/entity/noani/no.png",
       frame_count = 1,
       width = 1,
       height = 1,
@@ -1975,25 +1979,25 @@ data:extend(
         target_effects =
 		  {
 			  {
-				 type = "damage",
-				 damage = {amount = 100, type = "damage-player"}
+          type = "damage",
+          damage = {amount = 100, type = "damage-player"}
 			  },
 			  {
-				 type = "create-entity",
-				 entity_name = "target-melee-1"
+          type = "create-entity",
+          entity_name = "target-melee-1"
 			  },
 		  }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-20.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-20.png",
       frame_count = 12,
       width = 32,
       height = 32,
-		priority = "high",
-		--blend_mode = "additive",
-		animation_speed = 12/60
+      priority = "high",
+      --blend_mode = "additive",
+      animation_speed = 12/60
     },
   },
 
@@ -2038,7 +2042,7 @@ data:extend(
       },
       {
         type = "area",
-        perimeter = 3,
+        radius = 3,
         action_delivery =
         {
           type = "instant",
@@ -2052,9 +2056,9 @@ data:extend(
         }
       }
     },
-    spine_animation = 
-    { 
-      filename = "__roguef__/graphics/entity/explosion/p-21.png",
+    spine_animation =
+    {
+      filename = "__m-roguef__/graphics/entity/explosion/p-21.png",
       --blend_mode = "additive",
       --tint = {r=0, g=0, b=1, a=0.5},
       line_length = 4,
@@ -2069,7 +2073,7 @@ data:extend(
     },
     shadow =
     {
-      filename = "__base__/graphics/entity/acid-projectile-purple/acid-projectile-purple-shadow.png",
+      filename = "__0_16_graphics__/graphics/entity/acid-projectile-purple/acid-projectile-purple-shadow.png",
       line_length = 5,
       width = 28,
       height = 16,
@@ -2090,7 +2094,7 @@ data:extend(
     {
 		{
         type = "area",
-        perimeter = 7,
+        radius = 7,
         action_delivery =
         {
           type = "instant",
@@ -2100,17 +2104,17 @@ data:extend(
               type = "damage",
               damage = { amount = 50, type = "damage-player" }
             },
-				{
-				 type = "create-entity",
-				 entity_name = "target-slash"
-			  },
+            {
+              type = "create-entity",
+              entity_name = "target-slash"
+            },
           }
         }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/noani/no.png",
+      filename = "__m-roguef__/graphics/entity/noani/no.png",
       frame_count = 1,
       width = 1,
       height = 1,
@@ -2144,14 +2148,14 @@ data:extend(
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-24-1.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-24-1.png",
       frame_count = 1,
       width = 12,
       height = 12,
       priority = "high",
-		blend_mode = "additive",
-		scale=1
-		--animation_speed = 10/60
+      blend_mode = "additive",
+      scale=1
+      --animation_speed = 10/60
     },
   },
   {
@@ -2170,26 +2174,26 @@ data:extend(
         target_effects =
 		  {
 			  {
-				 type = "damage",
-				 damage = {amount = 5, type = "damage-player"}
+          type = "damage",
+          damage = {amount = 5, type = "damage-player"}
 			  },
 			  {
-				 type = "create-entity",
-				 entity_name = "target-melee-1"
+          type = "create-entity",
+          entity_name = "target-melee-1"
 			  },
 		  }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-24-2.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-24-2.png",
       frame_count = 1,
       width = 12,
       height = 12,
       priority = "high",
-		blend_mode = "additive",
-		scale=1
-		--animation_speed = 10/60
+      blend_mode = "additive",
+      scale=1
+      --animation_speed = 10/60
     },
   },
   {
@@ -2208,26 +2212,26 @@ data:extend(
         target_effects =
 		  {
 			  {
-				 type = "damage",
-				 damage = {amount = 10, type = "damage-player"}
+          type = "damage",
+          damage = {amount = 10, type = "damage-player"}
 			  },
 			  {
-				 type = "create-entity",
-				 entity_name = "target-melee-1"
+          type = "create-entity",
+          entity_name = "target-melee-1"
 			  },
 		  }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-24-3.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-24-3.png",
       frame_count = 1,
       width = 12,
       height = 12,
       priority = "high",
-		blend_mode = "additive",
-		scale=1
-		--animation_speed = 10/60
+      blend_mode = "additive",
+      scale=1
+      --animation_speed = 10/60
     },
   },
   {
@@ -2244,21 +2248,21 @@ data:extend(
       {
         type = "instant",
         target_effects =
-		  {
-			  {
-				 type = "damage",
-				 damage = {amount = 20, type = "damage-player"}
-			  },
-			  {
-				 type = "create-entity",
-				 entity_name = "target-melee-1"
-			  },
-		  }
+        {
+          {
+            type = "damage",
+            damage = {amount = 20, type = "damage-player"}
+          },
+          {
+            type = "create-entity",
+            entity_name = "target-melee-1"
+          },
+        }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-24-4.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-24-4.png",
       frame_count = 1,
       width = 12,
       height = 12,
@@ -2282,28 +2286,28 @@ data:extend(
       {
         type = "instant",
         target_effects =
-		  {
-			  {
-				 type = "damage",
-				 damage = {amount = 30, type = "damage-player"}
-			  },
-			  {
-				 type = "create-entity",
-				 entity_name = "target-melee-1"
-			  },
-		  }
+        {
+          {
+            type = "damage",
+            damage = {amount = 30, type = "damage-player"}
+          },
+          {
+            type = "create-entity",
+            entity_name = "target-melee-1"
+          },
+        }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-24-5.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-24-5.png",
       frame_count = 1,
       width = 12,
       height = 12,
       priority = "high",
-		blend_mode = "additive",
-		scale=1
-		--animation_speed = 10/60
+      blend_mode = "additive",
+      scale=1
+      --animation_speed = 10/60
     },
   },
   {
@@ -2320,28 +2324,28 @@ data:extend(
       {
         type = "instant",
         target_effects =
-		  {
-			  {
-				 type = "damage",
-				 damage = {amount = 35, type = "damage-player"}
-			  },
-			  {
-				 type = "create-entity",
-				 entity_name = "target-melee-1"
-			  },
-		  }
+        {
+          {
+            type = "damage",
+            damage = {amount = 35, type = "damage-player"}
+          },
+          {
+            type = "create-entity",
+            entity_name = "target-melee-1"
+          },
+        }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-24-6.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-24-6.png",
       frame_count = 1,
       width = 12,
       height = 12,
       priority = "high",
-		blend_mode = "additive",
-		scale=1
-		--animation_speed = 10/60
+      blend_mode = "additive",
+      scale=1
+      --animation_speed = 10/60
     },
   },
   {
@@ -2358,28 +2362,28 @@ data:extend(
       {
         type = "instant",
         target_effects =
-		  {
-			  {
-				 type = "damage",
-				 damage = {amount = 39, type = "damage-player"}
-			  },
-			  {
-				 type = "create-entity",
-				 entity_name = "target-melee-1"
-			  },
-		  }
+        {
+          {
+            type = "damage",
+            damage = {amount = 39, type = "damage-player"}
+          },
+          {
+            type = "create-entity",
+            entity_name = "target-melee-1"
+          },
+        }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-24-7.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-24-7.png",
       frame_count = 1,
       width = 12,
       height = 12,
       priority = "high",
-		blend_mode = "additive",
-		scale=1
-		--animation_speed = 10/60
+      blend_mode = "additive",
+      scale=1
+      --animation_speed = 10/60
     },
   },
   {
@@ -2396,18 +2400,18 @@ data:extend(
       {
         type = "instant",
         target_effects =
-		  {
-			  {
-				 type = "create-entity",
-				 entity_name = "hit-p-24",
-				 trigger_created_entity="true"
-			  }
-		  }
+        {
+          {
+            type = "create-entity",
+            entity_name = "hit-p-24",
+            trigger_created_entity="true"
+          }
+        }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/noani/no.png",
+      filename = "__m-roguef__/graphics/entity/noani/no.png",
       frame_count = 1,
       width = 1,
       height = 1,
@@ -2429,16 +2433,16 @@ data:extend(
         target_effects =
 		  {
 			  {
-				 type = "create-entity",
-				 entity_name = "hit-p-25",
-				 trigger_created_entity="true"
+          type = "create-entity",
+          entity_name = "hit-p-25",
+          trigger_created_entity="true"
 			  }
 		  }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/noani/no.png",
+      filename = "__m-roguef__/graphics/entity/noani/no.png",
       frame_count = 1,
       width = 1,
       height = 1,
@@ -2458,28 +2462,28 @@ data:extend(
       {
         type = "instant",
         target_effects =
-		  {
-			  {
-				 type = "damage",
-				 damage = {amount = 40, type = "damage-player"}
-			  },
-			  {
-				 type = "create-entity",
-				 entity_name = "target-melee-1"
-			  },
-		  }
+        {
+          {
+            type = "damage",
+            damage = {amount = 40, type = "damage-player"}
+          },
+          {
+            type = "create-entity",
+            entity_name = "target-melee-1"
+          },
+        }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-25.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-25.png",
       frame_count = 1,
       width = 32,
       height = 32,
       priority = "high",
-		--blend_mode = "additive",
-		scale=1
-		--animation_speed = 10/60
+      --blend_mode = "additive",
+      scale=1
+      --animation_speed = 10/60
     },
   },
   {
@@ -2496,26 +2500,26 @@ data:extend(
       {
         type = "instant",
         target_effects =
-		  {
-			  {
-				 type = "damage",
-				 damage = {amount = 1, type = "damage-player"}
-			  },
-			  {
-				 type = "create-entity",
-				 entity_name = "target-melee-1"
-			  }
-		  }
+        {
+          {
+            type = "damage",
+            damage = {amount = 1, type = "damage-player"}
+          },
+          {
+            type = "create-entity",
+            entity_name = "target-melee-1"
+          }
+        }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-26.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-26.png",
       frame_count = 1,
       width = 13,
       height = 13,
       priority = "high",
-		blend_mode = "additive",
+		  blend_mode = "additive",
     },
   },
   {
@@ -2532,27 +2536,27 @@ data:extend(
       {
         type = "instant",
         target_effects =
-		  {
-			  {
-				 type = "damage",
-				 damage = {amount = 8, type = "damage-player"}
-			  },
-			  {
-				 type = "create-entity",
-				 entity_name = "target-melee-1"
-			  },
-		  }
+		    {
+          {
+            type = "damage",
+            damage = {amount = 8, type = "damage-player"}
+          },
+          {
+            type = "create-entity",
+            entity_name = "target-melee-1"
+          },
+        }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-27.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-27.png",
       frame_count = 4,
       width = 16,
       height = 16,
       priority = "high",
-		blend_mode = "additive",
-		animation_speed = 10/60
+      blend_mode = "additive",
+      animation_speed = 10/60
     },
   },
   {
@@ -2591,7 +2595,7 @@ data:extend(
               type = "create-entity",
               entity_name = "p-7",
             },
-				{
+				    {
               type = "create-entity",
               entity_name = "explosion",
             }
@@ -2600,7 +2604,7 @@ data:extend(
       },
       {
         type = "area",
-        perimeter = 2.5,
+        radius = 2.5,
         action_delivery =
         {
           type = "instant",
@@ -2614,19 +2618,19 @@ data:extend(
         }
       }
     },
-    spine_animation = 
+    spine_animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-7.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-7.png",
       frame_count = 1,
       width = 19,
       height = 18,
       priority = "high",
-		blend_mode = "additive",
-		--animation_speed = 30/60
+      blend_mode = "additive",
+      --animation_speed = 30/60
     },
     shadow =
     {
-      filename = "__base__/graphics/entity/acid-projectile-purple/acid-projectile-purple-shadow.png",
+      filename = "__0_16_graphics__/graphics/entity/acid-projectile-purple/acid-projectile-purple-shadow.png",
       line_length = 5,
       width = 28,
       height = 16,
@@ -2650,18 +2654,18 @@ data:extend(
       {
         type = "instant",
         target_effects =
-		  {
-			  {
-				 type = "create-entity",
-				 entity_name = "hit-p-29",
-				 trigger_created_entity="true"
-			  }
-		  }
+        {
+          {
+          type = "create-entity",
+          entity_name = "hit-p-29",
+          trigger_created_entity="true"
+          }
+        }
       }
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/noani/no.png",
+      filename = "__m-roguef__/graphics/entity/noani/no.png",
       frame_count = 1,
       width = 1,
       height = 1,
@@ -2676,7 +2680,7 @@ data:extend(
     direction_only = true,
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-29.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-29.png",
       frame_count = 24,
 		line_length = 8,
       width = 64,
@@ -2693,9 +2697,8 @@ data:extend(
     --collision_box = {{-0.5, -0.5}, {0.5, 0.5}},
     acceleration = 0,
     --direction_only = true,
-    action =
-    {
-		{
+    action ={
+      {
         type = "cluster",
         cluster_count = 2,
         distance = 10,
@@ -2707,13 +2710,13 @@ data:extend(
           direction_deviation = 1,
           starting_speed = 0.3,
           starting_speed_deviation = 0,
-			 max_range=10
+          max_range=10
         }
       }
-	 },
+	  },
     animation =
     {
-      filename = "__roguef__/graphics/entity/noani/no.png",
+      filename = "__m-roguef__/graphics/entity/noani/no.png",
       frame_count = 1,
       width = 1,
       height = 1,
@@ -2747,7 +2750,7 @@ data:extend(
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-29-1.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-29-1.png",
       frame_count = 1,
       width = 15,
       height = 23,
@@ -2759,47 +2762,46 @@ data:extend(
 
 --armor
 function armor(n,p)
-return{
+  return {
     type = "armor",
-    name = "armor-"..n,
-	 localised_name = {"armor-name."..n},
-	 localised_description = {"armor-info."..n},
-    icon = "__roguef__/graphics/icons/armor/"..n..".png",
-    flags = {"goes-to-main-inventory"},
+    name = "armor-" .. n,
+    localised_name = {"armor-name." .. n},
+    localised_description = {"armor-info." .. n},
+    icon = "__m-roguef__/graphics/icons/armor/" .. n .. ".png",
+    icon_size = 32,
+    flags = {},
     subgroup = "rf_armor",
     order = "a",
     stack_size = 1,
-	 resistances =
-    {
-	  {
+    resistances ={
+      {
         type = "damage-enemy",
-		  decrease = 0,
+        decrease = 0,
         percent = p
       },
     },
     durability = 1000000
   }
 end
-data:extend(
-{
-armor(1,5),--20
-armor(2,10),--40
-armor(3,15),--60
-armor(4,20),--80
-armor(5,25),--100
-  
+data:extend({
+  armor(1,  5),  --20
+  armor(2, 10), --40
+  armor(3, 15), --60
+  armor(4, 20), --80
+  armor(5, 25), --100
 })
 
 --active
-for i=1,9 do
+for i = 1, 9 do
 	data:extend({
 		{
 		 type = "item",
 		 name = "active-"..i,
 		 localised_name = {"active-name."..i},
 		 localised_description = {"active-info."..i},
-		 icon = "__roguef__/graphics/icons/active/"..i..".png",
-		 flags = {"goes-to-main-inventory"},
+		 icon = "__m-roguef__/graphics/icons/active/"..i..".png",
+     icon_size = 32,
+     flags = {},
 		 subgroup = "rf_active",
 		 order = "a",
 		 stack_size = 1
@@ -2808,15 +2810,16 @@ for i=1,9 do
 end
 
 --passive
-for i=1,20 do
+for i = 1, 20 do
 	data:extend({
 		{
 		 type = "item",
-		 name = "passive-"..i,
-		 localised_name = {"passive-name."..i},
-		 localised_description = {"passive-info."..i},
-		 icon = "__roguef__/graphics/icons/passive/"..i..".png",
-		 flags = {"goes-to-main-inventory"},
+		 name = "passive-" .. i,
+		 localised_name = {"passive-name." .. i},
+		 localised_description = {"passive-info." .. i},
+		 icon = "__m-roguef__/graphics/icons/passive/" .. i .. ".png",
+     icon_size = 32,
+     flags = {},
 		 subgroup = "rf_passive",
 		 order = "a",
 		 stack_size = 1
@@ -2825,17 +2828,18 @@ for i=1,20 do
 end
 
 --mastery
-for t=1,7 do
-	for i=1,3 do
+for t=1, 7 do
+	for i=1, 3 do
 		data:extend({
 			{
-			 type = "item",
-			 name = "mastery-"..t.."-"..i,
-			 icon = "__roguef__/graphics/icons/mastery/"..t.."-"..i..".png",
-			 flags = {"goes-to-main-inventory"},
-			 subgroup = "rf_mastery",
-			 order = "a",
-			 stack_size = 1000
+        type = "item",
+        name = "mastery-"..t.."-"..i,
+        icon = "__m-roguef__/graphics/icons/mastery/"..t.."-"..i..".png",
+        icon_size = 32,
+        flags = {},
+        subgroup = "rf_mastery",
+        order = "a",
+        stack_size = 1000
 			}
 		})
 	end
@@ -2843,14 +2847,15 @@ end
 
 --raw                            6              7            8                9              10
 local raw={"active","money","level","xp","stage","heal"}
-for a,b in pairs(raw) do
+for _, b in pairs(raw) do
 	data:extend(
 	{
 	  {
 		 type = "item",
 		 name = b,
-		 icon = "__roguef__/graphics/icons/raw/"..b..".png",
-		 flags = {"goes-to-main-inventory"},
+		 icon = "__m-roguef__/graphics/icons/raw/" .. b .. ".png",
+     icon_size = 32,
+     flags = {},
 		 subgroup = "rf_raw",
 		 order = "a",
 		 stack_size = 1000
@@ -2863,13 +2868,12 @@ data:extend({
 	{
 		type = "item",
 		name = "rf_no",
-		icon = "__roguef__/graphics/icons/raw/heal.png",
-		flags = {"goes-to-main-inventory"},
+    icon = "__m-roguef__/graphics/icons/raw/heal.png",
+    icon_size = 32,
+		flags = {},
 		subgroup = "rf_raw",
 		order = "b",
 		stack_size = 1000,
-		place_result="rf_no"
+		place_result = "rf_no"
 	},
-	
-	
 })

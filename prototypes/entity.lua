@@ -1,88 +1,23 @@
+local player = data.raw["character"]["character"]
+player.max_health = 1000
+player.healing_per_tick = 0
+player.inventory_size = 100
+player.build_distance = 0
+player.drop_item_distance = 0
+player.reach_distance = 1
+player.loot_pickup_distance = 0
+player.reach_resource_distance = 0
+player.damage_hit_tint = {r = 0, g = 0, b = 0, a = 0}
+player.running_speed = 0.15
+player.distance_per_frame = 0.13
+player.maximum_corner_sliding_distance = 0.7
+
+local player_copy = util.table.deepcopy(player)
+player_copy.name = "player-test"
+
+
 data:extend({
-
---player
-	{
-    type = "player",
-    name = "player",
-    icon = "__base__/graphics/icons/player.png",
-    flags = {"pushable", "placeable-off-grid", "breaths-air", "not-repairable", "not-on-map"},
-    max_health = 1000,
-	 resistances =
-    {
-      {
-        type = "damage-player",
-        percent = 100
-      },		
-    },
-    alert_when_damaged = false,
-    healing_per_tick = 0/120,
-    collision_box = {{-0.2, -0.2}, {0.2, 0.2}},
-    selection_box = {{-0.4, -1.4}, {0.4, 0.2}},
-    crafting_categories = {"crafting"},
-    inventory_size = 100,
-	 build_distance = 0,
-    drop_item_distance = 0,
-    reach_distance = 1,
-    item_pickup_distance = 1,
-    loot_pickup_distance = 0,
-    reach_resource_distance = 0,
-    ticks_to_keep_gun = 600,
-    ticks_to_keep_aiming_direction = 100,
-    damage_hit_tint = {r = 0, g = 0, b = 0, a = 0},
-    running_speed = 0.15,
-    distance_per_frame = 0.13,
-    maximum_corner_sliding_distance = 0.7,
-    subgroup = "creatures",
-    order="a",
-    eat =
-    {
-      {
-        filename = "__base__/sound/eat.ogg",
-        volume = 1
-      }
-    },
-    heartbeat =    {{filename = "__base__/sound/heartbeat.ogg",volume=0}},
-     animations =     {       {         idle =         {           layers =           {             playeranimations.level1.idle,             playeranimations.level1.idlemask,           }         },         idle_with_gun =         {           layers =           {             playeranimations.level1.idlewithgun,             playeranimations.level1.idlewithgunmask,           }         },         mining_with_hands =         {           layers =           {             playeranimations.level1.miningwithhands,             playeranimations.level1.miningwithhandsmask,           }         },         mining_with_tool =         {           layers =           {             playeranimations.level1.miningwithtool,             playeranimations.level1.miningwithtoolmask,           }         },         running_with_gun =         {           layers =           {             playeranimations.level1.runningwithgun,             playeranimations.level1.runningwithgunmask,           }         },         running =         {           layers =           {             playeranimations.level1.running,             playeranimations.level1.runningmask,           }         }       },       {                 armors = data.is_demo and {"light-armor"} or {"light-armor", "heavy-armor"},         idle =         {           layers =           {             playeranimations.level1.idle,             playeranimations.level1.idlemask,             playeranimations.level2addon.idle,             playeranimations.level2addon.idlemask           }         },         idle_with_gun =         {           layers =           {             playeranimations.level1.idlewithgun,             playeranimations.level1.idlewithgunmask,             playeranimations.level2addon.idlewithgun,             playeranimations.level2addon.idlewithgunmask,           }         },         mining_with_hands =         {           layers =           {             playeranimations.level1.miningwithhands,             playeranimations.level1.miningwithhandsmask,             playeranimations.level2addon.miningwithhands,             playeranimations.level2addon.miningwithhandsmask,           }         },         mining_with_tool =         {           layers =           {             playeranimations.level1.miningwithtool,             playeranimations.level1.miningwithtoolmask,             playeranimations.level2addon.miningwithtool,             playeranimations.level2addon.miningwithtoolmask,           }         },         running_with_gun =         {           layers =           {             playeranimations.level1.runningwithgun,             playeranimations.level1.runningwithgunmask,             playeranimations.level2addon.runningwithgun,             playeranimations.level2addon.runningwithgunmask,           }         },         running =         {           layers =           {             playeranimations.level1.running,             playeranimations.level1.runningmask,             playeranimations.level2addon.running,             playeranimations.level2addon.runningmask,           }         }       },       {             armors = data.is_demo and {} or {"modular-armor", "power-armor", "power-armor-mk2"},         idle =         {           layers =           {             playeranimations.level1.idle,             playeranimations.level1.idlemask,             playeranimations.level3addon.idle,             playeranimations.level3addon.idlemask           }         },         idle_with_gun =         {           layers =           {             playeranimations.level1.idlewithgun,             playeranimations.level1.idlewithgunmask,             playeranimations.level3addon.idlewithgun,             playeranimations.level3addon.idlewithgunmask,           }         },         mining_with_hands =         {           layers =           {             playeranimations.level1.miningwithhands,             playeranimations.level1.miningwithhandsmask,             playeranimations.level3addon.miningwithhands,             playeranimations.level3addon.miningwithhandsmask,           }         },         mining_with_tool =         {           layers =           {             playeranimations.level1.miningwithtool,             playeranimations.level1.miningwithtoolmask,             playeranimations.level3addon.miningwithtool,             playeranimations.level3addon.miningwithtoolmask,           }         },         running_with_gun =         {           layers =           {             playeranimations.level1.runningwithgun,             playeranimations.level1.runningwithgunmask,             playeranimations.level3addon.runningwithgun,             playeranimations.level3addon.runningwithgunmask,           }         },         running =         {           layers =           {             playeranimations.level1.running,             playeranimations.level1.runningmask,             playeranimations.level3addon.running,             playeranimations.level3addon.runningmask,           }         }       }     },     light =     {       {         minimum_darkness = 0.3,         intensity = 0.4,         size = 25,       },       {         type = "oriented",         minimum_darkness = 0.3,         picture =         {           filename = "__core__/graphics/light-cone.png",           priority = "medium",           scale = 2,           width = 200,           height = 200         },         shift = {0, -13},         size = 2,         intensity = 0.6       },     },     mining_speed = 0.01,     mining_with_hands_particles_animation_positions = {29, 63},     mining_with_tool_particles_animation_positions = {28},     running_sound_animation_positions = {5, 16} 
-	},
-	
-	{
-    type = "player",
-    name = "player-test",
-    icon = "__base__/graphics/icons/player.png",
-    flags = {"pushable", "placeable-off-grid", "breaths-air", "not-repairable", "not-on-map"},
-    max_health = 1000,
-    alert_when_damaged = false,
-    healing_per_tick = 0/120,
-    collision_box = {{-0.5, -0.5}, {0.5, 0.5}},
-    selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
-    crafting_categories = {"crafting"},
-    inventory_size = 100,
-	 build_distance = 0,
-    drop_item_distance = 0,
-    reach_distance = 1,
-    item_pickup_distance = 1,
-    loot_pickup_distance = 0,
-    reach_resource_distance = 0,
-    ticks_to_keep_gun = 600,
-    ticks_to_keep_aiming_direction = 100,
-    damage_hit_tint = {r = 0, g = 0, b = 0, a = 0},
-    running_speed = 0.15,
-    distance_per_frame = 0.13,
-    maximum_corner_sliding_distance = 0.7,
-    subgroup = "creatures",
-    order="a",
-    eat =
-    {
-      {
-        filename = "__base__/sound/eat.ogg",
-        volume = 1
-      }
-    },
-    heartbeat =    {{filename = "__base__/sound/heartbeat.ogg",volume=0}},
-     animations =     {       {         idle =         {           layers =           {             playeranimations.level1.idle,             playeranimations.level1.idlemask,           }         },         idle_with_gun =         {           layers =           {             playeranimations.level1.idlewithgun,             playeranimations.level1.idlewithgunmask,           }         },         mining_with_hands =         {           layers =           {             playeranimations.level1.miningwithhands,             playeranimations.level1.miningwithhandsmask,           }         },         mining_with_tool =         {           layers =           {             playeranimations.level1.miningwithtool,             playeranimations.level1.miningwithtoolmask,           }         },         running_with_gun =         {           layers =           {             playeranimations.level1.runningwithgun,             playeranimations.level1.runningwithgunmask,           }         },         running =         {           layers =           {             playeranimations.level1.running,             playeranimations.level1.runningmask,           }         }       },       {                 armors = data.is_demo and {"light-armor"} or {"light-armor", "heavy-armor"},         idle =         {           layers =           {             playeranimations.level1.idle,             playeranimations.level1.idlemask,             playeranimations.level2addon.idle,             playeranimations.level2addon.idlemask           }         },         idle_with_gun =         {           layers =           {             playeranimations.level1.idlewithgun,             playeranimations.level1.idlewithgunmask,             playeranimations.level2addon.idlewithgun,             playeranimations.level2addon.idlewithgunmask,           }         },         mining_with_hands =         {           layers =           {             playeranimations.level1.miningwithhands,             playeranimations.level1.miningwithhandsmask,             playeranimations.level2addon.miningwithhands,             playeranimations.level2addon.miningwithhandsmask,           }         },         mining_with_tool =         {           layers =           {             playeranimations.level1.miningwithtool,             playeranimations.level1.miningwithtoolmask,             playeranimations.level2addon.miningwithtool,             playeranimations.level2addon.miningwithtoolmask,           }         },         running_with_gun =         {           layers =           {             playeranimations.level1.runningwithgun,             playeranimations.level1.runningwithgunmask,             playeranimations.level2addon.runningwithgun,             playeranimations.level2addon.runningwithgunmask,           }         },         running =         {           layers =           {             playeranimations.level1.running,             playeranimations.level1.runningmask,             playeranimations.level2addon.running,             playeranimations.level2addon.runningmask,           }         }       },       {             armors = data.is_demo and {} or {"modular-armor", "power-armor", "power-armor-mk2"},         idle =         {           layers =           {             playeranimations.level1.idle,             playeranimations.level1.idlemask,             playeranimations.level3addon.idle,             playeranimations.level3addon.idlemask           }         },         idle_with_gun =         {           layers =           {             playeranimations.level1.idlewithgun,             playeranimations.level1.idlewithgunmask,             playeranimations.level3addon.idlewithgun,             playeranimations.level3addon.idlewithgunmask,           }         },         mining_with_hands =         {           layers =           {             playeranimations.level1.miningwithhands,             playeranimations.level1.miningwithhandsmask,             playeranimations.level3addon.miningwithhands,             playeranimations.level3addon.miningwithhandsmask,           }         },         mining_with_tool =         {           layers =           {             playeranimations.level1.miningwithtool,             playeranimations.level1.miningwithtoolmask,             playeranimations.level3addon.miningwithtool,             playeranimations.level3addon.miningwithtoolmask,           }         },         running_with_gun =         {           layers =           {             playeranimations.level1.runningwithgun,             playeranimations.level1.runningwithgunmask,             playeranimations.level3addon.runningwithgun,             playeranimations.level3addon.runningwithgunmask,           }         },         running =         {           layers =           {             playeranimations.level1.running,             playeranimations.level1.runningmask,             playeranimations.level3addon.running,             playeranimations.level3addon.runningmask,           }         }       }     },     light =     {       {         minimum_darkness = 0.3,         intensity = 0.4,         size = 25,       },       {         type = "oriented",         minimum_darkness = 0.3,         picture =         {           filename = "__core__/graphics/light-cone.png",           priority = "medium",           scale = 2,           width = 200,           height = 200         },         shift = {0, -13},         size = 2,         intensity = 0.6       },     },     mining_speed = 0.01,     mining_with_hands_particles_animation_positions = {29, 63},     mining_with_tool_particles_animation_positions = {28},     running_sound_animation_positions = {5, 16} 
-	},
-
---fire
+  player_copy,
 	{
 	  type = "fire",
 	  name = "blaze",
@@ -94,7 +29,7 @@ data:extend({
 	  end_scale = 0.01,
 	  color = {r=1, g=0.9, b=0, a=0.5},
 	  damage_per_tick = {amount = 0, type = "fire"},
-	  spawn_entity = "noani",
+	  -- spawn_entity = "noani",
 	  spread_delay = 300,
 	  spread_delay_deviation = 180,
 	  maximum_spread_count = 100,
@@ -113,61 +48,63 @@ data:extend({
 	  burnt_patch_lifetime = 0,
 	  on_fuel_added_action =
 	  {
-		 type = "direct",
-		 action_delivery =
-		 {
-			type = "instant",
-			target_effects =
-			{
-			  {
-				 type = "create-smoke",
-				 entity_name = "fire-smoke-on-adding-fuel",
-				 -- speed = {-0.03, 0},
-				 -- speed_multiplier = 0.99,
-				 -- speed_multiplier_deviation = 1.1,
-				 offset_deviation = {{-0.5, -0.5}, {0.5, 0.5}},
-				 speed_from_center = 0.01
-			  }
-			}
-		 }
-	  },  
-	  pictures = 
-	  { {
-			filename = "__roguef__/graphics/entity/explosion/blaze.png",
-			line_length = 8,
-			width = 30,
-			height = 59,
-			frame_count = 25,
-			axially_symmetrical = false,
-			direction_count = 1,
-			blend_mode = fire_blend_mode,
-			animation_speed = fire_animation_speed,
-			scale = fire_scale,
-			tint = fire_tint,
-			flags = fire_flags,
-			shift = { -0.0390625/2, -0.90625/2 }
-		 }},
-	  light = {intensity = 1, size = 20},  
+      type = "direct",
+      action_delivery =
+      {
+        type = "instant",
+        target_effects =
+        {
+          {
+            type = "create-trivial-smoke",
+            smoke_name = "fire-smoke-on-adding-fuel",
+            -- speed = {-0.03, 0},
+            -- speed_multiplier = 0.99,
+            -- speed_multiplier_deviation = 1.1,
+            offset_deviation = {{-0.5, -0.5}, {0.5, 0.5}},
+            speed_from_center = 0.01
+          }
+        }
+      }
+	  },
+	  pictures =
+	  {
+      {
+        filename = "__m-roguef__/graphics/entity/explosion/blaze.png",
+        line_length = 8,
+        width = 30,
+        height = 59,
+        frame_count = 25,
+        axially_symmetrical = false,
+        direction_count = 1,
+        blend_mode = fire_blend_mode,
+        animation_speed = fire_animation_speed,
+        scale = fire_scale,
+        tint = fire_tint,
+        flags = fire_flags,
+        shift = { -0.0390625/2, -0.90625/2 }
+      }
+    },
+	  light = {intensity = 1, size = 20},
 	  working_sound =
 	  {
-		 sound = { filename = "__base__/sound/furnace.ogg" },
-		 max_sounds_per_type = 3
-	  },	  
+      sound = {filename = "__base__/sound/furnace.ogg"},
+      max_sounds_per_type = 3
+	  },
 	},
---robot
 	{
     type = "combat-robot",
     name = "robot-1",
-    icon = "__base__/graphics/icons/destroyer.png",
+    icon = "__0_16_graphics__/graphics/icons/destroyer.png",
+    icon_size = 32,
     flags = {"player-creation", "placeable-off-grid", "not-on-map", "not-repairable"},
-    resistances = { { type = "damage-player", percent = 100 } },
+    resistances = {{type = "damage-player", percent = 100}},
     subgroup="capsule",
     order="e-a-c",
-    max_health =0,
+    max_health = 1, -- why was 0???
     alert_when_damaged = false,
     --collision_box = {{0, 0}, {0, 0}},
     selection_box = {{-0.5, -1.5}, {0.5, -0.5}},
-	 --selectable_in_game = false,
+	  --selectable_in_game = false,
     distance_per_frame = 0.13,
     time_to_live = 60*60*60*24*365,
     speed = 0.1,
@@ -211,7 +148,7 @@ data:extend({
           frame_count = 1,
           direction_count = 32,
           shift = {0.078125, -0.546875},
-			 scale=1/2
+			    scale=1/2
         },
         {
           filename = "__base__/graphics/entity/destroyer-robot/destroyer-robot-mask.png",
@@ -224,7 +161,7 @@ data:extend({
           direction_count = 32,
           shift = {0.078125, -0.734375},
           apply_runtime_tint = true,
-			 scale=1/2
+			    scale=1/2
         },
       }
     },
@@ -238,7 +175,7 @@ data:extend({
       frame_count = 1,
       direction_count = 32,
       shift = {0.78125, 0},
-		scale=1/2
+		    scale=1/2
     },
     in_motion =
     {
@@ -253,7 +190,7 @@ data:extend({
           frame_count = 1,
           direction_count = 32,
           shift = {0.078125, -0.546875},
-			 scale=1/2
+			    scale=1/2
         },
         {
           filename = "__base__/graphics/entity/destroyer-robot/destroyer-robot-mask.png",
@@ -265,7 +202,7 @@ data:extend({
           direction_count = 32,
           shift = {0.078125, -0.734375},
           apply_runtime_tint = true,
-			 scale=1/2
+			    scale=1/2
         }
       }
     },
@@ -279,7 +216,7 @@ data:extend({
       frame_count = 1,
       direction_count = 32,
       shift = {0.78125, 0},
-		scale=1/2
+		  scale=1/2
     }
   },
   {
@@ -305,14 +242,14 @@ data:extend({
         {
           {
             type = "damage",
-            damage = { amount = 1, type = "damage-player"}
+            damage = {amount = 1, type = "damage-player"}
           }
         }
       }
     },
     head =
     {
-      filename = "__base__/graphics/entity/beam/beam-head.png",
+      filename = "__m-roguef__/graphics/entity/beam/beam-head.png",
       line_length = 16,
       width = 45,
       height = 39,
@@ -322,7 +259,7 @@ data:extend({
     },
     tail =
     {
-      filename = "__base__/graphics/entity/beam/beam-tail.png",
+      filename = "__m-roguef__/graphics/entity/beam/beam-tail.png",
       line_length = 16,
       width = 45,
       height = 39,
@@ -332,7 +269,7 @@ data:extend({
     body =
     {
       {
-        filename = "__base__/graphics/entity/beam/beam-body-1.png",
+        filename = "__m-roguef__/graphics/entity/beam/beam-body-1.png",
         line_length = 16,
         width = 45,
         height = 39,
@@ -340,7 +277,7 @@ data:extend({
         blend_mode = beam_blend_mode,
       },
       {
-        filename = "__base__/graphics/entity/beam/beam-body-2.png",
+        filename = "__m-roguef__/graphics/entity/beam/beam-body-2.png",
         line_length = 16,
         width = 45,
         height = 39,
@@ -348,7 +285,7 @@ data:extend({
         blend_mode = beam_blend_mode,
       },
       {
-        filename = "__base__/graphics/entity/beam/beam-body-3.png",
+        filename = "__m-roguef__/graphics/entity/beam/beam-body-3.png",
         line_length = 16,
         width = 45,
         height = 39,
@@ -356,7 +293,7 @@ data:extend({
         blend_mode = beam_blend_mode,
       },
       {
-        filename = "__base__/graphics/entity/beam/beam-body-4.png",
+        filename = "__m-roguef__/graphics/entity/beam/beam-body-4.png",
         line_length = 16,
         width = 45,
         height = 39,
@@ -364,7 +301,7 @@ data:extend({
         blend_mode = beam_blend_mode,
       },
       {
-        filename = "__base__/graphics/entity/beam/beam-body-5.png",
+        filename = "__m-roguef__/graphics/entity/beam/beam-body-5.png",
         line_length = 16,
         width = 45,
         height = 39,
@@ -372,7 +309,7 @@ data:extend({
         blend_mode = beam_blend_mode,
       },
       {
-        filename = "__base__/graphics/entity/beam/beam-body-6.png",
+        filename = "__m-roguef__/graphics/entity/beam/beam-body-6.png",
         line_length = 16,
         width = 45,
         height = 39,
@@ -381,16 +318,17 @@ data:extend({
       },
     }
   },
-  
+
   {
     type = "combat-robot",
     name = "robot-2",
-    icon = "__base__/graphics/icons/destroyer.png",
+    icon = "__0_16_graphics__/graphics/icons/destroyer.png",
+    icon_size = 32,
     flags = {"player-creation", "placeable-off-grid", "not-on-map", "not-repairable"},
     resistances = { { type = "damage-player", percent = 100 } },
     subgroup="capsule",
     order="e-a-c",
-    max_health =0,
+    max_health = 1, -- why was 0???
     alert_when_damaged = false,
     --collision_box = {{0, 0}, {0, 0}},
     selection_box = {{-0.5, -1.5}, {0.5, -0.5}},
@@ -413,7 +351,7 @@ data:extend({
 		  target_type="direction",
         action =
 			{
-				{	
+				{
 				 type = "direct",
 				 action_delivery =
 				 {
@@ -533,7 +471,7 @@ data:extend({
     },
     animation =
     {
-      filename = "__roguef__/graphics/entity/explosion/p-1.png",
+      filename = "__m-roguef__/graphics/entity/explosion/p-1.png",
       frame_count = 4,
       width = 16,
       height = 16,
@@ -543,20 +481,21 @@ data:extend({
 		scale=2/3
     },
   },
-  
+
   {
     type = "combat-robot",
     name = "robot-3",
-    icon = "__base__/graphics/icons/destroyer.png",
+    icon = "__0_16_graphics__/graphics/icons/destroyer.png",
+    icon_size = 32,
     flags = {"player-creation", "placeable-off-grid", "not-on-map", "not-repairable"},
     resistances = { { type = "damage-player", percent = 100 } },
     subgroup="capsule",
     order="e-a-c",
-    max_health =0,
+    max_health = 1, -- why was 0???
     alert_when_damaged = false,
     --collision_box = {{0, 0}, {0, 0}},
     selection_box = {{-0.5, -1.5}, {0.5, -0.5}},
-	 --selectable_in_game = false,
+	  --selectable_in_game = false,
     distance_per_frame = 0.13,
     time_to_live = 60*60*60*24*365,
     speed = 0.1,
@@ -575,7 +514,7 @@ data:extend({
 		  target_type="position",
         action =
 			{
-				{	
+				{
 				 type = "direct",
 				 action_delivery =
 				 {
@@ -587,10 +526,10 @@ data:extend({
 			  },
 			  {
 				 type = "direct",
-				 action_delivery = 
+				 action_delivery =
 				 {
 					type = "instant",
-					source_effects = 
+					source_effects =
 					{
 					  {
 						 type = "create-explosion",
@@ -704,7 +643,7 @@ data:extend({
       },
       {
         type = "area",
-        perimeter = 2,
+        radius = 2,
         action_delivery =
         {
           type = "instant",
@@ -725,34 +664,32 @@ data:extend({
       frame_count = 1,
       width = 24,
       height = 24,
-      priority = "high",
-		scale=1/2
+      priority = "high"
     },
     shadow =
     {
       filename = "__base__/graphics/entity/grenade/grenade-shadow.png",
       frame_count = 1,
       width = 24,
-      height = 32,
-      priority = "high",
-		scale=1/2
+      height = 24,
+      priority = "high"
     }
   },
-  
---mine
+
 	{
     type = "land-mine",
     name = "mine-6",
-    icon = "__base__/graphics/icons/land-mine.png",
+    icon = "__0_16_graphics__/graphics/icons/land-mine.png",
+    icon_size = 32,
     flags =
     {
       "player-creation",
       "placeable-off-grid"
     },
     max_health = 250,
-	 alert_when_damaged = false,
+	  alert_when_damaged = false,
     corpse = "small-remnants",
-    collision_box = {{-0.4,-0.4}, {0.4, 0.4}},
+    collision_box = {{-0.4, -0.4}, {0.4, 0.4}},
     selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
     dying_explosion = "explosion-hit",
     picture_safe =
@@ -784,7 +721,7 @@ data:extend({
             action =
             {
               type = "area",
-              perimeter = 6,
+              radius = 6,
               collision_mask = { "player-layer" },
               action_delivery =
               {
@@ -792,7 +729,7 @@ data:extend({
                 target_effects =
                 {
                   type = "damage",
-                  damage = { amount = 100, type = "damage-player"}
+                  damage = {amount = 100, type = "damage-player"}
                 }
               }
             },
@@ -803,14 +740,14 @@ data:extend({
           },
           {
             type = "damage",
-            damage = { amount = 1000, type = "damage-player"}
+            damage = {amount = 1000, type = "damage-player"}
           }
         }
       }
     },
   },
 
---flying-text	
+  -- TODO: delete flying-text due of https://lua-api.factorio.com/0.17.43/LuaRendering.html#LuaRendering.draw_text
   {
     type = "flying-text",
     name = "playertext",
@@ -846,13 +783,14 @@ data:extend({
     time_to_live = 60,
     speed = 0
   },
-  
---[[npc
+
+  --[[npc
   {
-    type = "player",
+    type = "character",
     name = "scareboy",
-	icon = "__base__/graphics/icons/player.png",
-    flags = {"pushable", "placeable-player","placeable-off-grid", "breaths-air", "not-repairable", "not-on-map"},
+    icon = "__0_16_graphics__/graphics/icons/player.png",
+    icon_size = 32,
+    flags = {"placeable-player","placeable-off-grid", "breaths-air", "not-repairable", "not-on-map"},
     max_health = 12500000,
     alert_when_damaged = false,healing_per_tick = 0.0,
     collision_box = {{-0.2, -0.2}, {0.2, 0.2}},
@@ -861,70 +799,73 @@ data:extend({
     ticks_to_keep_gun = 600,    ticks_to_keep_aiming_direction = 100,    damage_hit_tint = {r = 1, g = 0, b = 0, a = 0},
     running_speed = 0.15,    distance_per_frame = 0.13,    maximum_corner_sliding_distance = 0.7,
     subgroup = "rf_raw",    order="a",
-    eat ={{filename = "__base__/sound/eat.ogg",volume = 1}},    heartbeat ={{filename = "__base__/sound/heartbeat.ogg"}},
+    eat ={{filename = "__0_16_graphics__/sound/eat.ogg",volume = 1}},    heartbeat ={{filename = "__0_16_graphics__/sound/heartbeat.ogg"}},
     animations ={{ idle ={layers ={playeranimations.level1.idle,playeranimations.level1.idlemask,}},
     idle_with_gun ={layers ={playeranimations.level1.idlewithgun,playeranimations.level1.idlewithgunmask,}},
     mining_with_hands ={layers ={playeranimations.level1.miningwithhands,playeranimations.level1.miningwithhandsmask,}},
     mining_with_tool ={layers ={playeranimations.level1.miningwithtool,playeranimations.level1.miningwithtoolmask,}},
     running_with_gun ={layers ={playeranimations.level1.runningwithgun,playeranimations.level1.runningwithgunmask,}},
     running ={layers ={playeranimations.level1.running,playeranimations.level1.runningmask,}}}},
-    mining_speed = 0, 
+    mining_speed = 0,
     mining_with_hands_particles_animation_positions = {29, 63},
     mining_with_tool_particles_animation_positions = {28},
     running_sound_animation_positions = {5, 16}
   },
   ]]
-  
---weapon-attack for trigger
+
+  --weapon-attack for trigger
 	{
     type = "explosion",
     name = "weapon-attack",
     flags = {"not-on-map","placeable-off-grid"},
     animations =
-    {{
-	   filename = "__roguef__/graphics/entity/noani/no.png",
+    {
+      {
+	    filename = "__m-roguef__/graphics/entity/noani/no.png",
       frame_count = 1,
       width = 1,
       height = 1,
-		animation_speed = 1
-    }}
-   },
-	{
+		  animation_speed = 1
+      }
+    }
+  },
+  {
     type = "explosion",
     name = "weapon-attacker",
     flags = {"not-on-map","placeable-off-grid"},
     animations =
-    {{
-	   filename = "__roguef__/graphics/entity/noani/no.png",
-      frame_count = 1,
-      width = 1,
-      height = 1,
-		animation_speed = 1
-    }}
-   },
-    
+    {
+      {
+        filename = "__m-roguef__/graphics/entity/noani/no.png",
+        frame_count = 1,
+        width = 1,
+        height = 1,
+        animation_speed = 1
+      }
+    }
+    },
 })
 
 --sticker ( slowdown-i-j ) i : 0.5 sec,   j : movement speed %
 for i=1,10,1 do
 	for j=0,400,10 do
-	data:extend(
-	{
-		{
-		 type = "sticker",	 
-		 name = "slowdown-"..tostring(i).."-"..tostring(j),
-		 flags = {"not-on-map"},
-		 animation =
-		 {
-			filename = "__roguef__/graphics/entity/noani/no.png",
-			frame_count = 1,
-			width = 1,
-			height = 1,
-		 },
-		 duration_in_ticks = i*60/2,
-		 target_movement_modifier = j/100
-	   },
-  })
+    data:extend(
+    {
+      {
+        type = "sticker",
+        name = "slowdown-"..tostring(i).."-"..tostring(j),
+        flags = {"not-on-map"},
+        animation =
+        {
+          filename = "__m-roguef__/graphics/entity/noani/no.png",
+          frame_count = 1,
+          width = 1,
+          height = 1,
+        },
+        duration_in_ticks = i*60/2,
+        target_movement_modifier = j/100
+      },
+    })
   end
 end
 
@@ -938,7 +879,8 @@ data:extend({
     type = "decorative",
     name = "green-circle",
     flags = {"placeable-neutral", "not-on-map","placeable-off-grid"},
-    icon = "__roguef__/graphics/entity/green-circle.png",
+    icon = "__m-roguef__/graphics/entity/green-circle.png",
+    icon_size = 32,
     subgroup = "rf_raw",
     order = "b",
     collision_box = {{-0.1, -0.1}, {0.1, 0.1}},
@@ -948,17 +890,18 @@ data:extend({
     pictures =
     {
       {
-        filename = "__roguef__/graphics/entity/green-circle.png",
+        filename = "__m-roguef__/graphics/entity/green-circle.png",
         width = 32,
         height = 32,
 	   }
-    },  
+    },
   },
   {
     type = "decorative",
     name = "mark",
     flags = {"placeable-neutral", "not-on-map","placeable-off-grid"},
-    icon = "__roguef__/graphics/entity/mark.png",
+    icon = "__m-roguef__/graphics/entity/mark.png",
+    icon_size = 32,
     subgroup = "rf_raw",
     order = "b",
     collision_box = {{-0.1, -0.1}, {0.1, 0.1}},
@@ -968,11 +911,11 @@ data:extend({
     pictures =
     {
       {
-        filename = "__roguef__/graphics/entity/mark.png",
+        filename = "__m-roguef__/graphics/entity/mark.png",
         width = 128,
         height = 128,
-	   }
-    },  
+	    }
+    },
   },
   {
     type = "explosion",
@@ -981,17 +924,18 @@ data:extend({
     animations =
     {
       {
-	   filename = "__roguef__/graphics/entity/noani/no.png",
-      frame_count = 1,
-      width = 1,
-      height = 1,
+        filename = "__m-roguef__/graphics/entity/noani/no.png",
+        frame_count = 1,
+        width = 1,
+        height = 1,
       },
     }
-  },  
+  },
   {
     type = "market",
     name = "rf_market",
-    icon = "__base__/graphics/icons/market.png",
+    icon = "__0_16_graphics__/graphics/icons/market.png",
+    icon_size = 32,
     flags = {"placeable-neutral", "player-creation"},
     subgroup="rf_raw",
     order="b",
@@ -999,86 +943,88 @@ data:extend({
     corpse = "big-remnants",
     collision_box = {{-2.5, -0.7}, {2, 0.7}},
     selection_box = {{-2.5, -0.7}, {2, 0.7}},
-	 dying_explosion = "explosion",
+	  dying_explosion = "explosion",
     render_layer = "object",
-    max_health = 150,
     picture =
-      {
-      filename = "__roguef__/graphics/entity/console.png",
-      width = 256,
-      height = 128,
+    {
+      filename = "__m-roguef__/graphics/entity/console.png",
+      width = 200,
+      height = 114,
       shift = {0,0.5}
 		}
   },
-  
+
   {
     type = "simple-entity",
     name = "rf_consol-tuto",
     flags = {"placeable-neutral", "player-creation"},
-    icon = "__base__/graphics/icons/market.png",
+    icon = "__0_16_graphics__/graphics/icons/market.png",
+    icon_size = 32,
     subgroup = "rf_raw",
     order = "b",
     collision_box = {{-2.5, -0.7}, {2, 0.7}},
     selection_box = {{-2.5, -0.7}, {2, 0.7}},
-	 dying_explosion = "explosion",
+    dying_explosion = "explosion",
     render_layer = "object",
     max_health = 150,
     pictures =
     {
       {
-      filename = "__roguef__/graphics/entity/console.png",
-      width = 256,
-      height = 128,
-      shift = {0,0.5}
-		}
+        filename = "__m-roguef__/graphics/entity/console.png",
+        width = 200,
+        height = 114,
+        shift = {0,0.5}
+		  }
     }
   },
-  
+
   {
     type = "simple-entity",
     name = "rf_consol-stage",
     flags = {"placeable-neutral", "player-creation"},
-    icon = "__roguef__/graphics/entity/console.png",
+    icon = "__m-roguef__/graphics/entity/console.png",
+    icon_size = 32,
     subgroup = "rf_raw",
     order = "b",
     collision_box = {{-2.5, -0.7}, {2, 0.7}},
     selection_box = {{-2.5, -0.7}, {2, 0.7}},
-	 dying_explosion = "explosion",
+	  dying_explosion = "explosion",
     render_layer = "object",
     max_health = 150,
     pictures =
     {
       {
-      filename = "__roguef__/graphics/entity/console.png",
-      width = 256,
-      height = 128,
-      shift = {0,0.5}
-		}
+        filename = "__m-roguef__/graphics/entity/console.png",
+        width = 200,
+        height = 114,
+        shift = {0,0.5}
+		  }
     }
   },
-  
+
   {
     type = "simple-entity",
     name = "rf_consol-clear",
     flags = {"placeable-neutral", "player-creation"},
-    icon = "__base__/graphics/icons/market.png",
+    icon = "__0_16_graphics__/graphics/icons/market.png",
+    icon_size = 32,
     subgroup = "rf_raw",
     order = "b",
     collision_box = {{-2.5, -0.7}, {2, 0.7}},
     selection_box = {{-2.5, -0.7}, {2, 0.7}},
-	 dying_explosion = "explosion",
+	  dying_explosion = "explosion",
     render_layer = "object",
     max_health = 150,
     pictures =
     {
       {
-      filename = "__roguef__/graphics/entity/console.png",
-      width = 256,
-      height = 128,
-      shift = {0,0.5}
-		}
+        filename = "__m-roguef__/graphics/entity/console.png",
+        width = 200,
+        height = 114,
+        shift = {0,0.5}
+      }
     }
   },
-  
-  
+
+
 })
