@@ -1,12 +1,12 @@
 {
   "name": "m-roguef",
-  "version": "0.0.2",
-  "factorio_version": "0.17",
+  "version": "0.0.3",
+  "factorio_version": "1.0",
   "title": "Roguelike Factorio [test version]",
   "author": "kij336",
   "contact": "kij336@naver.com, zweroxotnik@gmail.com",
   "description": "Roguelike Factorio - adds new items, bosses, new enemies, skills, special scenario for it and elements of action roguelike. WIP!",
   "homepage": "https://forums.factorio.com/viewtopic.php?f=95&t=40743",
   "source": "https://gitlab.com/ZwerOxotnik/roguef",
-  "dependencies": ["base >= 0.17.35", "0_16_graphics", "fake-tiles"]
+  "dependencies": ["base >= 1.0", "0_16_graphics", "fake-tiles"]
 }

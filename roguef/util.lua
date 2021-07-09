@@ -186,9 +186,9 @@ module.bullet_line = function(ent,bullet,distance,t,speed)
 	local po s= targetrotate(ent.position, {x=ent.position.x,y=ent.position.y-distance}, ent.orientation*360+t)
 	if game.entity_prototypes[bullet].type=="projectile" then
 		return game.surfaces[1].create_entity{name=bullet,position=ent.position,target=pos,speed=speed}
-    else
-        return game.surfaces[1].create_entity{name=bullet,position=pos}
-    end
+		else
+				return game.surfaces[1].create_entity{name=bullet,position=pos}
+		end
 end
 
 return module

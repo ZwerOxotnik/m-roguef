@@ -17,24 +17,24 @@ end
 
 -- TODO: change \/
 data:extend({
-  {
-    type = "custom-input",
-    name = "reload",
-    key_sequence = "R"
-  },
-  {
-    type = "custom-input",
-    name = "dodge",
-    key_sequence = "mouse-button-2"
-  },
-  {
-    type = "custom-input",
-    name = "useitem",
-    key_sequence = "CAPSLOCK"
-  },
-  {
-    type = "custom-input",
-    name = "interaction",
-    key_sequence = "mouse-button-1"
-  },
+	{
+		type = "custom-input",
+		name = "reload",
+		key_sequence = "R"
+	},
+	{
+		type = "custom-input",
+		name = "dodge",
+		key_sequence = "mouse-button-2"
+	},
+	{
+		type = "custom-input",
+		name = "useitem",
+		key_sequence = "CAPSLOCK"
+	},
+	{
+		type = "custom-input",
+		name = "interaction",
+		key_sequence = "mouse-button-1"
+	},
 })
