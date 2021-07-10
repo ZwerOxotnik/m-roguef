@@ -25,7 +25,8 @@ end
 
 --flying-text
 local function pt(text,color) -- TOOD: Fix this
-	game.get_player(1).surface.create_entity{name = "playertext", position = global.p.position, text = text, color=color or {g=1}}
+	local player = game.get_player(1)
+	player.surface.create_entity{name = "playertext", position = player.position, text = text, color=color or {g=1}}
 end
 local function nt(ent,text,color)
 	if color==nil then color={r=1,g=1,b=1}end
