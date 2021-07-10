@@ -3,7 +3,7 @@ function assembler2pipepictures()
 	{
 		north =
 		{
-			filename = "__0_16_graphics__/graphics/entity/assembling-machine-2/pipe-north.png",
+			filename = "__0_16_graphics_revived__/graphics/entity/assembling-machine-2/pipe-north.png",
 			priority = "extra-high",
 			width = 41,
 			height = 40,
@@ -11,7 +11,7 @@ function assembler2pipepictures()
 		},
 		east =
 		{
-			filename = "__0_16_graphics__/graphics/entity/assembling-machine-2/pipe-east.png",
+			filename = "__0_16_graphics_revived__/graphics/entity/assembling-machine-2/pipe-east.png",
 			priority = "extra-high",
 			width = 41,
 			height = 40,
@@ -19,7 +19,7 @@ function assembler2pipepictures()
 		},
 		south =
 		{
-			filename = "__0_16_graphics__/graphics/entity/assembling-machine-2/pipe-south.png",
+			filename = "__0_16_graphics_revived__/graphics/entity/assembling-machine-2/pipe-south.png",
 			priority = "extra-high",
 			width = 41,
 			height = 40,
@@ -27,7 +27,7 @@ function assembler2pipepictures()
 		},
 		west =
 		{
-			filename = "__0_16_graphics__/graphics/entity/assembling-machine-2/pipe-west.png",
+			filename = "__0_16_graphics_revived__/graphics/entity/assembling-machine-2/pipe-west.png",
 			priority = "extra-high",
 			width = 41,
 			height = 40,
@@ -41,7 +41,7 @@ function assembler3pipepictures()
 	{
 		north =
 		{
-			filename = "__0_16_graphics__/graphics/entity/assembling-machine-3/pipe-north.png",
+			filename = "__0_16_graphics_revived__/graphics/entity/assembling-machine-3/pipe-north.png",
 			priority = "extra-high",
 			width = 40,
 			height = 45,
@@ -49,7 +49,7 @@ function assembler3pipepictures()
 		},
 		east =
 		{
-			filename = "__0_16_graphics__/graphics/entity/assembling-machine-3/pipe-east.png",
+			filename = "__0_16_graphics_revived__/graphics/entity/assembling-machine-3/pipe-east.png",
 			priority = "extra-high",
 			width = 40,
 			height = 45,
@@ -57,7 +57,7 @@ function assembler3pipepictures()
 		},
 		south =
 		{
-			filename = "__0_16_graphics__/graphics/entity/assembling-machine-3/pipe-south.png",
+			filename = "__0_16_graphics_revived__/graphics/entity/assembling-machine-3/pipe-south.png",
 			priority = "extra-high",
 			width = 40,
 			height = 45,
@@ -65,7 +65,7 @@ function assembler3pipepictures()
 		},
 		west =
 		{
-			filename = "__0_16_graphics__/graphics/entity/assembling-machine-3/pipe-west.png",
+			filename = "__0_16_graphics_revived__/graphics/entity/assembling-machine-3/pipe-west.png",
 			priority = "extra-high",
 			width = 40,
 			height = 45,

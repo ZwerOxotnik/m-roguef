@@ -1696,7 +1696,7 @@ data:extend(
 
 		shadow =
 		{
-			filename = "__0_16_graphics__/graphics/entity/acid-projectile-purple/acid-projectile-purple-shadow.png",
+			filename = "__0_16_graphics_revived__/graphics/entity/acid-projectile-purple/acid-projectile-purple-shadow.png",
 			line_length = 5,
 			width = 28,
 			height = 16,
@@ -1944,7 +1944,7 @@ data:extend(
 		},
 		shadow =
 		{
-			filename = "__0_16_graphics__/graphics/entity/acid-projectile-purple/acid-projectile-purple-shadow.png",
+			filename = "__0_16_graphics_revived__/graphics/entity/acid-projectile-purple/acid-projectile-purple-shadow.png",
 			line_length = 5,
 			width = 28,
 			height = 16,
@@ -2291,7 +2291,7 @@ data:extend({
 		},
 		shadow =
 		{
-			filename = "__0_16_graphics__/graphics/entity/acid-projectile-purple/acid-projectile-purple-shadow.png",
+			filename = "__0_16_graphics_revived__/graphics/entity/acid-projectile-purple/acid-projectile-purple-shadow.png",
 			line_length = 5,
 			width = 28,
 			height = 16,
@@ -3983,7 +3983,7 @@ data:extend({
 		},
 		shadow =
 		{
-			filename = "__0_16_graphics__/graphics/entity/acid-projectile-purple/acid-projectile-purple-shadow.png",
+			filename = "__0_16_graphics_revived__/graphics/entity/acid-projectile-purple/acid-projectile-purple-shadow.png",
 			line_length = 5,
 			width = 28,
 			height = 16,

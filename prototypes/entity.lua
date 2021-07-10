@@ -94,7 +94,7 @@ data:extend({
 	{
 		type = "combat-robot",
 		name = "robot-1",
-		icon = "__0_16_graphics__/graphics/icons/destroyer.png",
+		icon = "__0_16_graphics_revived__/graphics/icons/destroyer.png",
 		icon_size = 32,
 		flags = {"player-creation", "placeable-off-grid", "not-on-map", "not-repairable"},
 		resistances = {{type = "damage-player", percent = 100}},
@@ -322,7 +322,7 @@ data:extend({
 	{
 		type = "combat-robot",
 		name = "robot-2",
-		icon = "__0_16_graphics__/graphics/icons/destroyer.png",
+		icon = "__0_16_graphics_revived__/graphics/icons/destroyer.png",
 		icon_size = 32,
 		flags = {"player-creation", "placeable-off-grid", "not-on-map", "not-repairable"},
 		resistances = { { type = "damage-player", percent = 100 } },
@@ -485,7 +485,7 @@ data:extend({
 	{
 		type = "combat-robot",
 		name = "robot-3",
-		icon = "__0_16_graphics__/graphics/icons/destroyer.png",
+		icon = "__0_16_graphics_revived__/graphics/icons/destroyer.png",
 		icon_size = 32,
 		flags = {"player-creation", "placeable-off-grid", "not-on-map", "not-repairable"},
 		resistances = { { type = "damage-player", percent = 100 } },
@@ -679,7 +679,7 @@ data:extend({
 	{
 		type = "land-mine",
 		name = "mine-6",
-		icon = "__0_16_graphics__/graphics/icons/land-mine.png",
+		icon = "__0_16_graphics_revived__/graphics/icons/land-mine.png",
 		icon_size = 32,
 		flags =
 		{
@@ -788,7 +788,7 @@ data:extend({
 	{
 		type = "character",
 		name = "scareboy",
-		icon = "__0_16_graphics__/graphics/icons/player.png",
+		icon = "__0_16_graphics_revived__/graphics/icons/player.png",
 		icon_size = 32,
 		flags = {"placeable-player","placeable-off-grid", "breaths-air", "not-repairable", "not-on-map"},
 		max_health = 12500000,
@@ -799,7 +799,7 @@ data:extend({
 		ticks_to_keep_gun = 600,    ticks_to_keep_aiming_direction = 100,    damage_hit_tint = {r = 1, g = 0, b = 0, a = 0},
 		running_speed = 0.15,    distance_per_frame = 0.13,    maximum_corner_sliding_distance = 0.7,
 		subgroup = "rf_raw",    order="a",
-		eat ={{filename = "__0_16_graphics__/sound/eat.ogg",volume = 1}},    heartbeat ={{filename = "__0_16_graphics__/sound/heartbeat.ogg"}},
+		eat ={{filename = "__0_16_graphics_revived__/sound/eat.ogg",volume = 1}},    heartbeat ={{filename = "__0_16_graphics_revived__/sound/heartbeat.ogg"}},
 		animations ={{ idle ={layers ={playeranimations.level1.idle,playeranimations.level1.idlemask,}},
 		idle_with_gun ={layers ={playeranimations.level1.idlewithgun,playeranimations.level1.idlewithgunmask,}},
 		mining_with_hands ={layers ={playeranimations.level1.miningwithhands,playeranimations.level1.miningwithhandsmask,}},
@@ -934,7 +934,7 @@ data:extend({
 	{
 		type = "market",
 		name = "rf_market",
-		icon = "__0_16_graphics__/graphics/icons/market.png",
+		icon = "__0_16_graphics_revived__/graphics/icons/market.png",
 		icon_size = 32,
 		flags = {"placeable-neutral", "player-creation"},
 		subgroup="rf_raw",
@@ -958,7 +958,7 @@ data:extend({
 		type = "simple-entity",
 		name = "rf_consol-tuto",
 		flags = {"placeable-neutral", "player-creation"},
-		icon = "__0_16_graphics__/graphics/icons/market.png",
+		icon = "__0_16_graphics_revived__/graphics/icons/market.png",
 		icon_size = 32,
 		subgroup = "rf_raw",
 		order = "b",
@@ -1006,7 +1006,7 @@ data:extend({
 		type = "simple-entity",
 		name = "rf_consol-clear",
 		flags = {"placeable-neutral", "player-creation"},
-		icon = "__0_16_graphics__/graphics/icons/market.png",
+		icon = "__0_16_graphics_revived__/graphics/icons/market.png",
 		icon_size = 32,
 		subgroup = "rf_raw",
 		order = "b",

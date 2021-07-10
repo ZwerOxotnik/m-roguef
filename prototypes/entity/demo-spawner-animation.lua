@@ -4,7 +4,7 @@ return
 		layers =
 		{
 			{
-				filename = "__0_16_graphics__/graphics/entity/spawner/spawner-idle.png",
+				filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-idle.png",
 				line_length = 8,
 				width = 243,
 				height = 181,
@@ -16,7 +16,7 @@ return
 				y = variation * 181
 			},
 			{
-				filename = "__0_16_graphics__/graphics/entity/spawner/spawner-idle-mask.png",
+				filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-idle-mask.png",
 				flags = { "mask" },
 				width = 166,
 				height = 148,
@@ -46,19 +46,19 @@ return
 				stripes =
 				{
 				 {
-					filename = "__0_16_graphics__/graphics/entity/spawner/spawner-die-01.png",
+					filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-die-01.png",
 					width_in_frames = 7,
 					height_in_frames = 4,
 					y = variation * 184
 				 },
 				 {
-					filename = "__0_16_graphics__/graphics/entity/spawner/spawner-die-02.png",
+					filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-die-02.png",
 					width_in_frames = 7,
 					height_in_frames = 4,
 					y = variation * 184
 				 },
 				 {
-					filename = "__0_16_graphics__/graphics/entity/spawner/spawner-die-03.png",
+					filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-die-03.png",
 					width_in_frames = 6,
 					height_in_frames = 4,
 					y = variation * 184
@@ -76,13 +76,13 @@ return
 				stripes =
 				{
 				 {
-					filename = "__0_16_graphics__/graphics/entity/spawner/spawner-die-mask-01.png",
+					filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-die-mask-01.png",
 					width_in_frames = 10,
 					height_in_frames = 4,
 					y = variation * 148
 				 },
 				 {
-					filename = "__0_16_graphics__/graphics/entity/spawner/spawner-die-mask-02.png",
+					filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-die-mask-02.png",
 					width_in_frames = 10,
 					height_in_frames = 4,
 					y = variation * 148

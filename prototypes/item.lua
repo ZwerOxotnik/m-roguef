@@ -135,7 +135,7 @@ weapon(27,15,30),--83.2
 		},
 		stack_size = 1
 	},
-weapon(29,60,20,{{filename = "__m-roguef__/sound/icecast.ogg",volume = 1}}),--86.4
+	weapon(29,60,20,{{filename = "__m-roguef__/sound/icecast.ogg",volume = 1}}),--86.4
 	})
 
 --ammo  (n,target_type(entity,position,direction),source(shot effect),
@@ -144,7 +144,7 @@ return{
 		type = "ammo",
 		name = "ammo-"..n,
 		localised_name = " ",
-		icon = "__0_16_graphics__/graphics/icons/firearm-magazine.png",
+		icon = "__0_16_graphics_revived__/graphics/icons/firearm-magazine.png",
 		icon_size = 32,
 		flags = {},
 		subgroup = "rf_ammo",
@@ -366,7 +366,7 @@ ammo(5,"direction","explosion-hit",
 		type = "ammo",
 		name = "ammo-10",
 		localised_name = " ",
-		icon = "__0_16_graphics__/graphics/icons/firearm-magazine.png",
+		icon = "__0_16_graphics_revived__/graphics/icons/firearm-magazine.png",
 		icon_size = 32,
 		flags = {},
 		subgroup = "rf_ammo",
@@ -1233,7 +1233,7 @@ data:extend(
 				{
 					{
 					 type = "create-decorative",
-					 entity_name = "ex-256",
+					 decorative = "ex-256",
 					 spawn_max = 1, -- TODO: check this
 					 spawn_min_radius = 0, -- TODO: check this
 					 spawn_max_radius = 3, -- TODO: check this
@@ -2076,7 +2076,7 @@ data:extend(
 		},
 		shadow =
 		{
-			filename = "__0_16_graphics__/graphics/entity/acid-projectile-purple/acid-projectile-purple-shadow.png",
+			filename = "__0_16_graphics_revived__/graphics/entity/acid-projectile-purple/acid-projectile-purple-shadow.png",
 			line_length = 5,
 			width = 28,
 			height = 16,
@@ -2633,7 +2633,7 @@ data:extend(
 		},
 		shadow =
 		{
-			filename = "__0_16_graphics__/graphics/entity/acid-projectile-purple/acid-projectile-purple-shadow.png",
+			filename = "__0_16_graphics_revived__/graphics/entity/acid-projectile-purple/acid-projectile-purple-shadow.png",
 			line_length = 5,
 			width = 28,
 			height = 16,

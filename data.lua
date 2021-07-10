@@ -5,6 +5,7 @@ require("prototypes.explosion")
 require("prototypes.entity") -- TODO: refactor, fix, remake those consoles there
 require("prototypes.item")
 require("prototypes.tile")
+require("prototypes.style")
 
 -- TODO: change \/
 for _, corpse in pairs(data.raw.corpse) do

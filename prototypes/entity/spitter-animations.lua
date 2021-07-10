@@ -15,32 +15,32 @@ function spitterattackanimation(scale, tint)
 				stripes =
 				{
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-attack-1.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-attack-1.png",
 						width_in_frames = 8,
 						height_in_frames = 8
 					},
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-attack-2.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-attack-2.png",
 						width_in_frames = 8,
 						height_in_frames = 8
 					},
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-attack-3.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-attack-3.png",
 						width_in_frames = 6,
 						height_in_frames = 8
 					},
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-attack-4.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-attack-4.png",
 						width_in_frames = 8,
 						height_in_frames = 8
 					},
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-attack-5.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-attack-5.png",
 						width_in_frames = 8,
 						height_in_frames = 8
 					},
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-attack-6.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-attack-6.png",
 						width_in_frames = 6,
 						height_in_frames = 8
 					}
@@ -59,12 +59,12 @@ function spitterattackanimation(scale, tint)
 				stripes =
 				{
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-attack-mask-1.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-attack-mask-1.png",
 						width_in_frames = 11,
 						height_in_frames = 16
 					},
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-attack-mask-2.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-attack-mask-2.png",
 						width_in_frames = 11,
 						height_in_frames = 16
 					}
@@ -91,32 +91,32 @@ function spitterrunanimation(scale, tint)
 				stripes =
 				{
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-run-1.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-run-1.png",
 						width_in_frames = 8,
 						height_in_frames = 8
 					},
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-run-2.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-run-2.png",
 						width_in_frames = 8,
 						height_in_frames = 8
 					},
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-run-3.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-run-3.png",
 						width_in_frames = 8,
 						height_in_frames = 8
 					},
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-run-4.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-run-4.png",
 						width_in_frames = 8,
 						height_in_frames = 8
 					},
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-run-5.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-run-5.png",
 						width_in_frames = 8,
 						height_in_frames = 8
 					},
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-run-6.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-run-6.png",
 						width_in_frames = 8,
 						height_in_frames = 8
 					}
@@ -129,7 +129,7 @@ function spitterrunanimation(scale, tint)
 				direction_count = 16,
 				shift = {scale * 0.015625, scale * -0.6875},
 				scale = scale,
-				filename = "__0_16_graphics__/graphics/entity/spitter/spitter-run-mask.png",
+				filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-run-mask.png",
 				flags = { "mask" },
 				tint = tint
 			},
@@ -153,22 +153,22 @@ function spitterdyinganimation(scale, tint)
 				stripes =
 				{
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-die-1.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-die-1.png",
 						width_in_frames = 8,
 						height_in_frames = 8
 					},
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-die-2.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-die-2.png",
 						width_in_frames = 8,
 						height_in_frames = 8
 					},
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-die-3.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-die-3.png",
 						width_in_frames = 8,
 						height_in_frames = 8
 					},
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-die-4.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-die-4.png",
 						width_in_frames = 8,
 						height_in_frames = 8
 					}
@@ -187,22 +187,22 @@ function spitterdyinganimation(scale, tint)
 				stripes =
 				{
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-die-mask-1.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-die-mask-1.png",
 						width_in_frames = 8,
 						height_in_frames = 8
 					},
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-die-mask-2.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-die-mask-2.png",
 						width_in_frames = 8,
 						height_in_frames = 8
 					},
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-die-mask-3.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-die-mask-3.png",
 						width_in_frames = 8,
 						height_in_frames = 8
 					},
 					{
-						filename = "__0_16_graphics__/graphics/entity/spitter/spitter-die-mask-4.png",
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-die-mask-4.png",
 						width_in_frames = 8,
 						height_in_frames = 8
 					}
