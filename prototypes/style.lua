@@ -50,6 +50,76 @@ if default_gui.button_style == nil then
 	}
 end
 
+if default_gui.slot_button_style == nil then
+	default_gui.slot_button_style = {
+		type = "button_style",
+		parent = "button_style",
+		scalable = false,
+		width = 36,
+		height = 36,
+		top_padding = 1,
+		right_padding = 1,
+		bottom_padding = 1,
+		left_padding = 1,
+		default_graphical_set =
+		{
+			type = "composition", -- "monolith"?
+			filename = "__core__/graphics/gui.png",
+			priority = "extra-high-no-scale",
+			corner_size = {3, 3},
+			position = {0, 0}
+		},
+		hovered_graphical_set =
+		{
+			type = "composition", -- "monolith"?
+			filename = "__core__/graphics/gui.png",
+			priority = "extra-high-no-scale",
+			corner_size = {3, 3},
+			position = {0, 0}
+		},
+		clicked_graphical_set =
+		{
+			type = "composition", -- "monolith"?
+			filename = "__core__/graphics/gui.png",
+			priority = "extra-high-no-scale",
+			corner_size = {3, 3},
+			position = {0, 0}
+		},
+		pie_progress_color = {r=0.98, g=0.66, b=0.22, a = 0.5}
+	}
+end
+
+if default_gui.red_circuit_network_content_slot_style == nil then
+	default_gui.red_circuit_network_content_slot_style = {
+		type = "button_style",
+		parent = "slot_button_style",
+		default_graphical_set =
+		{
+			type = "composition", -- "monolith"?
+			filename = "__core__/graphics/gui.png",
+			priority = "extra-high-no-scale",
+			corner_size = {3, 3},
+			position = {0, 0}
+		},
+	}
+end
+
+if default_gui.green_circuit_network_content_slot_style == nil then
+	default_gui.green_circuit_network_content_slot_style = {
+		type = "button_style",
+		parent = "slot_button_style",
+		scalable = false,
+		default_graphical_set =
+		{
+			type = "composition", -- "monolith"?
+			filename = "__core__/graphics/gui.png",
+			priority = "extra-high-no-scale",
+			corner_size = {3, 3},
+			position = {0, 0}
+		},
+	}
+end
+
 -- used for frames that contains exclusively other inner frames
 if default_gui.outer_frame_style == nil then
 	default_gui.outer_frame_style = {

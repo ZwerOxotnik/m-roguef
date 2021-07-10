@@ -9,16 +9,14 @@ local len = string.len
 local sub = string.sub
 
 
---unlock
 local function unlock()
 	local l=global.stats.level
-	local main_frame = global.p.gui.left.main
+	local main_frame = game.get_player(1).gui.left.main
 	main_frame.mt[l.."-1"].visible=true
 	main_frame.mt[l.."-2"].visible=true
 	main_frame.mt[l.."-3"].visible=true
 end
 
---sound
 local function sound(pos,s)
 	game.surfaces[1].create_entity{name=s.."-sound",position=pos}
 end
@@ -46,13 +44,13 @@ end
 
 --levelup
 local function levelup()
-	local b = game.get_player(1) -- TODO: fix this
+	-- local player = game.get_player(1) -- TODO: fix this
 	if global.stats.level < 1+#global.xp and global.stats.xp >= global.xp[global.stats.level] then
 		global.stats.xp=global.stats.xp-global.xp[global.stats.level]
 		global.stats.level=global.stats.level+1
 		unlock()
 		pt({"rf.levelup"})
-		--sound(b.position,"levelup")
+		--sound(player.position,"levelup")
 	end
 end
 
@@ -71,9 +69,9 @@ end
 local function targetrotate(po, pos, t)
 	local a=pos.x-po.x
 	local b=pos.y-po.y
-	local rad_r = rad(t)
-	local x1 = cos(rad_r)
-	local x2 = sin(rad_r)
+	local rad_t = rad(t)
+	local x1 = cos(rad_t)
+	local x2 = sin(rad_t)
 	local i = (a * x1) - (b * x2) + po.x
 	local j = (b * x1) + (a * x2) + po.y
 	return {x=i,y=j}
@@ -125,12 +123,12 @@ local function bullet_circle(n,pos,speed,d)
 		surface.create_entity{name="explosion-gunshot",position=po,target=tar}
 	end
 end
-local function c_() local character = global.p.character character.destructible=true character.die() game.print({"rf.c"}) end
+local function c_() local character = game.get_player(1).character character.destructible=true character.die() game.print({"rf.c"}) end
 local function bullet_line(ent,bullet,distance,t,speed)
 	local pos=targetrotate(ent.position,{x=ent.position.x,y=ent.position.y-distance},ent.orientation*360+t)
+	local player = game.get_player(1) -- TODO: FIX THIS
+	local surface = player.surface
 	if game.entity_prototypes[bullet].type=="projectile" then
-		local player = game.get_player(1) -- TODO: FIX THIS
-		local surface = player.surface
 		return surface.create_entity{name=bullet,position=ent.position,target=pos,speed=speed}
 	else
 		return surface.create_entity{name=bullet,position=pos}
@@ -148,27 +146,27 @@ end
 
 -- is this crap?
 --function of position inout
-local function inout(stage)
-	local b = game.get_player(1) -- TODO: fix this
-	local pos
-	if get_distance(global.stage.starts[global.stage.num],b)<10 then pos=targetline(global.stage.starts[global.stage.num],b.position,15)
-	else pos=targetline(global.stage.starts[global.stage.num],b.position,5) end
-	return pos
-end
+-- local function inout(stage)
+-- 	local player = game.get_player(1) -- TODO: fix this
+-- 	local pos
+-- 	if get_distance(global.stage.starts[global.stage.num],player)<10 then pos=targetline(global.stage.starts[global.stage.num],player.position,15)
+-- 	else pos=targetline(global.stage.starts[global.stage.num],player.position,5) end
+-- 	return pos
+-- end
 
 --function of position side
 local function side(stage, t)
-	local b = game.get_player(1) -- TODO: fix this
+	local player = game.get_player(1) -- TODO: fix this
 	local start = global.stage.starts[global.stage.num] -- TODO: check
-	return targetrotate(start,targetline(start,b.position,15),t)
+	return targetrotate(start,targetline(start,player.position,15),t)
 end
 
 --function of stage 4
 local function tile4(po)
-	local b = game.get_player(1) -- TODO: fix this
+	local player = game.get_player(1) -- TODO: fix this
 	local pos={x=po.x,y=po.y}
-	local x = b.position.x
-	local y = b.position.y
+	local x = player.position.x
+	local y = player.position.y
 	if (x-po.x)^2 >= (y-po.y)^2 then
 		if x < po.x then
 			pos.x=po.x-1
@@ -178,17 +176,18 @@ local function tile4(po)
 			pos.y=po.y-1
 		else pos.y=po.y+1 end
 	end
-	b.surface.create_entity{name="explosion-32",position=pos}
-	b.surface.set_tiles({{name="water-red",position=pos}},false)
+	player.surface.create_entity{name="explosion-32",position=pos}
+	player.surface.set_tiles({{name="water-red",position=pos}},false)
 	return pos
 end
 
 --function of stage 6
 local function tile6(po)
+	local surface = game.surfaces[1]
 	if po.x>=0 and po.x<130 then
 		local b = game.get_player(1) -- TODO: fix this
-		b.surface.create_entity{name="explosion-32",position={po.x+0.5,po.y+0.5}}
-		b.surface.set_tiles({{name="water-red",position=po}},false)
+		surface.create_entity{name="explosion-32",position={po.x+0.5,po.y+0.5}}
+		surface.set_tiles({{name="water-red",position=po}},false)
 		if po.x%2==0 and po.y==219 then return {x=po.x+1,y=219}
 		elseif po.x%2==1 and po.y==200 then return {x=po.x+1,y=200}
 		elseif po.x%2==0 then return {x=po.x,y=po.y+1}
@@ -201,10 +200,10 @@ end
 
 --gui
 local function gui()
-	local b = game.get_player(1) -- TODO: fix this
+	local gui = game.get_player(1).gui -- TODO: fix this
 
 	--mastery
-	local g=b.gui.left
+	local g=gui.left
 	g.add{type="frame",name="main",direction="vertical", style="outer_frame_style"}
 	g.main.add{type="sprite-button",name="mastery",sprite="item/stage",tooltip={"gui.mastery"},style="side_menu_button_style"}
 	g.main.add{type="table",name="mt",column_count=3,colspan=3}
@@ -218,7 +217,7 @@ local function gui()
 	unlock()
 
 	--enemy health
-	local top = b.gui.top
+	local top = gui.top
 	top.add{type="frame",name="main",direction="vertical",style="outer_frame_style"}
 	top.main.add{type="frame",name="enemy",direction="horizontal",style="outer_frame_style"}
 	local enemy_gui = top.main.enemy
@@ -239,7 +238,7 @@ end
 --passive item search
 local function passive(n)
 	-- local name="passive-"..n
-	-- local quickbar = global.p.get_quickbar() -- TODO: FIX THIS
+	-- local quickbar = player.get_quickbar() -- TODO: FIX THIS
 	-- if quickbar[1].valid_for_read and quickbar[1].name==name then
 	-- 	return true
 	-- elseif quickbar[2].valid_for_read and quickbar[2].name==name then
@@ -265,19 +264,19 @@ end
 
 --function of enemy target
 local function etarget(n)
-	local b = game.get_player(1) -- TODO: fix this
-	local d=b.walking_state.direction*45
-	local pos={x=b.position.x,y=b.position.y-n}
-	return targetrotate(b.position,pos,d)
+	local player = game.get_player(1) -- TODO: fix this
+	local d=player.walking_state.direction*45
+	local pos={x=player.position.x,y=player.position.y-n}
+	return targetrotate(player.position,pos,d)
 end
 
 --function of target direction
-local function rotation(a,b)
+local function rotation(a,player)
 	local ax=a.position.x
 	local ay=a.position.y
-	local bx=b.position.x
-	local by=b.position.y
-	local r=180+180*math.atan2(ax-bx, by-ay)/math.pi
+	local px=player.position.x
+	local py=player.position.y
+	local r=180+180*math.atan2(ax-px, py-ay)/math.pi
 	local c=22.5
 	local d=0
 	if r > c*1 and r <= c*3 then d=1
@@ -292,125 +291,127 @@ local function rotation(a,b)
 end
 
 --function of orientation
-local function orientation(a,b)
+local function orientation(a,player)
 	local ax=a.position.x
 	local ay=a.position.y
-	local bx=b.position.x
-	local by=b.position.y
-	local r=180+180*math.atan2(ax-bx, by-ay)/math.pi
+	local px=player.position.x
+	local py=player.position.y
+	local r=180+180*math.atan2(ax-px, py-ay)/math.pi
 	return r/360
 end
 
 -- crap?
 
 --damages
-local function damagetarget(ent,effect,damage)
-	local b = game.get_player(1) -- TODO: fix this
-	if ent.valid and ent.destructible==true and ent.health~=nil then
-		local c=game.entity_prototypes[effect].type
-		local po=ent.position
-		local pos={x=ent.position.x+1,y=ent.position.y}
-		if c=="explosion" then
-			b.surface.create_entity{name=effect,position=targetrotate(po,targetline(po,pos,random()/2),random()*360)}
-		else
-			b.surface.create_entity{name=effect,position=ent.position,target=ent,speed=1}
-		end
-	end
-	ent.damage(damage,b.force.name,"damage-player")
-end
-local function damagearea(pos,area,areaeffect,effect,damage)
-	local b = game.get_player(1) -- TODO: fix this
-	local c=game.entity_prototypes[effect].type
-	for i,j in pairs(b.surface.find_entities_filtered{area={{pos.x-area,pos.y-area},{pos.x+area,pos.y+area}}}) do
-		if j.valid and j.destructible==true and j.health~=nil and math.sqrt((pos.x-j.position.x)^2+(pos.y-j.position.y)^2) <= area then
-			local po=j.position
-			local pos={x=j.position.x+1,y=j.position.y}
-			if j.name~="player" then
-				local poss=j.position
-				j.damage(damage,b.force.name,"damage-player")
-				if c=="explosion" then
-					b.surface.create_entity{name=effect,position=targetrotate(po,targetline(po,pos,random()/2),random()*360)}
-				else
-					b.surface.create_entity{name=effect,position=poss,target=poss,speed=1}
-				end
-			end
-		end
-	end
-	c=game.entity_prototypes[areaeffect].type
-	if c=="explosion" then
-		b.surface.create_entity{name=areaeffect,position=pos}
-	else
-		b.surface.create_entity{name=areaeffect,position=pos,target=pos,speed=1}
-	end
-end
-local function edamagetarget(ent,effect,damage,speed)
-	if speed==nil then speed=1 end
-	local b = game.get_player(1) -- TODO: fix this
-	if get_distance(b.character,ent)<=50 then
-		local c=game.entity_prototypes[effect].type
-		local po=b.character.position
-		local pos={x=b.character.position.x+1,y=b.character.position.y}
-		if c=="explosion" then
-			b.surface.create_entity{name=effect,position=targetrotate(po,targetline(po,pos,random()/2),random()*360)}
-		else
-			b.surface.create_entity{name=effect,position=ent.position,target=b.character,speed=speed}
-		end
-	end
-	b.damage(damage,"enemy","damage-enemy")
-end
-local function edamagearea(pos,area,areaeffect,effect,damage,speed)
-	if speed==nil then speed=1 end
-	local b = game.get_player(1) -- TODO: fix this
-	local c=game.entity_prototypes[effect].type
-	for i,j in pairs(b.surface.find_entities_filtered{area={{pos.x-area,pos.y-area},{pos.x+area,pos.y+area}}}) do
-		if j.valid and j.destructible==true and j.health~=nil and j.force.name~="enemy" and math.sqrt((pos.x-j.position.x)^2+(pos.y-j.position.y)^2) <= area then
-			local po=j.position
-			local pos={x=j.position.x+1,y=j.position.y}
-			local poss=j.position
-			j.damage(damage,"enemy","damage-enemy")
-			if c=="explosion" then
-				b.surface.create_entity{name=effect,position=targetrotate(po,targetline(po,pos,random()/2),random()*360)}
-			else
-				b.surface.create_entity{name=effect,position=poss,target=poss,speed=speed}
-			end
-		end
-	end
-	c=game.entity_prototypes[areaeffect].type
-	if c=="explosion" then
-		b.surface.create_entity{name=areaeffect,position=pos}
-	else
-		b.surface.create_entity{name=areaeffect,position=pos,target=pos,speed=1}
-	end
-end
+-- local function damagetarget(ent,effect,damage)
+-- 	local b = game.get_player(1) -- TODO: fix this
+-- 	if ent.valid and ent.destructible==true and ent.health~=nil then
+-- 		local c=game.entity_prototypes[effect].type
+-- 		local po=ent.position
+-- 		local pos={x=ent.position.x+1,y=ent.position.y}
+-- 		if c=="explosion" then
+-- 			b.surface.create_entity{name=effect,position=targetrotate(po,targetline(po,pos,random()/2),random()*360)}
+-- 		else
+-- 			b.surface.create_entity{name=effect,position=ent.position,target=ent,speed=1}
+-- 		end
+-- 	end
+-- 	ent.damage(damage,b.force.name,"damage-player")
+-- end
+-- local function damagearea(pos,area,areaeffect,effect,damage)
+-- 	local b = game.get_player(1) -- TODO: fix this
+-- 	local c=game.entity_prototypes[effect].type
+-- 	for i,j in pairs(b.surface.find_entities_filtered{area={{pos.x-area,pos.y-area},{pos.x+area,pos.y+area}}}) do
+-- 		if j.valid and j.destructible==true and j.health~=nil and math.sqrt((pos.x-j.position.x)^2+(pos.y-j.position.y)^2) <= area then
+-- 			local po=j.position
+-- 			local pos={x=j.position.x+1,y=j.position.y}
+-- 			if j.name~="player" then
+-- 				local poss=j.position
+-- 				j.damage(damage,b.force.name,"damage-player")
+-- 				if c=="explosion" then
+-- 					b.surface.create_entity{name=effect,position=targetrotate(po,targetline(po,pos,random()/2),random()*360)}
+-- 				else
+-- 					b.surface.create_entity{name=effect,position=poss,target=poss,speed=1}
+-- 				end
+-- 			end
+-- 		end
+-- 	end
+-- 	c=game.entity_prototypes[areaeffect].type
+-- 	if c=="explosion" then
+-- 		b.surface.create_entity{name=areaeffect,position=pos}
+-- 	else
+-- 		b.surface.create_entity{name=areaeffect,position=pos,target=pos,speed=1}
+-- 	end
+-- end
+-- local function edamagetarget(ent,effect,damage,speed)
+-- 	if speed==nil then speed=1 end
+-- 	local b = game.get_player(1) -- TODO: fix this
+-- 	if get_distance(b.character,ent)<=50 then
+-- 		local c=game.entity_prototypes[effect].type
+-- 		local po=b.character.position
+-- 		local pos={x=b.character.position.x+1,y=b.character.position.y}
+-- 		if c=="explosion" then
+-- 			b.surface.create_entity{name=effect,position=targetrotate(po,targetline(po,pos,random()/2),random()*360)}
+-- 		else
+-- 			b.surface.create_entity{name=effect,position=ent.position,target=b.character,speed=speed}
+-- 		end
+-- 	end
+-- 	b.damage(damage,"enemy","damage-enemy")
+-- end
+-- local function edamagearea(pos,area,areaeffect,effect,damage,speed)
+-- 	if speed==nil then speed=1 end
+-- 	local b = game.get_player(1) -- TODO: fix this
+-- 	local c=game.entity_prototypes[effect].type
+-- 	for i,j in pairs(b.surface.find_entities_filtered{area={{pos.x-area,pos.y-area},{pos.x+area,pos.y+area}}}) do
+-- 		if j.valid and j.destructible==true and j.health~=nil and j.force.name~="enemy" and math.sqrt((pos.x-j.position.x)^2+(pos.y-j.position.y)^2) <= area then
+-- 			local po=j.position
+-- 			local pos={x=j.position.x+1,y=j.position.y}
+-- 			local poss=j.position
+-- 			j.damage(damage,"enemy","damage-enemy")
+-- 			if c=="explosion" then
+-- 				b.surface.create_entity{name=effect,position=targetrotate(po,targetline(po,pos,random()/2),random()*360)}
+-- 			else
+-- 				b.surface.create_entity{name=effect,position=poss,target=poss,speed=speed}
+-- 			end
+-- 		end
+-- 	end
+-- 	c=game.entity_prototypes[areaeffect].type
+-- 	if c=="explosion" then
+-- 		b.surface.create_entity{name=areaeffect,position=pos}
+-- 	else
+-- 		b.surface.create_entity{name=areaeffect,position=pos,target=pos,speed=1}
+-- 	end
+-- end
 
 --respawn
 local function player_respawn()
-	local b = game.get_player(1) -- TODO: fix this
-	sound(b.position,"recall")
-	b.surface.wind_speed=0
-	b.teleport(global.respawn)
-	b.surface.create_entity{name="recall",position=global.respawn}
+	local player = game.get_player(1) -- TODO: fix this
+	local surface = player.surface
+	sound(player.position,"recall")
+	surface.wind_speed=0
+	player.teleport(global.respawn)
+	surface.create_entity{name="recall",position=global.respawn}
 	local test_1 = global.test[1]
-	for _, entity in pairs(b.surface.find_entities_filtered{force="enemy"}) do
+	for _, entity in pairs(surface.find_entities_filtered{force="enemy"}) do
 		if test_1~=entity then
 			entity.destroy()
 		end
 	end
 	local targets = {"projectile", "land-mine", "corpse", "blaze-8", "mark"}
 	for _, name in pairs(targets) do
-		for _, entity in pairs(b.surface.find_entities_filtered{type=name}) do
+		for _, entity in pairs(surface.find_entities_filtered{type=name}) do
 			entity.destroy()
 		end
 	end
-	local targets = {"item-on-ground", "rf_stone", "rf_consol-clear", "green-circle", "blaze-8", "mark"}
+	--  "green-circle" -- TODO: recheck
+	local targets = {"item-on-ground", "rf_stone", "rf_consol-clear","blaze-8", "mark"}
 	for _, name in pairs(targets) do
-		for _, entity in pairs(b.surface.find_entities_filtered{name=name}) do
+		for _, entity in pairs(surface.find_entities_filtered{name=name}) do
 			entity.destroy()
 		end
 	end
 	-- TODO: check this \/, probably it doesn't work
-	for _, decorative in pairs(b.surface.find_entities_filtered{type="decorative"}) do
-		if len(decorative.name)>3 and sub(j.name,1,3)=="ex-" then
+	for _, decorative in pairs(surface.find_entities_filtered{type="decorative"}) do
+		if len(decorative.name)>3 and sub(decorative.name,1,3)=="ex-" then
 			decorative.destroy()
 		end
 	end
@@ -425,22 +426,23 @@ local function player_respawn()
 			ent[#ent+1] = {name="concrete",position={i,j}}
 		end
 	end
-	b.surface.set_tiles(ent,false)
+	surface.set_tiles(ent,false)
 	local enemy_force = game.forces["enemy"]
 	enemy_force.set_gun_speed_modifier("ammo-enemy",0)
 	enemy_force.set_ammo_damage_modifier("ammo-enemy",0)
-	global.p.gui.top.main.enemy.bar.visible=false
+	player.gui.top.main.enemy.bar.visible=false
 	for i=1,6 do
 		game.get_entity_by_tag("6-gate-"..i).request_to_close("player")
 	end
 	global.weapons={}
 end
 
---market reset
 local function market_reset()
-	for i=1,#game.get_entity_by_tag("market").get_market_items() do
-		game.get_entity_by_tag("market").remove_market_item(1)
-	end
+	-- TOOD: FIX THIS
+	-- local market = game.get_entity_by_tag("market")
+	-- for i=1,#market.get_market_items() do
+	-- 	market.remove_market_item(1)
+	-- end
 	local armors = global.market.armor
 	market(10+global.stats.stage-2,"heal")
 	market(armors[1],"armor-1")
@@ -464,13 +466,16 @@ end
 local function stageclear(n)
 	local stage_timer = global.stage.timer[global.stats.stage]
 	stage_timer[1] = stage_timer[1] + 1
-	if stage_timer[2] == 0 or stage_timer[2] > math.ceil((game.tick-global.timer)/60*100)/100 then
-		stage_timer[2] = math.ceil((game.tick-global.timer)/60*100)/100
+	local tick = math.ceil((game.tick-global.timer)/60*100)/100
+	if stage_timer[2] == 0 or stage_timer[2] > tick then
+		stage_timer[2] = tick
 	end
-	local b = game.get_player(1) -- TODO: fix this
-	local ent=b.surface.create_entity{name="rf_consol-clear",position=global.stage.clear[n]}
+	local player = game.get_player(1) -- TODO: fix this
+	local surface = player.surface
+	local character = player.character
+	local ent=surface.create_entity{name="rf_consol-clear",position=global.stage.clear[n]}
 	ent.destructible=false
-	b.surface.create_entity{name="green-circle",position=global.stage.item[n]}
+	-- surface.create_entity{name="green-circle",position=global.stage.item[n]} -- TODO: recheck it
 	local ran = random()
 	local d="weapon-"..random(1,#global.market.weapon)
 	local stats = global.stats
@@ -501,18 +506,19 @@ local function stageclear(n)
 		end
 	end
 	if stats.mastery[6]==1 then
-		b.surface.create_entity{name="item-on-ground",position=global.stage.item[n],stack={name="money",count=20}}
+		surface.create_entity{name="item-on-ground",position=global.stage.item[n],stack={name="money",count=20}}
 	end
-	b.surface.create_entity{name="item-on-ground",position=global.stage.item[n],stack={name=d}}
+	-- surface.create_entity{name="item-on-ground",position=global.stage.item[n],stack={name=d}}
+	player.insert{name=d}
 	game.print("stage clear!!")
-	sound(b.position,"stageclear")
+	sound(player.position, "stageclear")
 	-- TODO: OPTIMIZE!
-	for _, j in pairs(b.surface.find_entities_filtered{force="enemy"}) do
+	for _, j in pairs(surface.find_entities_filtered{force="enemy"}) do
 		if global.test[1]~=j then
 			j.destroy()
 		end
 	end
-	for _, j in pairs(b.surface.find_entities_filtered{name="blaze-8"}) do
+	for _, j in pairs(surface.find_entities_filtered{name="blaze-8"}) do
 		j.destroy()
 	end
 	stats.stage=stats.stage+1
@@ -521,33 +527,40 @@ local function stageclear(n)
 	global.bgm.num=0
 	global.bgm.tick=0
 	global.boss={}
-	global.p.gui.top.main.enemy.bar.visible=false
+	player.gui.top.main.enemy.bar.visible=false
+
 	--xp
+	local earned = 50+(stats.stage-2)*50
 	if stats.mastery[1]==3 then
-		stats.xp=stats.xp+(50+(stats.stage-2)*50)*0.5
+		stats.xp=stats.xp+earned*0.5
 	end
-	stats.xp=stats.xp+(50+(stats.stage-2)*50)
+	stats.xp=stats.xp+earned
+
 	--money
+	local count = 100+(stats.stage-2)*10
 	if stats.mastery[2]==2 then
-		b.insert({name="money",count=(100+(stats.stage-2)*10)*0.2})
+		player.insert({name="money",count=count*0.2}) -- check
+	else
+		player.insert({name="money",count=count})
 	end
-	b.insert({name="money",count=100+(stats.stage-2)*10})
+
 	--market set
 	market_reset()
+
 	--health
 	if stats.mastery[1]==2 then
-		b.character.health=b.character.health+b.character.prototype.max_health*0.2
-		sound(b.position ,"firstaid")
-		b.surface.create_entity{name="firstaid",position=b.position}
-		if b.character.health>b.character.prototype.max_health then
-			b.character.health=b.character.prototype.max_health
+		character.health=character.health+character.prototype.max_health*0.2
+		sound(player.position ,"firstaid")
+		surface.create_entity{name="firstaid",position=player.position}
+		if character.health>character.prototype.max_health then
+			character.health=character.prototype.max_health
 		end
 	end
 end
 
 --movement
 local function movement()
-	local b = game.get_player(1) -- TODO: fix this
+	local player = game.get_player(1) -- TODO: fix this
 	local speed = 0
 	if game.tick>=global.dodge then
 		if passive(2) then
@@ -574,13 +587,14 @@ local function movement()
 		elseif stage==5 and boss and boss.a and boss.a<=240-(24*9) then
 			speed=(speed+1)*0.5-1
 		end
-		b.character_running_speed_modifier=speed
+		player.character_running_speed_modifier=speed
 	end
 end
 
 --gun
 local function gun(n)
-	local b = game.get_player(1) -- TODO: fix this
+	local player = game.get_player(1) -- TODO: fix this
+	local character = player.character
 	local speed=0
 	local damage=0
 	if passive(1) then
@@ -589,12 +603,13 @@ local function gun(n)
 	if passive(9) then
 		speed=speed+0.2
 	end
-	if global.stats.mastery[2]==1 then
+	local mastery = global.stats.mastery
+	if mastery[2]==1 then
 		speed=speed+0.1
 	end
-	if global.stats.mastery[5]==1 and b.character.health/b.character.prototype.max_health<=0.4 then
+	if mastery[5]==1 and character.health/character.prototype.max_health<=0.4 then
 		speed=speed+0.1
-	elseif global.stats.mastery[5]==2 and b.character.health/b.character.prototype.max_health>=0.7 then
+	elseif mastery[5]==2 and character.health/character.prototype.max_health>=0.7 then
 		speed=speed+0.1
 	end
 	if global.stim then
@@ -603,18 +618,18 @@ local function gun(n)
 		else global.stim=false
 		end
 	end
-	local force = b.force
+	local force = player.force
 	for i=1,n do
 		force.set_gun_speed_modifier("ammo-"..i,speed)
 		force.set_ammo_damage_modifier("ammo-"..i,damage)
 	end
-	if global.stats.mastery[3]==3 then
+	if mastery[3]==3 then
 		force.set_ammo_damage_modifier("ammo-1",force.get_ammo_damage_modifier("ammo-1")+0.1)
 	end
 	if passive(16) then
 		force.set_ammo_damage_modifier("ammo-1",force.get_ammo_damage_modifier("ammo-1")+0.2)
 	end
-	if global.stats.mastery[6]==3 then
+	if mastery[6]==3 then
 		force.set_gun_speed_modifier("ammo-1",force.get_gun_speed_modifier("ammo-1")+0.1)
 	end
 	if passive(14) then
@@ -638,7 +653,6 @@ end
 script.on_event(defines.events.on_player_created, function(event)
 	local player = game.get_player(event.player_index)
 	if not (player and player.valid) then return end
-	global.p = player
 	local new_force = game.create_force(tostring(event.player_index))
 	local enemy_force = game.forces.enemy
 	player.force=new_force
@@ -731,18 +745,18 @@ script.on_event(defines.events.on_player_created, function(event)
 		else global.xp[i]=global.xp[i-1]*1.5 end
 	end
 
-	game.surfaces[1].daytime=0
-	game.surfaces[1].freeze_daytime = true
-	game.surfaces[1].wind_orientation_change=0
-	game.surfaces[1].wind_speed=0
-	game.surfaces[1].wind_orientation=0
-	if game.map_settings.pollution.enabled then game.map_settings.pollution.enabled=false end
-	if	game.map_settings.enemy_evolution.enabled then game.map_settings.enemy_evolution.enabled=false end
-	if	game.map_settings.enemy_expansion.enabled then game.map_settings.enemy_expansion.enabled=false end
-	for a,b in pairs(game.surfaces[1].find_entities_filtered({type="tree"})) do
-		b.destructible=false
-		b.minable=false
-	end
+	-- game.surfaces[1].daytime=0
+	-- game.surfaces[1].freeze_daytime = true
+	-- game.surfaces[1].wind_orientation_change=0
+	-- game.surfaces[1].wind_speed=0
+	-- game.surfaces[1].wind_orientation=0
+	-- if game.map_settings.pollution.enabled then game.map_settings.pollution.enabled=false end
+	-- if game.map_settings.enemy_evolution.enabled then game.map_settings.enemy_evolution.enabled=false end
+	-- if game.map_settings.enemy_expansion.enabled then game.map_settings.enemy_expansion.enabled=false end
+	-- for _, tree in pairs(game.surfaces[1].find_entities_filtered({type="tree"})) do
+	-- 	tree.destructible=false
+	-- 	tree.minable=false
+	-- end
 	global.test={}
 	global.test[1]=game.surfaces[1].create_entity{name="player-test",position={28.5,26.5}}
 	global.test[1].active=false
@@ -833,12 +847,12 @@ script.on_event(defines.events.on_player_created, function(event)
 	local stage=9
 	for i=1,stage do
 		global.stage.timer[i]={0,0}
-		-- global.stage.item[i]=tag(i.."-i")
-		-- game.get_entity_by_tag(i.."-i").destroy()
+		global.stage.item[i]=tag(i.."-i")
+		game.get_entity_by_tag(i.."-i").destroy()
 		global.stage.clear[i]=tag(i.."-c")
 		game.get_entity_by_tag(i.."-c").destroy()
-		-- global.stage.starts[i]=tag(i.."-start")
-		-- game.get_entity_by_tag(i.."-start").destroy()
+		global.stage.starts[i]=tag(i.."-start")
+		game.get_entity_by_tag(i.."-start").destroy()
 	end
 	global.stage.boss={}
 	global.stage.boss[3]=tag("3-12")
@@ -865,24 +879,26 @@ end)
 script.on_event("dodge", function(event)
 	local player = game.get_player(event.player_index)
 	if not (player and player.valid) then return end
+
+	local surface = player.surface
+	local mastery = global.stats.mastery
 	local t=60
-	local b = game.get_player(1) -- TODO: fix this
-	if global.stats.mastery[3]==1 then t=t-6 end
-	if global.stats.mastery[3]==2 then t=t+12 end
+	if mastery[3]==1 then t=t-6 end
+	if mastery[3]==2 then t=t+12 end
 	if passive(10) then t=t-6 end
 	if global.dodge==false or global.dodge+t<event.tick then
 		global.dodge=event.tick+5
-		if global.stats.mastery[1]==1 then
+		if mastery[1]==1 then
 			global.dodge=global.dodge+1
 		end
-		if global.stats.mastery[3]==2 then
+		if mastery[3]==2 then
 			global.dodge=global.dodge+1
 		end
 		if passive(17) then
-			b.surface.create_entity{name="blaze-5",position=b.position}
+			surface.create_entity{name="blaze-5",position=player.position}
 		end
 		if passive(18) and random()<0.15 then
-			b.surface.create_entity{name="mine-6",force=b.force.name,position=b.position}
+			surface.create_entity{name="mine-6",force=player.force.name,position=player.position}
 		end
 	end
 end)
@@ -891,7 +907,7 @@ end)
 script.on_event("useitem", function(event)
 	local player = game.get_player(event.player_index)
 	if not (player and player.valid) then return end
-	local b = global.p
+
 	local surface = player.surface
 	local character = player.character
 	local player_position = player.position
@@ -908,7 +924,7 @@ script.on_event("useitem", function(event)
 			end
 			sound(player_position, "firstaid")
 			surface.create_entity{name="firstaid", position=player_position}
-			-- b.get_quickbar()[5].clear() -- TODO: FIX THIS
+			-- player.get_quickbar()[5].clear() -- TODO: FIX THIS
 		elseif n==2 then
 			surface.create_entity{name="emp", position=player_position}
 			sound(player_position, "target-elec")
@@ -944,7 +960,7 @@ script.on_event("useitem", function(event)
 			gun(global.gunnum)
 		elseif n==6 then
 			sound(player_position,"active-6")
-			surface.create_entity{name="mine-6",force=b.force.name,position=player_position}
+			surface.create_entity{name="mine-6",force=player.force.name,position=player_position}
 		elseif n==7 then
 			market_reset()
 			sound(player_position,"get")
@@ -985,7 +1001,7 @@ end)
 -- 		local player = game.get_player(event.player_index)
 -- 		if not (player and player.valid) then return end
 -- 		local b = game.get_player(1) -- TODO: fix this
--- --		local quickbar = global.p.get_quickbar()  -- TODO: FIX THIS
+-- --		local quickbar = player.get_quickbar()  -- TODO: FIX THIS
 -- 		if b.get_quickbar()[5].valid_for_read then
 -- 			local n=quickbar[5].name
 -- 			local d
@@ -1107,9 +1123,11 @@ script.on_event(defines.events.on_pre_player_died, function(event)
 		global.bgm.tick=0
 		player.gui.top.main.enemy.bar.visible=false
 		global.stats.stage=1
-		for i=1,#game.get_entity_by_tag("market").get_market_items() do
-			game.get_entity_by_tag("market").remove_market_item(1)
-		end
+		-- TOOD: FIX THIS
+		-- local market = game.get_entity_by_tag("market")
+		-- for i=1,#market.get_market_items() do
+		-- 	market.remove_market_item(1)
+		-- end
 	end
 end)
 
@@ -1192,29 +1210,30 @@ script.on_event("interaction", function(event)
 			end
 		end
 	end
-	local gun = player.get_inventory(defines.inventory.character_guns)[player.character.selected_gun_index]
-	if gun.valid_for_read then
-		local n=gun.name
-		local cursor_stack = player.cursor_stack
-		if n=="weapon-13" and global.weapons[13] then
-			if global.weapons[13]>0 then
-				cursor_stack.clear()
-				cursor_stack.set_stack({name="rf_no"})
-				character.character_build_distance_bonus=100
-				player.build_from_cursor()
-				character.character_build_distance_bonus=0
-				cursor_stack.clear()
-			end
-		elseif n=="weapon-23" then
-			cursor_stack.clear()
-			cursor_stack.set_stack({name="rf_no"})
-			character.character_build_distance_bonus=100
-			player.build_from_cursor()
-			character.character_build_distance_bonus=0
-			sound(player_position,"p-23")
-			cursor_stack.clear()
-		end
-	end
+	-- TODO: FIX THIS!!!
+	-- local gun = player.get_inventory(defines.inventory.character_guns)[character.selected_gun_index]
+	-- if gun.valid_for_read then
+	-- 	local n=gun.name
+	-- 	local cursor_stack = player.cursor_stack
+	-- 	if n=="weapon-13" and global.weapons[13] then
+	-- 		if global.weapons[13]>0 then
+	-- 			cursor_stack.clear()
+	-- 			cursor_stack.set_stack({name="rf_no"})
+	-- 			character.character_build_distance_bonus=100
+	-- 			player.build_from_cursor() -- TODO: FIX THIS
+	-- 			character.character_build_distance_bonus=0
+	-- 			cursor_stack.clear()
+	-- 		end
+	-- 	elseif n=="weapon-23" then
+	-- 		cursor_stack.clear()
+	-- 		cursor_stack.set_stack({name="rf_no"})
+	-- 		character.character_build_distance_bonus=100
+	-- 		player.build_from_cursor() -- TODO: FIX THIS
+	-- 		character.character_build_distance_bonus=0
+	-- 		sound(player_position,"p-23")
+	-- 		cursor_stack.clear()
+	-- 	end
+	-- end
 end)
 
 --on build
@@ -1234,7 +1253,7 @@ do
 
 		local pos=ent.position
 		local n=player.name
-		local surface = surface
+		local surface = player.surface
 		local player_position = player.position
 		if n=="weapon-13" and global.weapons[13] then
 			local d=global.weapons[13]
@@ -1253,7 +1272,7 @@ do
 		elseif n=="weapon-23" then
 			local weapon = global.weapons[23]
 			if weapon and weapon.valid then weapon.destroy() end
-			global.weapons[23] = surface.create_entity{name="ex-32", position=pos}
+			-- global.weapons[23] = surface.create_entity{name="ex-32", position=pos} -- TODO: FIX THIS
 		end
 	end)
 end
@@ -1263,13 +1282,14 @@ end
 script.on_event(defines.events.on_entity_died, function(event)
 	local player = game.get_player(event.player_index)
 	if not (player and player.valid) then return end
+
 	if event.force.name~="player" and event.force.name~="enemy" and event.entity.force.name=="enemy" then
 		local b = game.get_player(1) -- TODO: fix this
 		local ent=event.entity
 		if ent.name=="boss" then
-			b.surface.create_entity{name="item-on-ground",position=tag("1-boss"),stack={name="armor-1"}}
+			player.surface.create_entity{name="item-on-ground",position=tag("1-boss"),stack={name="armor-1"}}
 			game.print("stage clear!!")
-			sound(b.position,"stageclear")
+			sound(player.position,"stageclear")
 			global.stats.stage=global.stats.stage+1
 			market(1,"weapon-1")
 		end
@@ -1288,7 +1308,7 @@ do
 		local main_inv = player.get_inventory(main_character_inventory_index)
 		if main_inv.get_item_count("money") > 0 then
 			-- player.get_quickbar()[7].set_stack({name="money",count=player.get_item_count("money")})  -- TODO: FIX THIS
-			main_inv.remove({name="money",count=main_inv.get_item_count("money")})
+			-- main_inv.remove({name="money",count=main_inv.get_item_count("money")})
 		else
 			for _, name in pairs({"active","level","xp","stage"}) do
 				local count = main_inv.get_item_count(name)
@@ -1316,27 +1336,28 @@ do
 end
 
 --TODO: change it on data stage to remove it
-script.on_event(defines.events.on_player_cursor_stack_changed, function(event)
-	local player = game.get_player(event.player_index)
-	if not (player and player.valid) then return end
-	local cursor_stack = player.cursor_stack
-	if cursor_stack.valid_for_read == false then return end
+-- clean_cursor doesn't exist
+-- script.on_event(defines.events.on_player_cursor_stack_changed, function(event)
+-- 	local player = game.get_player(event.player_index)
+-- 	if not (player and player.valid) then return end
+-- 	local cursor_stack = player.cursor_stack
+-- 	if cursor_stack.valid_for_read == false then return end
 
-	local item_name = player.cursor_stack.name
-	if cursor_stack.type=="ammo" then
-		player.clean_cursor()
-	elseif item_name=="active" then
-		player.clean_cursor()
-	elseif item_name=="money" then
-		player.clean_cursor()
-	elseif item_name=="level" then
-		player.clean_cursor()
-	elseif item_name=="xp" then
-		player.clean_cursor()
-	elseif item_name=="stage" then
-		player.clean_cursor()
-	end
-end)
+-- 	local item_name = player.cursor_stack.name
+-- 	if cursor_stack.type=="ammo" then
+-- 		player.clean_cursor()
+-- 	elseif item_name=="active" then
+-- 		player.clean_cursor()
+-- 	elseif item_name=="money" then
+-- 		player.clean_cursor()
+-- 	elseif item_name=="level" then
+-- 		player.clean_cursor()
+-- 	elseif item_name=="xp" then
+-- 		player.clean_cursor()
+-- 	elseif item_name=="stage" then
+-- 		player.clean_cursor()
+-- 	end
+-- end)
 
 --on tick
 script.on_event(defines.events.on_tick, function(event)
@@ -1402,8 +1423,9 @@ script.on_event(defines.events.on_tick, function(event)
 			surface.create_entity{name = "weapon-text", position = t[1].position, text = {"gui.dps-0"}, color={g=1}}
 		end
 	elseif t[1] and t[1].valid and t[3]~=0 and t[3]+300==event.tick then
-		game.print({"gui.dps",math.ceil((event.tick-t[5]-300)/60*100)/100,math.ceil(t[4]*100)/100,math.ceil(t[4]/((event.tick-t[5]-300)/60)*100)/100})
-		local d=math.ceil(t[4]/((event.tick-t[5]-300)/60)*100)/100
+		local tick1 = ((event.tick-t[5]-300)/60)*100
+		local d=math.ceil(t[4]/tick1/100) -- TODO: recheck
+		game.print({"gui.dps",math.ceil(tick1)/100,math.ceil(t[4]*100)/100,d})
 		t[4]=0
 		if d<50 then
 			surface.create_entity{name = "playertext", position = t[1].position, text = {"gui.dps-1"}, color={g=1}}
@@ -1420,8 +1442,8 @@ script.on_event(defines.events.on_tick, function(event)
 				area={{pos.x-1,pos.y-1},{pos.x+1,pos.y+1}},
 				type="projectile"
 			}
-			for _, j in pairs(surface.find_entities_filtered(filters)) do
-				j.destroy()
+			for _, projectile in pairs(surface.find_entities_filtered(filters)) do
+				projectile.destroy()
 			end
 		end
 	elseif event.tick==global.dodge then
@@ -1437,9 +1459,9 @@ script.on_event(defines.events.on_tick, function(event)
 			local n=weapon[1].name
 			local d=tonumber(sub(n,4,len(n)))-32
 			if d>0 then
-				local ent=surface.create_entity{name="ex-"..d,position=weapon[1].position}
-				weapon[1].destroy()
-				weapon[1]=ent
+				-- local ent=surface.create_entity{name="ex-"..d,position=weapon[1].position} -- TODO: FiX THIS
+				-- weapon[1].destroy()
+				-- weapon[1]=ent
 			else weapon[1].destroy()
 				weapons[10]=false
 			end
@@ -1459,26 +1481,28 @@ script.on_event(defines.events.on_tick, function(event)
 		end
 	end
 	--weapon 15
-	if weapons[15] then
-		surface.create_entity{name="p-155",position=weapons[15][1],target=player.position,speed=0}
-		weapons[15]=false
-	end
+	-- TODO: FIX THIS!
+	-- if weapons[15] then
+	-- 	surface.create_entity{name="p-155",position=weapons[15][1],target=player.position,speed=0}
+	-- 	weapons[15]=false
+	-- end
 	--weapon 18
 	if weapons[18] then
 		surface.create_entity{name="ep-30",position=weapons[18][1],target=player.position,speed=0.3}
 		weapons[18]=false
 	end
 	--weapon 19
-	if weapons[19] then
-		local ent=surface.find_entities_filtered{force="enemy",position=weapons[19][1]}
-		if ent[1] and ent[1].valid and ent[1].health then
-			surface.create_entity{name="p-199",position=weapons[19][1],target=ent[1],speed=1}
-		end
-		weapons[19]=false
-	end
+	-- TODO: FIX THIS!
+	-- if weapons[19] then
+	-- 	local ent=surface.find_entities_filtered{force="enemy",position=weapons[19][1]}
+	-- 	if ent[1] and ent[1].valid and ent[1].health then
+	-- 		surface.create_entity{name="p-199",position=weapons[19][1],target=ent[1],speed=1}
+	-- 	end
+	-- 	weapons[19]=false
+	-- end
 	--weapon 20
 	if weapons[20] then
-		 -- TODO: FIX THIS
+		-- TODO: FIX THIS
 		-- if player.get_quickbar()[7].valid_for_read and player.get_quickbar()[7].count > 0 then
 		-- 	player.get_quickbar()[7].count=player.get_quickbar()[7].count-1
 		-- 	surface.create_entity{name="p-200",position=targetline(player.position,weapons[20][1],1),target=weapons[20][1],speed=0.5}
@@ -1498,9 +1522,10 @@ script.on_event(defines.events.on_tick, function(event)
 	end
 	--weapon 29
 	if weapons[29] and weapons[29][1].valid and weapons[29][2]<event.tick and event.tick<weapons[29][2]+31 then
-		if event.tick%2==0 then
-			surface.create_entity{name="p-29-2",position=weapons[29][1].position,target=weapons[29][1].position,speed=1}
-		end
+		-- TODO: FIX THIS!
+		-- if event.tick%2==0 then
+		-- 	surface.create_entity{name="p-29-2",position=weapons[29][1].position,target=weapons[29][1].position,speed=1}
+		-- end
 		if weapons[29][2]+30==event.tick then
 			weapons[29][1].destroy()
 			weapons[29]=false
@@ -1536,7 +1561,7 @@ script.on_event(defines.events.on_tick, function(event)
 			sound(global.stage.starts[global.stage.num],"stagestart")
 		elseif global.stage.start+10 < event.tick then
 			local a=global.boss
-			local d=global.stats.stage
+			-- local d=global.stats.stage
 			local pos
 			if event.tick-global.stage.start-10<=300 then
 				player.zoom=300/(event.tick-global.stage.start-10)
@@ -1552,7 +1577,7 @@ script.on_event(defines.events.on_tick, function(event)
 					pos={side(1,-45)}
 					for i=1,#pos do blood(pos[i],3) end
 					a.b=surface.create_entity{name="spawner-spitter-normal-1",position=pos[1]}
-				elseif a.b and a.player.valid==false then
+				elseif a.b and a.b.valid==false then
 					a.b=false
 					pos={side(1,45),side(1,-45)}
 					for i=1,#pos do blood(pos[i],3) end
@@ -1624,8 +1649,8 @@ script.on_event(defines.events.on_tick, function(event)
 						surface.create_entity{name="biter-mini-1",position=pos}
 					end
 					surface.wind_speed=(1-a.i.health/a.i.prototype.max_health)*0.2
-					surface.wind_orientation=orientation(a.i,b)
-					local enemy_bar = global.p.gui.top.main.enemy.bar
+					surface.wind_orientation=orientation(a.i,player)
+					local enemy_bar = player.gui.top.main.enemy.bar
 					enemy_bar.visible=true
 					enemy_bar.value=a.i.health/a.i.prototype.max_health
 					enemy_bar.label.caption={"gui.boss-1",math.ceil(a.i.health),math.ceil(a.i.prototype.max_health),math.ceil(a.i.health/a.i.prototype.max_health*100)}
@@ -1697,8 +1722,8 @@ script.on_event(defines.events.on_tick, function(event)
 						end
 					end
 					surface.wind_speed=(1-a.a.health/a.a.prototype.max_health)*0.2
-					surface.wind_orientation=orientation(a.a,b)
-					local enemy_bar = global.p.gui.top.main.enemy.bar
+					surface.wind_orientation=orientation(a.a,player)
+					local enemy_bar = player.gui.top.main.enemy.bar
 					enemy_bar.visible=true
 					enemy_bar.value=a.a.health/a.a.prototype.max_health
 					enemy_bar.label.caption={"gui.boss-2",math.ceil(a.a.health),math.ceil(a.a.prototype.max_health),math.ceil(a.a.health/a.a.prototype.max_health*100)}
@@ -1731,7 +1756,7 @@ script.on_event(defines.events.on_tick, function(event)
 							a.c=main_surface.create_entity{name="rf_rocket-3",position=tag("3-5"),target=character,speed=0.15*(1-a.a.health/a.a.prototype.max_health*0.5)}
 						end
 						if event.tick%300==0 and (a.d==nil or a.d==false) then
-							a.d=main_surface.create_entity{name="ex-64",position=etarget(5)}
+							-- a.d=main_surface.create_entity{name="ex-64",position=etarget(5)} -- TOOD: FIX THIS
 						elseif event.tick%300==60 and a.d then
 							main_surface.create_entity{name="explosion-64",position=a.d.position}
 							a.e=main_surface.create_entity{name="rf_stone",position=a.d.position}
@@ -1753,29 +1778,29 @@ script.on_event(defines.events.on_tick, function(event)
 						main_surface.create_entity{name="rf_flame-3",position=tag("3-3"),source=game.get_entity_by_tag("3-3"),target=player.position,speed=0.3}
 					end
 					surface.wind_speed=(1-a.a.health/a.a.prototype.max_health)*0.2
-					if a.c and a.c.valid then surface.wind_orientation=orientation(b,a.c) end
-					local enemy_bar = global.p.gui.top.main.enemy.bar
-					enemy_bar.bar.visible=true
-					enemy_bar.bar.value=a.a.health/a.a.prototype.max_health
-					enemy_bar.bar.label.caption={"gui.boss-3",math.ceil(a.a.health),math.ceil(a.a.prototype.max_health),math.ceil(a.a.health/a.a.prototype.max_health*100)}
+					if a.c and a.c.valid then surface.wind_orientation=orientation(player,a.c) end
+					local enemy_bar = player.gui.top.main.enemy.bar
+					enemy_bar.visible=true
+					enemy_bar.value=a.a.health/a.a.prototype.max_health
+					enemy_bar.label.caption={"gui.boss-3",math.ceil(a.a.health),math.ceil(a.a.prototype.max_health),math.ceil(a.a.health/a.a.prototype.max_health*100)}
 				elseif a.a and a.a.valid==false then
 					stageclear(global.stage.num)
 				end
 			--stage 4
 			elseif global.stage.num==4 then
+				local boss4 = a.a
 				if global.stage.start+580>event.tick and event.tick%30==0 then
 					surface.create_entity{name="explosion-64",position=global.stage.starts[global.stage.num]}
 				elseif global.stage.start+580==event.tick then
 					blood(global.stage.starts[global.stage.num],3)
 					a.a=surface.create_entity{name="worm-boss-4",position=global.stage.starts[global.stage.num]}
-					local boss4 = a.a
 					surface.set_tiles({{name="water-red",position={164.5,164.5}},{name="water-red",position={164.5,165.5}},{name="water-red",position={165.5,164.5}},{name="water-red",position={165.5,165.5}}}, false)
 					a.b={x=165.5,y=165.5}
 					a.c=false
 					a.e=false
 				elseif boss4 and boss4.valid then
 					local boss4_pos = boss4.position
-					local health_ratio = player.boss4.health/boss4.prototype.max_health -- TODO: change this
+					local health_ratio = player.character.health/character.prototype.max_health -- TODO: change this
 					local targetline_pos = targetline(boss4_pos,a.d,30)
 					if health_ratio>0.9 then
 						if event.tick%50==0 then a.b=tile4(a.b) end
@@ -1828,9 +1853,9 @@ script.on_event(defines.events.on_tick, function(event)
 						character.damage(2,"enemy","damage-enemy")
 					end
 					surface.wind_speed=(1-boss4.health/boss4.prototype.max_health)*0.2
-					surface.wind_orientation=orientation(boss4,b)
+					surface.wind_orientation=orientation(boss4,player)
 					game.forces["enemy"].set_gun_speed_modifier("ammo-enemy",1-(boss4.health/boss4.prototype.max_health))
-					local enemy_bar = global.p.gui.top.main.enemy.bar
+					local enemy_bar = player.gui.top.main.enemy.bar
 					enemy_bar.visible=true
 					enemy_bar.value=boss4.health/boss4.prototype.max_health
 					enemy_bar.label.caption={"gui.boss-4",math.ceil(boss4.health),math.ceil(boss4.prototype.max_health),math.ceil(boss4.health/boss4.prototype.max_health*100)}
@@ -1906,8 +1931,8 @@ script.on_event(defines.events.on_tick, function(event)
 					end
 					if a.a and a.a>0 then
 						surface.wind_speed=(1-a.a/240)*0.2
-						surface.wind_orientation=orientation(a.t,b)
-						local enemy_bar = global.p.gui.top.main.enemy.bar
+						surface.wind_orientation=orientation(a.t,player)
+						local enemy_bar = player.gui.top.main.enemy.bar
 						enemy_bar.visible=true
 						enemy_bar.value=a.a/240
 						enemy_bar.label.caption={"gui.boss-5",math.ceil(a.a),240,math.ceil(a.a/240*100)}
@@ -1963,7 +1988,7 @@ script.on_event(defines.events.on_tick, function(event)
 					if a.g[2].is_opened() and a.g[3].is_opened()==false then
 						local boss6_2_pos = a.a[2] -- is it?
 						local x = boss6_2_pos.x
-						local y = y
+						local y = boss6_2_pos.y
 						if a.c==false then
 							game.print({"boss.6-2"})
 							blood({x+6,y+6},3)
@@ -2014,7 +2039,7 @@ script.on_event(defines.events.on_tick, function(event)
 									end
 									pos=targetrotate(a.a[3],targetline(a.a[3],ent.position,9),60)
 									a.e.set_command({type=defines.command.go_to_location,destination=pos,distraction=defines.distraction.none})
-								elseif get_distance(a.e,b)<10 then
+								elseif get_distance(a.e,player)<10 then
 									pos=targetrotate(a.a[3],targetline(a.a[3],player.position,9),120)
 									a.e.set_command({type=defines.command.go_to_location,destination=pos,distraction=defines.distraction.none})
 								end
@@ -2071,6 +2096,8 @@ script.on_event(defines.events.on_tick, function(event)
 							a.i=event.tick
 							game.print({"boss.6-5"})
 						elseif a.c and (a.c.valid or a.d.valid or a.e.valid or a.f.valid or a.h.valid) then
+							local x = a.a[5].x
+							local y = a.a[5].y
 							if a.h.valid==false and event.tick%120==0 then
 								blood({x-6,y-6},2)
 								surface.create_entity{name="biter-normal-1",position={x-6,y-6}}
@@ -2101,7 +2128,7 @@ script.on_event(defines.events.on_tick, function(event)
 									end
 									pos=targetrotate(a.a[5],targetline(a.a[5],ent.position,9),60)
 									a.c.set_command({type=defines.command.go_to_location,destination=pos,distraction=defines.distraction.none})
-								elseif get_distance(a.c,b)<10 then
+								elseif get_distance(a.c,player)<10 then
 									pos=targetrotate(a.a[5],targetline(a.a[5],player.position,9),120)
 									a.c.set_command({type=defines.command.go_to_location,destination=pos,distraction=defines.distraction.none})
 								end
@@ -2118,7 +2145,7 @@ script.on_event(defines.events.on_tick, function(event)
 					if player.position.x<131 and player.position.y>190 then
 						surface.wind_speed=(1-player.position.x/130)*0.2
 						surface.wind_orientation=0.25
-						local enemy_bar = global.p.gui.top.main.enemy.bar
+						local enemy_bar = player.gui.top.main.enemy.bar
 						enemy_bar.visible=true
 						enemy_bar.value=1-(player.position.x/130)
 						enemy_bar.label.caption={"gui.boss-6",math.ceil(player.position.x),130,math.ceil(player.position.x/130*100)}
@@ -2341,10 +2368,10 @@ script.on_event(defines.events.on_tick, function(event)
 						if a.a.name=="boss-7" then
 							a.speed=0.15 --(1-(a.a.health/a.a.prototype.max_health)/2)
 						end
-						surface.wind_orientation=orientation(a.gas,b)
+						surface.wind_orientation=orientation(a.gas,player)
 						surface.wind_speed=a.speed
 					end
-					local enemy_bar = global.p.gui.top.main.enemy.bar
+					local enemy_bar = player.gui.top.main.enemy.bar
 					enemy_bar.visible=true
 					enemy_bar.value=a.a.health/a.a.prototype.max_health
 					enemy_bar.label.caption={"gui.boss-7",math.ceil(a.a.health),math.ceil(a.a.prototype.max_health),math.ceil(a.a.health/a.a.prototype.max_health*100)}
@@ -2650,8 +2677,8 @@ script.on_event(defines.events.on_tick, function(event)
 				end
 				if a.a and a.a.valid then
 					surface.wind_speed=(1-a.a.health/a.a.prototype.max_health)*0.2
-					surface.wind_orientation=orientation(a.a,b)
-					local enemy_bar = global.p.gui.top.main.enemy.bar
+					surface.wind_orientation=orientation(a.a,player)
+					local enemy_bar = player.gui.top.main.enemy.bar
 					enemy_bar.visible=true
 					enemy_bar.value=a.a.health/a.a.prototype.max_health
 					enemy_bar.label.caption={"gui.boss-8",math.ceil(a.a.health),math.ceil(a.a.prototype.max_health),math.ceil(a.a.health/a.a.prototype.max_health*100)}
@@ -2914,8 +2941,8 @@ script.on_event(defines.events.on_tick, function(event)
 						surface.create_entity{name="firstaid",position=a.a.position}
 					end
 					surface.wind_speed=(1-a.a.health/a.a.prototype.max_health)*0.2
-					surface.wind_orientation=orientation(a.a,b)
-					local enemy_bar = global.p.gui.top.main.enemy.bar
+					surface.wind_orientation=orientation(a.a,player)
+					local enemy_bar = player.gui.top.main.enemy.bar
 					enemy_bar.visible=true
 					enemy_bar.value=a.a.health/a.a.prototype.max_health
 					enemy_bar.label.caption={"gui.boss-9",math.ceil(a.a.health),math.ceil(a.a.prototype.max_health),math.ceil(a.a.health/a.a.prototype.max_health*100)}
@@ -3028,14 +3055,15 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 	local n = gun.name
 	if ent.name=="player-fire" then
 		local cooldown = game.item_prototypes[n].attack_parameters.cooldown
-		if passive(19) then
-			if random()<cooldown/60*0.5 then
-				local e=player.surface.find_nearest_enemy{position=player.position,max_distance=30}
-				if e and e.valid then
-					player.surface.create_entity{name="p-7",position=targetline(player.position,e.position,1.5),target=e.position,speed=0.5}
-				end
-			end
-		end
+		-- TODO: FIX THIS!
+		-- if passive(19) then
+		-- 	if random()<cooldown/60*0.5 then
+		-- 		local e=player.surface.find_nearest_enemy{position=player.position,max_distance=30}
+		-- 		if e and e.valid then
+		-- 			player.surface.create_entity{name="p-7",position=targetline(player.position,e.position,1.5),target=e.position,speed=0.5}
+		-- 		end
+		-- 	end
+		-- end
 		if passive(20) then
 			if random()<cooldown/60*0.2 then
 				if global.active[1] then
@@ -3064,7 +3092,8 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 		elseif n=="weapon-19" then
 			player.character.damage(1,"enemy","damage-enemy")
 		elseif n=="weapon-23" and global.weapons[23] and global.weapons[23].valid then
-			player.surface.create_entity{name="p-1", position=targetline(player.position,global.weapons[23].position,1.5),target=global.weapons[23].position,speed=0.5}
+			-- TODO: FIX THIS!
+			-- player.surface.create_entity{name="p-1", position=targetline(player.position,global.weapons[23].position,1.5),target=global.weapons[23].position,speed=0.5}
 		end
 	elseif ent.name=="ex-256" then
 		local weapon = global.weapons[10]
@@ -3072,7 +3101,8 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 			weapon[1].destroy()
 		end
 		global.weapons[10]={ent,event.tick}
-		game.surfaces[1].create_entity{name="p-100",position={x=global.weapons[10][1].position.x,y=global.weapons[10][1].position.y-120},target=global.weapons[10][1].position,speed=1}
+		-- TODO: FIX THIS!
+		-- game.surfaces[1].create_entity{name="p-100",position={x=global.weapons[10][1].position.x,y=global.weapons[10][1].position.y-120},target=global.weapons[10][1].position,speed=1}
 	elseif ent.name=="hit-p-14" then
 		global.weapons[14]={ent.position,event.tick}
 	elseif ent.name=="hit-p-15" then
@@ -3084,14 +3114,17 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 	elseif ent.name=="hit-p-20" then
 		global.weapons[20]={ent.position,event.tick}
 	elseif ent.name=="hit-p-24" then
-		local d=random(1,7)
-		player.surface.create_entity{name="p-24-"..d,position=targetline(player.position,ent.position,1.5),target=ent.position,speed=d*0.1}
+		-- TODO: FIX THIS!
+		-- local d=random(1,7)
+		-- player.surface.create_entity{name="p-24-"..d,position=targetline(player.position,ent.position,1.5),target=ent.position,speed=d*0.1}
 	elseif ent.name=="hit-p-25" then
-		local d=player.surface.create_entity{name="p-25-1",position=targetline(player.position,ent.position,1.5),target=ent.position,speed=0.5}
-		global.weapons[25]=d
+		-- TODO: FIX THIS!
+		-- local d=player.surface.create_entity{name="p-25-1",position=targetline(player.position,ent.position,1.5),target=ent.position,speed=0.5}
+		-- global.weapons[25]=d
 	elseif ent.name=="hit-p-29" then
-		local d=player.surface.create_entity{name="p-29-1",position=targetline(player.position,ent.position,1.5),target=ent.position,speed=0.6}
-		global.weapons[29]={d,event.tick}
+		-- TODO: FIX THIS!
+		-- local d=player.surface.create_entity{name="p-29-1",position=targetline(player.position,ent.position,1.5),target=ent.position,speed=0.6}
+		-- global.weapons[29]={d,event.tick}
 	elseif ent.name=="hit-p-16-1" then
 		local ents=player.surface.find_entities_filtered{force="enemy",area={{ent.position.x-8,ent.position.y-8},{ent.position.x+8,ent.position.y+8}}}
 		if #ents>0 then
@@ -3099,10 +3132,11 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 				if get_distance(j,ent)==0 then table.remove(ents,i) end
 			end
 		end
-		if #ents>0 then
-			local d = random(1, #ents)
-			player.surface.create_entity{name="p-16-1",position=ent.position,target=ents[d],speed=0.5}
-		end
+		-- TODO: FIX THIS!
+		-- if #ents>0 then
+		-- 	local d = random(1, #ents)
+		-- 	player.surface.create_entity{name="p-16-1",position=ent.position,target=ents[d],speed=0.5}
+		-- end
 	elseif ent.name=="hit-p-16-2" then
 		local ents=player.surface.find_entities_filtered{force="enemy",area={{ent.position.x-6,ent.position.y-6},{ent.position.x+6,ent.position.y+6}}}
 		if #ents>0 then
@@ -3110,10 +3144,11 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 				if get_distance(j,ent)==0 then table.remove(ents,i) end
 			end
 		end
-		if #ents>0 then
-			local d = random(1, #ents)
-			player.surface.create_entity{name="p-16-2",position=ent.position,target=ents[d],speed=0.4}
-		end
+		-- TODO: FIX THIS!
+		-- if #ents>0 then
+			-- local d = random(1, #ents)
+			-- player.surface.create_entity{name="p-16-2",position=ent.position,target=ents[d],speed=0.4}
+		-- end
 	elseif ent.name=="hit-p-16-3" then
 		local ents=player.surface.find_entities_filtered{force="enemy",area={{ent.position.x-4,ent.position.y-4},{ent.position.x+4,ent.position.y+4}}}
 		if #ents>0 then
@@ -3121,9 +3156,10 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 				if get_distance(j,ent)==0 then table.remove(ents,i) end
 			end
 		end
-		if #ents>0 then
-			local d = random(1, #ents)
-			player.surface.create_entity{name="p-16-3",position=ent.position,target=ents[d],speed=0.3}
-		end
+		-- TODO: FIX THIS!
+		-- if #ents>0 then
+		-- 	local d = random(1, #ents)
+		-- 	player.surface.create_entity{name="p-16-3",position=ent.position,target=ents[d],speed=0.3}
+		-- end
 	end
 end)
