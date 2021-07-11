@@ -1389,7 +1389,7 @@ do
 			end
 			global.weapons[23] = surface.create_decoratives{
 				check_collision = false,
-				decoratives = {name = "ex-32", position = pos, amount = 1}
+				decoratives = {{name = "ex-32", position = pos, amount = 1}}
 			} -- TODO: CHECK THIS
 		end
 	end)
@@ -1581,7 +1581,7 @@ script.on_event(defines.events.on_tick, function(event)
 			if d > 0 then
 				local ent = surface.create_decoratives{
 					check_collision = false,
-					decoratives = {name = "ex-" .. d, position = weapon[1].position, amount = 1}
+					decoratives = {{name = "ex-" .. d, position = weapon[1].position, amount = 1}}
 				} -- TODO: CHECK THIS
 				weapon[1].destroy()
 				weapon[1] = ent
@@ -1943,7 +1943,7 @@ script.on_event(defines.events.on_tick, function(event)
 						if event.tick % 300 == 0 and (a.d == nil or a.d == false) then
 							a.d = main_surface.create_decoratives{
 								check_collision = false,
-								decoratives = {name = "ex-64", position = etarget(5), amount = 1}
+								decoratives = {{name = "ex-64", position = etarget(5), amount = 1}}
 							} -- TODO: CHECK THIS
 						elseif event.tick % 300 == 60 and a.d then
 							main_surface.create_entity{name = "explosion-64", position = a.d.position}
