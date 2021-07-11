@@ -18,7 +18,6 @@ data:extend({
 		name = "water-red",
 		collision_mask = {"ground-tile"},
 		pollution_absorption_per_second = 0,
-		-- autoplace = water_autoplace_settings(0),
 		layer = 40,
 		variants = {
 			main = {

@@ -1,12 +1,11 @@
 local function sound(name, volume)
-	if volume == nil then volume = 0.5 end
 	return {
 		type = "explosion",
 		name = name .. "-sound",
 		flags = {"not-on-map"},
 		animations = {
 			{
-				filename = "__m-roguef__/graphics/entity/noani/no.png",
+				filename = "__roguef-core__/graphics/empty.png",
 				priority = "extra-high",
 				width = 1,
 				height = 1,
@@ -20,7 +19,7 @@ local function sound(name, volume)
 				type = "instant",
 				source_effects = {
 					type = "play-sound",
-					sound = {{filename = "__m-roguef__/sound/" .. name .. ".ogg", volume = volume}}
+					sound = {{filename = "__m-roguef__/sound/" .. name .. ".ogg", volume = volume or 0.5}}
 				}
 			}
 		}
@@ -28,13 +27,12 @@ local function sound(name, volume)
 end
 
 data:extend({
-	sound("msg", 1), sound("rush", 1), sound("firstaid"), sound("get"), sound("tuto", 0.75), sound("levelup", 0.75),
+	sound("msg", 1), sound("rush", 1), sound("firstaid"), sound("tuto", 0.75), sound("levelup", 0.75),
 	sound("stagestart", 0.75), sound("stageclear", 0.75), sound("die", 0.75), sound("open", 1), sound("laser", 1),
-	sound("p-23", 1), sound("shot-5", 0.5), sound("target-elec"), sound("target-ice"), sound("target-fire"),
-	sound("target-melee"), sound("target-poison"), sound("target-water"), sound("active-3"), sound("stim"),
-	sound("active-6"), sound("anda1", 1), sound("anda2", 1), sound("anda3", 1), sound("anda-cast-1", 1),
-	sound("anda-cast-2", 1), sound("diablo1", 1), sound("diablo2", 1), sound("laugh1", 1), sound("laugh2", 1),
-	sound("laugh3", 1), sound("castlazer", 1), sound("alarm", 1), sound("diesound", 1), sound("recall", 1)
+	sound("p-23", 1), sound("recall", 1), sound("active-6"), sound("anda1", 1), sound("anda2", 1),
+	sound("anda3", 1), sound("anda-cast-1", 1), sound("anda-cast-2", 1), sound("diablo1", 1), sound("diablo2", 1),
+	sound("laugh1", 1), sound("laugh2", 1), sound("laugh3", 1), sound("castlazer", 1), sound("alarm", 1),
+	sound("diesound", 1), sound("active-3"), sound("stim")
 })
 
 local bgmtable = {}

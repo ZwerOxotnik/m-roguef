@@ -1,20 +1,14 @@
-require("prototypes.entity.demo-worm-animations")
-require("prototypes.entity.demo-enemy-sounds")
-require("prototypes.entity.demo-gunshot-sounds")
-require("prototypes.entity.demo-enemy-autoplace-utils")
-require("prototypes.entity.demo-pipecovers")
-require("prototypes.entity.assemblerpipes")
-require("prototypes.entity.demo-spawner-animation")
-require("prototypes.entity.demo-biter-animations")
-require("prototypes.entity.spitter-animations")
-
-
- -- TODO: check this
+-- TODO: check this
 local fire_blend_mode = "additive"
 local fire_flags = nil
 local fire_tint = {r=1,g=1,b=1,a=1}
 local fire_animation_speed = 0.5
 local fire_scale = 1
+local smallspitterscale = 0.5
+local smallspittertint = {r = 1, g = 0, b = 1, a = 1}
+local smallbiterscale = 0.5
+local medium_worm_scale = 0.83
+local big_worm_scale = 1.0
 local capsule_smoke = {{
 	name = "smoke-fast",
 	deviation = {0.15, 0.15},
@@ -34,294 +28,491 @@ data.raw["electric-turret"]["laser-turret"].energy_source = {
 	usage_priority = "primary-input"
 }
 
--- worm turret
-function shift_small_worm(shiftx, shifty)
-	return {shiftx - 0.1, shifty + 0.1}
-end
 
-small_worm_scale = 0.65
-small_worm_tint = {r = 1, g = 0.63, b = 0, a = 1.0}
+--#region local functions
 
---[[
-data:extend(
-{
-	{
-		type = "turret",
-		name = "small-worm-turret",
-		icon = "__base__/graphics/icons/small-worm.png",
-		icon_size = 32,
-		flags = {"placeable-enemy", "not-repairable", "breaths-air"},
-		order="b-b-d",
-		max_health = 200,
-		subgroup="enemies",
-		healing_per_tick = 0.01,
-		collision_box = {{-0.9, -0.8 }, {0.9, 0.8}},
-		selection_box = {{-0.9, -0.8 }, {0.9, 0.8}},
-		shooting_cursor_size = 3,
-		corpse = "small-worm-corpse",
-		dying_explosion = "blood-explosion-big",
-		dying_sound = make_worm_dying_sounds(0.8),
-		folded_speed = 0.01,
-		folded_animation = worm_folded_animation(small_worm_scale, small_worm_tint),
-		prepare_range = 25,
-		preparing_speed = 0.025,
-		preparing_animation = worm_preparing_animation(small_worm_scale, small_worm_tint, "forward"),
-		prepared_speed = 0.015,
-		prepared_animation = worm_prepared_animation(small_worm_scale, small_worm_tint),
-		starting_attack_speed = 0.03,
-		starting_attack_animation = worm_attack_animation(small_worm_scale, small_worm_tint, "forward"),
-		starting_attack_sound = make_worm_roars(0.75),
-		ending_attack_speed = 0.03,
-		ending_attack_animation = worm_attack_animation(small_worm_scale, small_worm_tint, "backward"),
-		folding_speed = 0.015,
-		folding_animation =  worm_preparing_animation(small_worm_scale, small_worm_tint, "backward"),
-		attack_parameters =
-		{
-			type = "projectile",
-			ammo_category = "bullet",
-			cooldown = 15,
-			range = 17,
-			projectile_creation_distance = 1.8,
-			ammo_type =
-			{
-				category = "biological",
-				action =
-				{
-					type = "direct",
-					action_delivery =
-					{
-						type = "projectile",
-						projectile = "acid-projectile-purple",
-						starting_speed = 0.5
-					}
-				}
-			}
-		},
-		autoplace = enemy_worm_autoplace(0),
-		call_for_help_radius = 40
-	},
-})
-]] --
-
-function shift_medium_worm(shiftx, shifty)
-	return {shiftx - 0.15, shifty + 0.15}
-end
-
-medium_worm_scale = 0.83
-medium_worm_tint = {r = 0.9, g = 0.15, b = 0.3, a = 1.0}
-
-big_worm_scale = 1.0
-big_worm_tint = {r = 0.34, g = 0.68, b = 0.90, a = 1.0}
-
-function shift_big_worm(shiftx, shifty)
-	return {shiftx - 0.2, shifty + 0.2}
-end
-
---[[
-data:extend(
-{
-	{
-		type = "turret",
-		name = "medium-worm-turret",
-		icon = "__base__/graphics/icons/medium-worm.png",
-		icon_size = 32,
-		flags = {"placeable-player", "placeable-enemy", "not-repairable", "breaths-air"},
-		order="b-b-e",
-		subgroup="enemies",
-		max_health = 350,
-		resistances =
-		{
-			{
-				type = "physical",
-				decrease = 4,
-			},
-			{
-				type = "explosion",
-				decrease = 5,
-				percent = 15,
-			}
-		},
-		healing_per_tick = 0.015,
-		collision_box = {{-1.1, -1.0}, {1.1, 1.0}},
-		selection_box = {{-1.1, -1.0}, {1.1, 1.0}},
-		shooting_cursor_size = 3.5,
-		rotation_speed = 1,
-		corpse = "medium-worm-corpse",
-		dying_explosion = "blood-explosion-big",
-		dying_sound = make_worm_dying_sounds(0.9),
-		folded_speed = 0.01,
-		folded_animation = worm_folded_animation(medium_worm_scale, medium_worm_tint),
-		prepare_range = 25,
-		preparing_speed = 0.025,
-		preparing_animation = worm_preparing_animation(medium_worm_scale, medium_worm_tint, "forward"),
-		prepared_speed = 0.015,
-		prepared_animation = worm_prepared_animation(medium_worm_scale, medium_worm_tint),
-		starting_attack_speed = 0.03,
-		starting_attack_animation = worm_attack_animation(medium_worm_scale, medium_worm_tint, "forward"),
-		starting_attack_sound = make_worm_roars(0.8),
-		ending_attack_speed = 0.03,
-		ending_attack_animation = worm_attack_animation(medium_worm_scale, medium_worm_tint, "backward"),
-		folding_speed = 0.015,
-		folding_animation =  worm_preparing_animation(medium_worm_scale, medium_worm_tint, "backward"),
-		prepare_range = 30,
-		attack_parameters =
-		{
-			type = "projectile",
-			ammo_category = "rocket",
-			cooldown = 100,
-			range = 20,
-			projectile_creation_distance = 1.9,
-			damage_modifier = 3,
-			ammo_type =
-			{
-				category = "biological",
-				action =
-				{
-					type = "direct",
-					action_delivery =
-					{
-						type = "projectile",
-						projectile = "acid-projectile-purple",
-						starting_speed = 0.5
-					}
-				}
-			}
-		},
-		build_base_evolution_requirement = 0.3,
-		autoplace = enemy_worm_autoplace(2),
-		call_for_help_radius = 40
-	},
-
-	{
-		type = "turret",
-		name = "big-worm-turret",
-		icon = "__base__/graphics/icons/big-worm.png",
-		icon_size = 32,
-		flags = {"placeable-player", "placeable-enemy", "not-repairable", "breaths-air"},
-		max_health = 500,
-		order="b-b-f",
-		subgroup="enemies",
-		resistances =
-		{
-			{
-				type = "physical",
-				decrease = 8,
-			},
-			{
-				type = "explosion",
-				decrease = 10,
-				percent = 30,
-			}
-		},
-		healing_per_tick = 0.02,
-		collision_box = {{-1.4, -1.2}, {1.4, 1.2}},
-		selection_box = {{-1.4, -1.2}, {1.4, 1.2}},
-		shooting_cursor_size = 4,
-		rotation_speed = 1,
-		corpse = "big-worm-corpse",
-		dying_explosion = "blood-explosion-big",
-		dying_sound = make_worm_dying_sounds(1.0),
-		inventory_size = 2,
-		folded_speed = 0.01,
-		folded_animation = worm_folded_animation(big_worm_scale, big_worm_tint),
-		prepare_range = 25,
-		preparing_speed = 0.025,
-		preparing_animation = worm_preparing_animation(big_worm_scale, big_worm_tint, "forward"),
-		prepared_speed = 0.015,
-		prepared_animation = worm_prepared_animation(big_worm_scale, big_worm_tint),
-		starting_attack_speed = 0.03,
-		starting_attack_animation = worm_attack_animation(big_worm_scale, big_worm_tint, "forward"),
-		starting_attack_sound = make_worm_roars(0.95),
-		ending_attack_speed = 0.03,
-		ending_attack_animation = worm_attack_animation(big_worm_scale, big_worm_tint, "backward"),
-		folding_speed = 0.015,
-		folding_animation =  worm_preparing_animation(big_worm_scale, big_worm_tint, "backward"),
-		prepare_range = 30,
-		attack_parameters =
-		{
-			type = "projectile",
-			ammo_category = "rocket",
-			cooldown = 100,
-			range = 25,
-			projectile_creation_distance = 2.1,
-			damage_modifier = 6,
-			ammo_type =
-			{
-				category = "biological",
-				action =
-				{
-					type = "direct",
-					action_delivery =
-					{
-						type = "projectile",
-						projectile = "acid-projectile-purple",
-						starting_speed = 0.5
-					}
-				}
-			}
-		},
-		build_base_evolution_requirement = 0.5,
-		autoplace = enemy_worm_autoplace(5),
-		call_for_help_radius = 40
-	}
-})
-]] --
-
--- enemy unit
-
-smallbiterscale = 0.5
-small_biter_tint1 = {r = 1, g = 0, b = 1, a = 1}
-small_biter_tint2 = {r = 1, g = 0, b = 1, a = 1}
-
--- biter_spawner_tint = {r=0.92, g=0.54, b=0, a=0.5}
-biter_spawner_tint = {r = 1.0, g = 1.0, b = 1.0, a = 1.0}
-spitter_spawner_tint = {r = 0.99, g = 0.09, b = 0.09, a = 1}
-
-function spitterattackparameters(data)
+local function biterrunanimation(scale, tint1, tint2)
 	return {
-		type = "projectile",
-		ammo_category = "rocket",
-		cooldown = data.cooldown,
-		range = data.range,
-		min_attack_distance = data.min_attack_distance,
-		projectile_creation_distance = 1.9,
-		damage_modifier = data.damage_modifier,
-		warmup = 30,
-		ammo_type = {
-			category = "biological",
-			action = {
-				type = "direct",
-				action_delivery = {type = "projectile", projectile = "acid-projectile-purple", starting_speed = 0.5}
+		layers = {
+			{
+				width = 169,
+				height = 114,
+				frame_count = 16,
+				direction_count = 16,
+				shift = {scale * 0.714844, scale * -0.246094},
+				scale = scale,
+				stripes = {
+					{
+						filename = "__0_16_graphics_revived__/graphics/entity/biter/biter-run-1.png",
+						width_in_frames = 8,
+						height_in_frames = 16
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/biter/biter-run-2.png",
+						width_in_frames = 8,
+						height_in_frames = 16
+					}
+				}
+			}, {
+				filename = "__0_16_graphics_revived__/graphics/entity/biter/biter-run-mask1.png",
+				flags = {"mask"},
+				width = 105,
+				height = 81,
+				frame_count = 16,
+				direction_count = 16,
+				shift = {scale * 0.117188, scale * -0.867188},
+				scale = scale,
+				tint = tint1
+			}, {
+				filename = "__0_16_graphics_revived__/graphics/entity/biter/biter-run-mask2.png",
+				flags = {"mask"},
+				line_length = 16,
+				width = 95,
+				height = 81,
+				frame_count = 16,
+				direction_count = 16,
+				shift = {scale * 0.117188, scale * -0.855469},
+				scale = scale,
+				tint = tint2
 			}
-		},
-		sound = make_spitter_roars(data.roarvolume),
-		animation = spitterattackanimation(data.scale, data.tint)
+		}
 	}
 end
 
-smallspitterscale = 0.5
-smallspittertint = {r = 1, g = 0, b = 1, a = 1}
+local function make_worm_dying_sounds(volume)
+	return {
+		{filename = "__base__/sound/creatures/worm-death-1.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/worm-death-2.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/worm-death-3.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/worm-death-4.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/worm-death-5.ogg", volume = volume}
+	}
+end
 
-mediumspitterscale = 2
-mediumspittertint = {r = 0.83, g = 0.39, b = 0.36, a = 0.75}
+local function make_worm_roars(volume)
+	return {
+		{filename = "__base__/sound/creatures/worm-roar-1.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/worm-roar-2.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/worm-roar-3.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/worm-roar-4.ogg", volume = volume}
+	}
+end
 
-bigspitterscale = 1
-bigspittertint = {r = 0.54, g = 0.58, b = 0.85, a = 0.6}
+local function make_spitter_dying_sounds(volume)
+	return {
+		{filename = "__base__/sound/creatures/spitter-death-1.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/spitter-death-2.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/spitter-death-3.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/spitter-death-4.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/spitter-death-5.ogg", volume = volume}
+	}
+end
 
-behemothspitterscale = 1.2
-behemothspittertint = {r = 0.3, g = 0.9, b = 0.3, a = 0.75}
+local function make_spitter_roars(volume)
+	return {
+		layers = {
+			[0] = {
+				{filename = "__base__/sound/creatures/Spiters_1_1.ogg", volume = volume},
+				{filename = "__base__/sound/creatures/Spiters_2_1.ogg", volume = volume},
+				{filename = "__base__/sound/creatures/Spiters_3_1.ogg", volume = volume},
+				{filename = "__base__/sound/creatures/Spiters_4_1.ogg", volume = volume},
+				{filename = "__base__/sound/creatures/Spiters_5_1.ogg", volume = volume}
+			},
+			[1] = {
+				{filename = "__base__/sound/creatures/Spiters_1_2.ogg", volume = volume},
+				{filename = "__base__/sound/creatures/Spiters_2_2.ogg", volume = volume},
+				{filename = "__base__/sound/creatures/Spiters_3_2.ogg", volume = volume},
+				{filename = "__base__/sound/creatures/Spiters_4_2.ogg", volume = volume},
+				{filename = "__base__/sound/creatures/Spiters_5_2.ogg", volume = volume}
+			}
+		}
+	}
+end
 
-mediumbiterscale = 0.7
-medium_biter_tint1 = {r = 0.78, g = 0.15, b = 0.15, a = 0.6}
-medium_biter_tint2 = {r = 0.9, g = 0.3, b = 0.3, a = 0.75}
+local function make_biter_calls(volume)
+	return {
+		{filename = "__base__/sound/creatures/biter-call-1.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/biter-call-2.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/biter-call-3.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/biter-call-4.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/biter-call-5.ogg", volume = volume}
+	}
+end
 
-bigbiterscale = 1.0
-big_biter_tint1 = {r = 0.34, g = 0.68, b = 0.90, a = 0.6}
-big_biter_tint2 = {r = 0.31, g = 0.61, b = 0.95, a = 0.85}
+local function make_biter_dying_sounds(volume)
+	return {
+		{filename = "__base__/sound/creatures/biter-death-1.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/biter-death-2.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/biter-death-3.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/biter-death-4.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/biter-death-5.ogg", volume = volume}
+	}
+end
 
-behemothbiterscale = 1.2
-behemoth_biter_tint1 = {r = 0.3, g = 0.9, b = 0.3, a = 0.75}
-behemoth_biter_tint2 = {r = 0.88, g = 0.24, b = 0.24, a = 0.9}
+local function make_biter_roars(volume)
+	return {
+		{filename = "__base__/sound/creatures/biter-roar-1.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/biter-roar-2.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/biter-roar-3.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/biter-roar-4.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/biter-roar-5.ogg", volume = volume},
+		{filename = "__base__/sound/creatures/biter-roar-6.ogg", volume = volume}
+	}
+end
+
+local function spawner_idle_animation(variation, tint)
+	return {
+		layers = {
+			{
+				filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-idle.png",
+				line_length = 8,
+				width = 243,
+				height = 181,
+				frame_count = 8,
+				animation_speed = 0.18,
+				direction_count = 1,
+				run_mode = "forward-then-backward",
+				shift = {0.140625 - 0.65, -0.234375},
+				y = variation * 181
+			}, {
+				filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-idle-mask.png",
+				flags = {"mask"},
+				width = 166,
+				height = 148,
+				frame_count = 8,
+				animation_speed = 0.18,
+				run_mode = "forward-then-backward",
+				shift = {-0.34375 - 0.65, -0.375},
+				line_length = 8,
+				tint = tint,
+				y = variation * 148
+			}
+		}
+	}
+end
+
+local function worm_attack_animation(scale, tint, run_mode)
+	return {
+		layers = {
+			{
+				width = 248,
+				height = 196,
+				frame_count = 8,
+				direction_count = 16,
+				shift = {scale * 0.953125, scale * -0.671875},
+				scale = scale,
+				run_mode = run_mode,
+				stripes = {
+					{
+						filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-attack-01.png",
+						width_in_frames = 8,
+						height_in_frames = 8
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-attack-02.png",
+						width_in_frames = 8,
+						height_in_frames = 8
+					}
+				}
+			}, {
+				flags = {"mask"},
+				width = 168,
+				height = 153,
+				frame_count = 8,
+				direction_count = 16,
+				shift = {scale * 0.078125, scale * -1.125},
+				scale = scale,
+				tint = tint,
+				run_mode = run_mode,
+				stripes = {
+					{
+						filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-attack-mask-01.png",
+						width_in_frames = 8,
+						height_in_frames = 8
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity//worm/worm-attack-mask-02.png",
+						width_in_frames = 8,
+						height_in_frames = 8
+					}
+				}
+			}
+		}
+	}
+end
+
+local function worm_prepared_animation(scale, tint)
+	return {
+		layers = {
+			{
+				filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-prepared.png",
+				run_mode = "forward-then-backward",
+				line_length = 10,
+				width = 190,
+				height = 156,
+				frame_count = 10,
+				scale = scale,
+				direction_count = 1,
+				shift = {scale * 0.828125, scale * -0.890625}
+			}, {
+				filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-prepared-mask.png",
+				flags = {"mask"},
+				run_mode = "forward-then-backward",
+				line_length = 10,
+				width = 80,
+				height = 129,
+				frame_count = 10,
+				shift = {scale * 0.078125, scale * -1.28125},
+				scale = scale,
+				direction_count = 1,
+				tint = tint
+			}
+		}
+	}
+end
+
+local function worm_preparing_animation(scale, tint, run_mode)
+	return {
+		layers = {
+			{
+				width = 208,
+				height = 148,
+				line_length = 13,
+				frame_count = 26,
+				shift = {scale * 1.10938, scale * -0.734375},
+				run_mode = run_mode,
+				scale = scale,
+				direction_count = 1,
+				stripes = {
+					{
+						filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-preparing-01.png",
+						width_in_frames = 7,
+						height_in_frames = 2
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-preparing-02.png",
+						width_in_frames = 6,
+						height_in_frames = 2
+					}
+				}
+			}, {
+				filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-preparing-mask.png",
+				flags = {"mask"},
+				line_length = 13,
+				width = 98,
+				height = 121,
+				frame_count = 26,
+				shift = {scale * 0.171875, scale * -1.15625},
+				run_mode = run_mode,
+				scale = scale,
+				direction_count = 1,
+				tint = tint
+			}
+		}
+	}
+end
+
+local function worm_folded_animation(scale, tint)
+	return {
+		layers = {
+			{
+				filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-folded.png",
+				run_mode = "forward-then-backward",
+				line_length = 5,
+				width = 143,
+				height = 104,
+				frame_count = 5,
+				shift = {scale * 0.09375, scale * -0.046875},
+				direction_count = 1,
+				scale = scale
+			}, {
+				filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-folded-mask.png",
+				flags = {"mask"},
+				run_mode = "forward-then-backward",
+				line_length = 5,
+				width = 60,
+				height = 51,
+				frame_count = 5,
+				shift = {scale * 0.078125, scale * -0.09375},
+				scale = scale,
+				direction_count = 1,
+				tint = tint
+			}
+		}
+	}
+end
+
+local function spitterrunanimation(scale, tint)
+	return {
+		layers = {
+			{
+				width = 193,
+				height = 164,
+				priority = "very-low",
+				frame_count = 24,
+				direction_count = 16,
+				shift = {scale * 1.01562, 0},
+				scale = scale,
+				still_frame = 4,
+				stripes = {
+					{
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-run-1.png",
+						width_in_frames = 8,
+						height_in_frames = 8
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-run-2.png",
+						width_in_frames = 8,
+						height_in_frames = 8
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-run-3.png",
+						width_in_frames = 8,
+						height_in_frames = 8
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-run-4.png",
+						width_in_frames = 8,
+						height_in_frames = 8
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-run-5.png",
+						width_in_frames = 8,
+						height_in_frames = 8
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-run-6.png",
+						width_in_frames = 8,
+						height_in_frames = 8
+					}
+				}
+			}, {
+				width = 81,
+				height = 90,
+				frame_count = 24,
+				direction_count = 16,
+				shift = {scale * 0.015625, scale * -0.6875},
+				scale = scale,
+				filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-run-mask.png",
+				flags = {"mask"},
+				tint = tint
+			}
+		}
+	}
+end
+
+local function biterattackanimation(scale, tint1, tint2)
+	return {
+		layers = {
+			{
+				width = 279,
+				height = 184,
+				frame_count = 11,
+				direction_count = 16,
+				shift = {scale * 1.74609, scale * -0.644531},
+				animation_speed = 0.3,
+				scale = scale,
+				stripes = {
+					{
+						filename = "__0_16_graphics_revived__/graphics/entity/biter/biter-attack-1.png",
+						width_in_frames = 6,
+						height_in_frames = 8
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/biter/biter-attack-2.png",
+						width_in_frames = 5,
+						height_in_frames = 8
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/biter/biter-attack-3.png",
+						width_in_frames = 6,
+						height_in_frames = 8
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/biter/biter-attack-4.png",
+						width_in_frames = 5,
+						height_in_frames = 8
+					}
+				}
+			}, {
+				filename = "__0_16_graphics_revived__/graphics/entity/biter/biter-attack-mask1.png",
+				flags = {"mask"},
+				width = 125,
+				height = 108,
+				frame_count = 11,
+				direction_count = 16,
+				shift = {scale * 0.117188, scale * -1.11328},
+				scale = scale,
+				tint = tint1
+			}, {
+				filename = "__0_16_graphics_revived__/graphics/entity/biter/biter-attack-mask2.png",
+				flags = {"mask"},
+				width = 114,
+				height = 100,
+				frame_count = 11,
+				direction_count = 16,
+				shift = {scale * 0.117188, scale * -1.06641},
+				scale = scale,
+				tint = tint2
+			}
+		}
+	}
+end
+
+local function spitterattackanimation(scale, tint)
+	return {
+		layers = {
+			{
+				width = 199,
+				height = 164,
+				frame_count = 22,
+				direction_count = 16,
+				scale = scale,
+				shift = {scale * 0.765625, scale * 0.0625},
+				animation_speed = 0.4,
+				stripes = {
+					{
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-attack-1.png",
+						width_in_frames = 8,
+						height_in_frames = 8
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-attack-2.png",
+						width_in_frames = 8,
+						height_in_frames = 8
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-attack-3.png",
+						width_in_frames = 6,
+						height_in_frames = 8
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-attack-4.png",
+						width_in_frames = 8,
+						height_in_frames = 8
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-attack-5.png",
+						width_in_frames = 8,
+						height_in_frames = 8
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-attack-6.png",
+						width_in_frames = 6,
+						height_in_frames = 8
+					}
+				}
+			}, {
+				flags = {"mask"},
+				width = 108,
+				height = 90,
+				frame_count = 22,
+				direction_count = 16,
+				shift = {scale * 0, scale * -0.625},
+				scale = scale,
+				tint = tint,
+				animation_speed = 0.4,
+				stripes = {
+					{
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-attack-mask-1.png",
+						width_in_frames = 11,
+						height_in_frames = 16
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/spitter/spitter-attack-mask-2.png",
+						width_in_frames = 11,
+						height_in_frames = 16
+					}
+				}
+			}
+		}
+	}
+end
+
+--#endregion
+
 
 data:extend({
 	{
@@ -376,524 +567,8 @@ data:extend({
 		dying_sound = make_spitter_dying_sounds(0),
 		run_animation = spitterrunanimation(smallspitterscale, smallspittertint)
 	}
-	--[[
-	{
-		type = "unit",
-		name = "small-biter",
-		icon = "__base__/graphics/icons/small-biter.png",
-		icon_size = 32,
-		flags = {"placeable-player", "placeable-enemy", "placeable-off-grid", "breaths-air"},
-		max_health = 15,
-		order = "b-b-a",
-		subgroup="enemies",
-		healing_per_tick = 0.01,
-		collision_box = {{-0.2, -0.2}, {0.2, 0.2}},
-		selection_box = {{-0.4, -0.7}, {0.7, 0.4}},
-		attack_parameters =
-		{
-			type = "projectile",
-			range = 0.5,
-			cooldown = 60,
-			ammo_category = "melee",
-			ammo_type = make_unit_melee_ammo_type(1),
-			sound = make_biter_roars(0.5),
-			animation = biterattackanimation(smallbiterscale, small_biter_tint1, small_biter_tint2)
-		},
-		vision_distance = 10,
-		movement_speed = 0.2,
-		distance_per_frame = 0.1,
-		pollution_to_join_attack = 0,
-		distraction_cooldown = 0,
-		corpse = "small-biter-corpse",
-		dying_explosion = "blood-explosion-small",
-		dying_sound =  make_biter_dying_sounds(1.0),
-		working_sound =  make_biter_calls(0.7),
-		run_animation = biterrunanimation(smallbiterscale, small_biter_tint1, small_biter_tint2),
-	},
-
-	{
-		type = "unit",
-		name = "medium-biter",
-		icon = "__base__/graphics/icons/medium-biter.png",
-		icon_size = 32,
-		flags = {"placeable-player", "placeable-enemy", "placeable-off-grid", "breaths-air", "not-repairable"},
-		max_health = 500,
-		order="b-b-b",
-		subgroup="enemies",
-		resistances =
-		{
-			{
-				type = "physical",
-				decrease = 4,
-			},
-			{
-				type = "explosion",
-				percent = 10
-			},
-			{
-				type = "fire",
-				percent = -50
-			}
-		},
-		healing_per_tick = 0.01,
-		collision_box = {{-0.5, -0.5}, {0.5, 0.5}},
-		selection_box = {{-0.7, -1.5}, {0.7, 0.3}},
-		sticker_box = {{-0.3, -0.5}, {0.3, 0.1}},
-		distraction_cooldown = 300,
-		attack_parameters =
-		{
-			type = "projectile",
-			ammo_category = "melee",
-			ammo_type = make_unit_melee_ammo_type(1),
-			range = 0.5,
-			cooldown = 30,
-			sound = make_biter_roars(0.7),
-			animation = biterattackanimation(mediumbiterscale, medium_biter_tint1, medium_biter_tint2)
-		},
-		vision_distance = 50,
-		movement_speed = 0.185,
-		distance_per_frame = 0.15,
-		-- in pu
-		pollution_to_join_attack = 0,
-		corpse = "medium-biter-corpse",
-		dying_explosion = "blood-explosion-small",
-		working_sound = make_biter_calls(0.8),
-		dying_sound = make_biter_dying_sounds(1.0),
-		run_animation = biterrunanimation(mediumbiterscale, medium_biter_tint1, medium_biter_tint2)
-	},
-
-	{
-		type = "unit",
-		name = "big-biter",
-		order="b-b-c",
-		icon = "__base__/graphics/icons/big-biter.png",
-		icon_size = 32,
-		flags = {"placeable-player", "placeable-enemy", "placeable-off-grid", "breaths-air", "not-repairable"},
-		max_health = 375,
-		subgroup="enemies",
-		resistances =
-		{
-			{
-				type = "physical",
-				decrease = 8,
-			},
-			{
-				type = "explosion",
-				percent = 10
-			}
-		},
-		spawning_time_modifier = 3,
-		healing_per_tick = 0.02,
-		collision_box = {{-0.4, -0.4}, {0.4, 0.4}},
-		selection_box = {{-0.7, -1.5}, {0.7, 0.3}},
-		sticker_box = {{-0.6, -0.8}, {0.6, 0}},
-		distraction_cooldown = 300,
-		attack_parameters =
-		{
-			type = "projectile",
-			range = 1.5,
-			cooldown = 35,
-			ammo_category = "melee",
-			ammo_type = make_unit_melee_ammo_type(30),
-			sound =  make_biter_roars(0.6),
-			animation = biterattackanimation(bigbiterscale, big_biter_tint1, big_biter_tint2)
-		},
-		vision_distance = 30,
-		movement_speed = 0.17,
-		distance_per_frame = 0.2,
-		-- in pu
-		pollution_to_join_attack = 4000,
-		corpse = "big-biter-corpse",
-		dying_explosion = "blood-explosion-big",
-		working_sound = make_biter_calls(0.9),
-		dying_sound = make_biter_dying_sounds(1.0),
-		run_animation = biterrunanimation(bigbiterscale, big_biter_tint1, big_biter_tint2)
-	},
-
-	{
-		type = "unit",
-		name = "behemoth-biter",
-		order="b-b-d",
-		icon = "__base__/graphics/icons/behemoth-biter.png",
-		icon_size = 32,
-		flags = {"placeable-player", "placeable-enemy", "placeable-off-grid", "breaths-air", "not-repairable"},
-		max_health = 5000,
-		subgroup="enemies",
-		resistances =
-		{
-			{
-				type = "physical",
-				decrease = 8,
-				percent = 20
-			},
-			{
-				type = "explosion",
-				decrease = 10,
-				percent = 20
-			}
-		},
-		spawning_time_modifier = 12,
-		healing_per_tick = 0.1,
-		collision_box = {{-0.4, -0.4}, {0.4, 0.4}},
-		selection_box = {{-0.7, -1.5}, {0.7, 0.3}},
-		sticker_box = {{-0.6, -0.8}, {0.6, 0}},
-		distraction_cooldown = 300,
-		attack_parameters =
-		{
-			type = "projectile",
-			range = 1.5,
-			cooldown = 50,
-			ammo_category = "melee",
-			ammo_type = make_unit_melee_ammo_type(100),
-			sound =  make_biter_roars(0.8),
-			animation = biterattackanimation(behemothbiterscale, behemoth_biter_tint1, behemoth_biter_tint2)
-		},
-		vision_distance = 30,
-		movement_speed = 0.17,
-		distance_per_frame = 0.2,
-		-- in pu
-		pollution_to_join_attack = 20000,
-		corpse = "behemoth-biter-corpse",
-		dying_explosion = "blood-explosion-big",
-		working_sound = make_biter_calls(1.2),
-		dying_sound = make_biter_dying_sounds(1.0),
-		run_animation = biterrunanimation(behemothbiterscale, behemoth_biter_tint1, behemoth_biter_tint2)
-	},
-
-	{
-		type = "unit",
-		name = "small-spitter",
-		icon = "__base__/graphics/icons/small-spitter.png",
-		icon_size = 32,
-		flags = {"placeable-player", "placeable-enemy", "placeable-off-grid", "breaths-air", "not-repairable"},
-		max_health = 10,
-		order="b-b-d",
-		subgroup="enemies",
-		healing_per_tick = 0.01,
-		collision_box = {{-0.3, -0.3}, {0.3, 0.3}},
-		selection_box = {{-0.4, -0.4}, {0.4, 0.4}},
-		sticker_box = {{-0.3, -0.5}, {0.3, 0.1}},
-		distraction_cooldown = 300,
-		attack_parameters = spitterattackparameters({range=15,
-																								 min_attack_distance=10,
-																								 cooldown=100,
-																								 damage_modifier=1,
-																								 scale=smallspitterscale,
-																								 tint=smallspittertint,
-																								 roarvolume=0.7}),
-		vision_distance = 30,
-		movement_speed = 0.185,
-		distance_per_frame = 0.04,
-		-- in pu
-		pollution_to_join_attack = 200,
-		corpse = "small-spitter-corpse",
-		dying_explosion = "blood-explosion-small",
-		working_sound = make_biter_calls(0.65),
-		dying_sound = make_spitter_dying_sounds(1.0),
-		run_animation = spitterrunanimation(smallspitterscale, smallspittertint)
-	},
-
-	{
-		type = "unit",
-		name = "medium-spitter",
-		icon = "__base__/graphics/icons/medium-spitter.png",
-		icon_size = 32,
-		flags = {"placeable-player", "placeable-enemy", "placeable-off-grid", "breaths-air", "not-repairable"},
-		max_health = 50,
-		order="b-b-e",
-		subgroup="enemies",
-		resistances =
-		{
-			{
-				type = "explosion",
-				percent = 15
-			}
-		},
-		healing_per_tick = 0.01,
-		collision_box = {{-0.4, -0.4}, {0.4, 0.4}},
-		selection_box = {{-0.5, -0.7}, {0.5, 0.7}},
-		sticker_box = {{-0.3, -0.5}, {0.3, 0.1}},
-		distraction_cooldown = 300,
-		attack_parameters = spitterattackparameters({range=15,
-																								 min_attack_distance=10,
-																								 cooldown=100,
-																								 damage_modifier=2,
-																								 scale=mediumspitterscale,
-																								 tint=mediumspittertint,
-																								 roarvolume=0.85}),
-		vision_distance = 30,
-		movement_speed = 0.165,
-		distance_per_frame = 0.055,
-		-- in pu
-		pollution_to_join_attack = 600,
-		corpse = "medium-spitter-corpse",
-		dying_explosion = "blood-explosion-small",
-		working_sound = make_biter_calls(0.75),
-		dying_sound = make_spitter_dying_sounds(1.0),
-		run_animation = spitterrunanimation(mediumspitterscale, mediumspittertint)
-	},
-
-	{
-		type = "unit",
-		name = "big-spitter",
-		icon = "__base__/graphics/icons/big-spitter.png",
-		icon_size = 32,
-		flags = {"placeable-player", "placeable-enemy", "placeable-off-grid", "breaths-air", "not-repairable"},
-		max_health = 200,
-		order="b-b-f",
-		subgroup="enemies",
-		resistances =
-		{
-			{
-				type = "explosion",
-				percent = 30
-			}
-		},
-		spawning_time_modifier = 3,
-		healing_per_tick = 0.01,
-		collision_box = {{-0.5, -0.5}, {0.5, 0.5}},
-		selection_box = {{-0.7, -1.0}, {0.7, 1.0}},
-		sticker_box = {{-0.3, -0.5}, {0.3, 0.1}},
-		distraction_cooldown = 300,
-		attack_parameters = spitterattackparameters({range=15,
-																								 min_attack_distance=10,
-																								 cooldown=100,
-																								 damage_modifier=3,
-																								 scale=bigspitterscale,
-																								 tint=bigspittertint,
-																								 roarvolume=0.95}),
-		vision_distance = 30,
-		movement_speed = 0.15,
-		distance_per_frame = 0.07,
-		-- in pu
-		pollution_to_join_attack = 1500,
-		corpse = "big-spitter-corpse",
-		dying_explosion = "blood-explosion-big",
-		working_sound = make_biter_calls(0.9),
-		dying_sound = make_spitter_dying_sounds(1.0),
-		run_animation = spitterrunanimation(bigspitterscale, bigspittertint)
-	},
-
-	{
-		type = "unit",
-		name = "behemoth-spitter",
-		icon = "__base__/graphics/icons/behemoth-spitter.png",
-		icon_size = 32,
-		flags = {"placeable-player", "placeable-enemy", "placeable-off-grid", "breaths-air", "not-repairable"},
-		max_health = 2000,
-		order="b-b-f",
-		subgroup="enemies",
-		resistances =
-		{
-			{
-				type = "explosion",
-				percent = 35
-			}
-		},
-		spawning_time_modifier = 12,
-		healing_per_tick = 0.1,
-		collision_box = {{-0.5, -0.5}, {0.5, 0.5}},
-		selection_box = {{-0.7, -1.0}, {0.7, 1.0}},
-		sticker_box = {{-0.3, -0.5}, {0.3, 0.1}},
-		distraction_cooldown = 300,
-		attack_parameters = spitterattackparameters({range=15,
-																								 min_attack_distance=10,
-																								 cooldown=100,
-																								 damage_modifier=5,
-																								 scale=behemothspitterscale,
-																								 tint=behemothspittertint}),
-		vision_distance = 30,
-		movement_speed = 0.15,
-		distance_per_frame = 0.084,
-		pollution_to_join_attack = 10000,
-		corpse = "behemoth-spitter-corpse",
-		dying_explosion = "blood-explosion-big",
-		dying_sound = make_spitter_dying_sounds(1.0),
-		run_animation = spitterrunanimation(behemothspitterscale, behemothspittertint)
-	},
-
-	{
-		type = "unit-spawner",
-		name = "biter-spawner",
-		icon = "__base__/graphics/icons/biter-spawner.png",
-		icon_size = 32,
-		flags = {"placeable-player", "placeable-enemy", "not-repairable"},
-		max_health = 350,
-		order="b-b-g",
-		subgroup="enemies",
-		resistances =
-		{
-			{
-				type = "physical",
-				decrease = 2,
-			},
-			{
-				type = "explosion",
-				decrease = 5,
-				percent = 15,
-			}
-		},
-		working_sound = {
-			sound =
-			{
-				{
-					filename = "__base__/sound/creatures/spawner.ogg",
-					volume = 1.0
-				}
-			},
-			apparent_volume = 2
-		},
-		dying_sound =
-		{
-			{
-				filename = "__base__/sound/creatures/spawner-death-1.ogg",
-				volume = 1.0
-			},
-			{
-				filename = "__base__/sound/creatures/spawner-death-2.ogg",
-				volume = 1.0
-			}
-		},
-		healing_per_tick = 0.02,
-		collision_box = {{-3.2, -2.2}, {2.2, 2.2}},
-		selection_box = {{-3.5, -2.5}, {2.5, 2.5}},
-		-- in ticks per 1 pu
-		pollution_absorption_absolute = 20,
-		pollution_absorption_proportional = 0.01,
-		pollution_to_enhance_spawning = 30000,
-		corpse = "biter-spawner-corpse",
-		dying_explosion = "blood-explosion-huge",
-		-- loot =
-		-- {
-		--   {
-		--     count_max = 10,
-		--     count_min = 2,
-		--     item = "alien-artifact",
-		--     probability = 1
-		--   }
-		-- },
-		max_count_of_owned_units = 0,
-		max_friends_around_to_spawn = 0,
-		animations =
-		{
-			spawner_idle_animation(0, biter_spawner_tint),
-			spawner_idle_animation(1, biter_spawner_tint),
-			spawner_idle_animation(2, biter_spawner_tint),
-			spawner_idle_animation(3, biter_spawner_tint)
-		},
-		result_units = (function()
-										 local res = {}
-										 res[1] = {"small-biter", {{0.0, 0.3}, {0.6, 0.0}}}
-										 if not data.is_demo then
-											 -- from evolution_factor 0.3 the weight for medium-biter is linearly rising from 0 to 0.3
-											 -- this means for example that when the evolution_factor is 0.45 the probability of spawning
-											 -- a small biter is 66% while probability for medium biter is 33%.
-											 res[2] = {"medium-biter", {{0.3, 0.0}, {0.6, 0.3}, {0.7, 0.1}}}
-											 -- for evolution factor of 1 the spawning probabilities are: small-biter 0%, medium-biter 1/7, big-biter 4/7, behemoth biter 3/7
-											 res[3] = {"big-biter", {{0.5, 0.0}, {1.0, 0.4}}}
-											 res[4] = {"behemoth-biter", {{0.9, 0.0}, {1.0, 0.3}}}
-										 end
-										 return res
-									 end)(),
-		-- With zero evolution the spawn rate is 6 seconds, with max evolution it is 2.5 seconds
-		spawning_cooldown = {30, 30},
-		spawning_radius = 0,
-		spawning_spacing = 0,
-		max_spawn_shift = 0,
-		max_richness_for_spawn_shift = 100,
-		autoplace = enemy_spawner_autoplace(0),
-		call_for_help_radius = 0
-	},
-
-
-	{
-		type = "unit-spawner",
-		name = "spitter-spawner",
-		icon = "__base__/graphics/icons/biter-spawner.png",
-		icon_size = 32,
-		flags = {"placeable-player", "placeable-enemy", "not-repairable"},
-		max_health = 350,
-		order="b-b-h",
-		subgroup="enemies",
-		working_sound = {
-			sound =
-			{
-				{
-					filename = "__base__/sound/creatures/spawner.ogg",
-					volume = 1.0
-				}
-			},
-			apparent_volume = 2
-		},
-		dying_sound =
-		{
-			{
-				filename = "__base__/sound/creatures/spawner-death-1.ogg",
-				volume = 1.0
-			},
-			{
-				filename = "__base__/sound/creatures/spawner-death-2.ogg",
-				volume = 1.0
-			}
-		},
-		resistances =
-		{
-			{
-				type = "physical",
-				decrease = 2,
-			},
-			{
-				type = "explosion",
-				decrease = 5,
-				percent = 15,
-			}
-		},
-		healing_per_tick = 0.02,
-		collision_box = {{-3.2, -2.2}, {2.2, 2.2}},
-		selection_box = {{-3.5, -2.5}, {2.5, 2.5}},
-		pollution_absorption_absolute = 20,
-		pollution_absorption_proportional = 0.01,
-		corpse = "spitter-spawner-corpse",
-		dying_explosion = "blood-explosion-huge",
-		loot =
-		{
-			{
-				count_max = 15,
-				count_min = 5,
-				item = "alien-artifact",
-				probability = 1
-			}
-		},
-		max_count_of_owned_units = 7,
-		max_friends_around_to_spawn = 5,
-		animations =
-		{
-			spawner_idle_animation(0, spitter_spawner_tint),
-			spawner_idle_animation(1, spitter_spawner_tint),
-			spawner_idle_animation(2, spitter_spawner_tint),
-			spawner_idle_animation(3, spitter_spawner_tint)
-		},
-
-		result_units = (function()
-										 local res = {}
-										 res[1] = {"small-biter", {{0.0, 0.3}, {0.35, 0}}}
-										 res[2] = {"small-spitter", {{0.25, 0.0}, {0.5, 0.3}, {0.7, 0.0}}}
-										 res[3] = {"medium-spitter", {{0.5, 0.0}, {0.7, 0.3}, {0.9, 0.1}}}
-										 res[4] = {"big-spitter", {{0.5, 0.0}, {1.0, 0.4}}}
-										 res[5] = {"behemoth-spitter", {{0.9, 0.0}, {1.0, 0.3}}}
-										 return res
-									 end)(),
-		-- With zero evolution the spawn rate is 6 seconds, with max evolution it is 2.5 seconds
-		spawning_cooldown = {360, 150},
-		spawning_radius = 10,
-		spawning_spacing = 3,
-		max_spawn_shift = 0,
-		max_richness_for_spawn_shift = 100,
-		autoplace = enemy_spawner_autoplace(1),
-		call_for_help_radius = 50
-	},
-]] --
 })
+
 
 -- ep
 for i = 10, 200, 10 do
@@ -917,7 +592,7 @@ for i = 10, 200, 10 do
 				}
 			},
 			animation = {
-				filename = "__m-roguef__/graphics/entity/explosion/ep-1.png",
+				filename = "__roguef-core__/graphics/explosion/ep-1.png",
 				frame_count = 1,
 				width = 17,
 				height = 17,
@@ -929,10 +604,10 @@ for i = 10, 200, 10 do
 		}
 	})
 end
+
+
 -- stage 1
-
 data:extend({
-
 	{
 		type = "unit",
 		name = "biter-normal-1",
@@ -1122,7 +797,6 @@ data:extend({
 		spawning_spacing = 3,
 		max_spawn_shift = 0,
 		max_richness_for_spawn_shift = 100,
-		autoplace = enemy_spawner_autoplace(0),
 		call_for_help_radius = 50
 	}, {
 		type = "unit-spawner",
@@ -1137,7 +811,7 @@ data:extend({
 		working_sound = {sound = {{filename = "__base__/sound/creatures/spawner.ogg", volume = 1.0}}, apparent_volume = 2},
 		dying_sound = {
 			{filename = "__base__/sound/creatures/spawner-death-1.ogg", volume = 1.0},
-				{filename = "__base__/sound/creatures/spawner-death-2.ogg", volume = 1.0}
+			{filename = "__base__/sound/creatures/spawner-death-2.ogg", volume = 1.0}
 		},
 		healing_per_tick = 0,
 		collision_box = {{-3.2, -2.2}, {2.2, 2.2}},
@@ -1151,7 +825,7 @@ data:extend({
 		max_friends_around_to_spawn = 5,
 		animations = {
 			spawner_idle_animation(0, {r = 0, g = 0, b = 1, a = 1}), spawner_idle_animation(1, {r = 0, g = 0, b = 1, a = 1}),
-				spawner_idle_animation(2, {r = 0, g = 0, b = 1, a = 1}), spawner_idle_animation(3, {r = 0, g = 0, b = 1, a = 1})
+			spawner_idle_animation(2, {r = 0, g = 0, b = 1, a = 1}), spawner_idle_animation(3, {r = 0, g = 0, b = 1, a = 1})
 		},
 		result_units = (function()
 			local res = {}
@@ -1168,7 +842,6 @@ data:extend({
 		spawning_spacing = 3,
 		max_spawn_shift = 0,
 		max_richness_for_spawn_shift = 100,
-		autoplace = enemy_spawner_autoplace(0),
 		call_for_help_radius = 50
 	}, {
 		type = "unit",
@@ -1214,13 +887,11 @@ data:extend({
 		working_sound = make_biter_calls(0.7),
 		run_animation = biterrunanimation(smallbiterscale * 4, {r = 0, g = 1, b = 0, a = 1}, {r = 0, g = 1, b = 0, a = 1})
 	}
-
 })
 
+
 -- stage 2
-
 data:extend({
-
 	{
 		type = "unit",
 		name = "spitter-boss-2",
@@ -1280,18 +951,17 @@ data:extend({
 		dying_sound = make_spitter_dying_sounds(1.0),
 		run_animation = spitterrunanimation(smallspitterscale * 4, {r = 1, g = 0, b = 0, a = 1})
 	}
-
 })
 
--- stage 3
 
+-- stage 3
+-- it seems wrong
 data.raw["rocket-silo"]["rocket-silo"].flags = {
 	"placeable-player", "placeable-enemy", "not-repairable", "placeable-off-grid"
 }
 data.raw["rocket-silo"]["rocket-silo"].max_health = 6000
 local rock_medium_copy = util.table.deepcopy(data.raw["optimized-decorative"]["rock-medium"])
 data:extend({
-
 	{
 		type = "simple-entity",
 		name = "rf_stone",
@@ -1517,7 +1187,7 @@ data:extend({
 
 		pictures = {
 			{
-				filename = "__m-roguef__/graphics/entity/explosion/blaze.png",
+				filename = "__roguef-core__/graphics/explosion/blaze.png",
 				line_length = 8,
 				width = 30,
 				height = 59,
@@ -1535,11 +1205,10 @@ data:extend({
 		light = {intensity = 1, size = 20},
 		working_sound = {sound = {filename = "__base__/sound/furnace.ogg"}, max_sounds_per_type = 3}
 	}
-
 })
 
--- stage 4
 
+-- stage 4
 data:extend({
 	{
 		type = "turret",
@@ -1593,7 +1262,6 @@ data:extend({
 			}
 		},
 		build_base_evolution_requirement = 0.5,
-		autoplace = enemy_worm_autoplace(5),
 		call_for_help_radius = 40
 	}, {
 		type = "stream",
@@ -1639,7 +1307,7 @@ data:extend({
 			}
 		},
 		spine_animation = {
-			filename = "__m-roguef__/graphics/entity/explosion/ep-4-1.png",
+			filename = "__roguef-core__/graphics/explosion/ep-4-1.png",
 			frame_count = 32,
 			line_length = 8,
 			width = 64,
@@ -1740,7 +1408,6 @@ data:extend({
 			}
 		}
 	}
-
 })
 
 -- stage 5
@@ -1814,7 +1481,6 @@ data:extend({
 			}
 		},
 		build_base_evolution_requirement = 0.3,
-		autoplace = enemy_worm_autoplace(2),
 		call_for_help_radius = 40
 	}, {
 		type = "turret",
@@ -1864,7 +1530,6 @@ data:extend({
 			}
 		},
 		build_base_evolution_requirement = 0.3,
-		autoplace = enemy_worm_autoplace(2),
 		call_for_help_radius = 40
 	}, {
 		type = "stream",
@@ -1897,7 +1562,7 @@ data:extend({
 			}
 		},
 		spine_animation = {
-			filename = "__m-roguef__/graphics/entity/explosion/ep-6-1.png",
+			filename = "__roguef-core__/graphics/explosion/ep-6-1.png",
 			frame_count = 32,
 			line_length = 8,
 			width = 64,
@@ -1968,7 +1633,6 @@ data:extend({
 			}
 		},
 		build_base_evolution_requirement = 0.3,
-		autoplace = enemy_worm_autoplace(2),
 		call_for_help_radius = 40
 	}, {
 		type = "unit",
@@ -2069,7 +1733,7 @@ data:extend({
 		flags = {"not-on-map", "placeable-off-grid"},
 		animations = {
 			{
-				filename = "__m-roguef__/graphics/entity/explosion/slow-aura.png",
+				filename = "__roguef-core__/graphics/explosion/slow-aura.png",
 				priority = "low",
 				width = 182,
 				height = 160,
@@ -2131,7 +1795,6 @@ data:extend({
 			}
 		},
 		build_base_evolution_requirement = 0.3,
-		autoplace = enemy_worm_autoplace(2),
 		call_for_help_radius = 40
 	}, {
 		type = "projectile",
@@ -2157,7 +1820,7 @@ data:extend({
 			}
 		},
 		animation = {
-			filename = "__m-roguef__/graphics/entity/explosion/p-7.png",
+			filename = "__roguef-core__/graphics/explosion/p-7.png",
 			frame_count = 1,
 			width = 19,
 			height = 18,
@@ -2184,20 +1847,18 @@ data:extend({
 			}
 		},
 		animation = {
-			filename = "__m-roguef__/graphics/entity/explosion/ep-6-3.png",
+			filename = "__roguef-core__/graphics/explosion/ep-6-3.png",
 			frame_count = 1,
 			width = 17,
 			height = 17,
 			priority = "high"
 		}
 	}
-
 })
 
+
 -- stage 7
-
 data:extend({
-
 	{
 		type = "unit",
 		name = "boss-7",
@@ -2670,7 +2331,7 @@ data:extend({
 		flags = {"not-on-map", "placeable-off-grid"},
 		animations = {
 			{
-				filename = "__m-roguef__/graphics/entity/explosion/ep-7-1.png",
+				filename = "__roguef-core__/graphics/explosion/ep-7-1.png",
 				priority = "extra-high",
 				width = 29,
 				height = 38,
@@ -2690,7 +2351,7 @@ data:extend({
 		},
 		sound = {
 			aggregation = {max_count = 1, remove = false},
-			variations = {{filename = "__m-roguef__/sound/shot-9.ogg", volume = 0.5}}
+			variations = {{filename = "__roguef-core__/sound/shot-9.ogg", volume = 0.5}}
 		}
 	}, {
 		type = "smoke-with-trigger",
@@ -2698,7 +2359,7 @@ data:extend({
 		flags = {"not-on-map"},
 		show_when_smoke_off = true,
 		animation = {
-			filename = "__m-roguef__/graphics/entity/noani/no.png",
+			filename = "__roguef-core__/graphics/empty.png",
 			flags = {"compressed"},
 			priority = "low",
 			width = 1,
@@ -2712,13 +2373,11 @@ data:extend({
 		fade_away_duration = 1 * 60,
 		spread_duration = 10
 	}
-
 })
 
+
 -- stage 8
-
 data:extend({
-
 	{
 		type = "unit",
 		name = "boss-8-1",
@@ -2751,11 +2410,11 @@ data:extend({
 			},
 			sound = {
 				{filename = "__m-roguef__/sound/diablo/attack1.ogg", volume = 0.5},
-					{filename = "__m-roguef__/sound/diablo/attack2.ogg", volume = 0.5},
-					{filename = "__m-roguef__/sound/diablo/attack3.ogg", volume = 0.5},
-					{filename = "__m-roguef__/sound/diablo/attack4.ogg", volume = 0.5},
-					{filename = "__m-roguef__/sound/diablo/attack5.ogg", volume = 0.5},
-					{filename = "__m-roguef__/sound/diablo/attack6.ogg", volume = 0.5}
+				{filename = "__m-roguef__/sound/diablo/attack2.ogg", volume = 0.5},
+				{filename = "__m-roguef__/sound/diablo/attack3.ogg", volume = 0.5},
+				{filename = "__m-roguef__/sound/diablo/attack4.ogg", volume = 0.5},
+				{filename = "__m-roguef__/sound/diablo/attack5.ogg", volume = 0.5},
+				{filename = "__m-roguef__/sound/diablo/attack6.ogg", volume = 0.5}
 			},
 			animation = {
 				width = 288,
@@ -2906,7 +2565,7 @@ data:extend({
 
 		pictures = {
 			{
-				filename = "__m-roguef__/graphics/entity/explosion/blaze.png",
+				filename = "__roguef-core__/graphics/explosion/blaze.png",
 				line_length = 8,
 				width = 30,
 				height = 59,
@@ -2983,7 +2642,6 @@ data:extend({
 			}
 		},
 		build_base_evolution_requirement = 0.3,
-		autoplace = enemy_worm_autoplace(2),
 		call_for_help_radius = 40
 	}, {
 		type = "turret",
@@ -3033,7 +2691,6 @@ data:extend({
 			}
 		},
 		build_base_evolution_requirement = 0.3,
-		autoplace = enemy_worm_autoplace(2),
 		call_for_help_radius = 40
 	}, {
 		type = "stream",
@@ -3066,7 +2723,7 @@ data:extend({
 			}
 		},
 		spine_animation = {
-			filename = "__m-roguef__/graphics/entity/explosion/ep-6-1.png",
+			filename = "__roguef-core__/graphics/explosion/ep-6-1.png",
 			frame_count = 32,
 			line_length = 8,
 			width = 64,
@@ -3137,7 +2794,6 @@ data:extend({
 			}
 		},
 		build_base_evolution_requirement = 0.3,
-		autoplace = enemy_worm_autoplace(2),
 		call_for_help_radius = 40
 	}, {
 		type = "turret",
@@ -3190,7 +2846,6 @@ data:extend({
 			}
 		},
 		build_base_evolution_requirement = 0.3,
-		autoplace = enemy_worm_autoplace(2),
 		call_for_help_radius = 40
 	}, {
 		type = "projectile",
@@ -3216,7 +2871,7 @@ data:extend({
 			}
 		},
 		animation = {
-			filename = "__m-roguef__/graphics/entity/explosion/p-7.png",
+			filename = "__roguef-core__/graphics/explosion/p-7.png",
 			frame_count = 1,
 			width = 19,
 			height = 18,
@@ -3275,7 +2930,6 @@ data:extend({
 			}
 		},
 		build_base_evolution_requirement = 0.3,
-		autoplace = enemy_worm_autoplace(2),
 		call_for_help_radius = 40
 	}, {
 		type = "projectile",
@@ -3294,7 +2948,7 @@ data:extend({
 			}
 		},
 		animation = {
-			filename = "__m-roguef__/graphics/entity/explosion/ep-8-2.png",
+			filename = "__roguef-core__/graphics/explosion/ep-8-2.png",
 			frame_count = 1,
 			width = 128,
 			height = 117,
@@ -3307,7 +2961,7 @@ data:extend({
 		flags = {"not-on-map", "placeable-off-grid"},
 		animations = {
 			{
-				filename = "__m-roguef__/graphics/entity/explosion/ep-7-1.png", -- fast-fix \/
+				filename = "__roguef-core__/graphics/explosion/ep-7-1.png", -- fast-fix \/
 				priority = "extra-high",
 				width = 29,
 				height = 38,
@@ -3317,7 +2971,7 @@ data:extend({
 				scale = 2
 			}
 			-- {
-			-- filename = "__m-roguef__/graphics/entity/explosion/explosion.png", -- TODO: FIX THIS
+			-- filename = "__roguef-core__/graphics/explosion/explosion.png", -- TODO: FIX THIS
 			-- priority = "extra-high",
 			-- width = 40,
 			-- height = 40,
@@ -3331,7 +2985,7 @@ data:extend({
 			aggregation = {max_count = 1, remove = true},
 			variations = {
 				{
-					filename = "__base__/sound/fight/medium-explosion-1.ogg", -- TODO: change this",
+					filename = "__base__/sound/fight/medium-explosion-1.ogg", -- TODO: change this
 					volume = 0.5
 				}, {
 					filename = "__base__/sound/fight/medium-explosion-2.ogg", -- TODO: change this
@@ -3348,13 +3002,11 @@ data:extend({
 			}
 		}
 	}
-
 })
 
 -- stage 9
 
 data:extend({
-
 	{
 		type = "simple-entity",
 		name = "tomas",
@@ -3380,5 +3032,4 @@ data:extend({
 			}
 		}
 	}
-
 })

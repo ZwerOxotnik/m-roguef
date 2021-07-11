@@ -1,7 +1,5 @@
-require("prototypes.category")
 require("prototypes.sound")
 require("prototypes.enemy")
-require("prototypes.explosion")
 require("prototypes.entity") -- TODO: refactor, fix, remake those consoles there
 require("prototypes.item")
 require("prototypes.tile")

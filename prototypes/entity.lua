@@ -72,7 +72,7 @@ data:extend({
 		},
 		pictures = {
 			{
-				filename = "__m-roguef__/graphics/entity/explosion/blaze.png",
+				filename = "__roguef-core__/graphics/explosion/blaze.png",
 				line_length = 8,
 				width = 30,
 				height = 59,
@@ -404,7 +404,7 @@ data:extend({
 			}
 		},
 		animation = {
-			filename = "__m-roguef__/graphics/entity/explosion/p-1.png",
+			filename = "__roguef-core__/graphics/explosion/p-1.png",
 			frame_count = 4,
 			width = 16,
 			height = 16,
@@ -669,14 +669,14 @@ data:extend({
 		name = "weapon-attack",
 		flags = {"not-on-map", "placeable-off-grid"},
 		animations = {
-			{filename = "__m-roguef__/graphics/entity/noani/no.png", frame_count = 1, width = 1, height = 1, animation_speed = 1}
+			{filename = "__roguef-core__/graphics/empty.png", frame_count = 1, width = 1, height = 1, animation_speed = 1}
 		}
 	}, {
 		type = "explosion",
 		name = "weapon-attacker",
 		flags = {"not-on-map", "placeable-off-grid"},
 		animations = {
-			{filename = "__m-roguef__/graphics/entity/noani/no.png", frame_count = 1, width = 1, height = 1, animation_speed = 1}
+			{filename = "__roguef-core__/graphics/empty.png", frame_count = 1, width = 1, height = 1, animation_speed = 1}
 		}
 	}
 })
@@ -689,7 +689,7 @@ for i = 1, 10, 1 do
 				type = "sticker",
 				name = "slowdown-" .. tostring(i) .. "-" .. tostring(j),
 				flags = {"not-on-map"},
-				animation = {filename = "__m-roguef__/graphics/entity/noani/no.png", frame_count = 1, width = 1, height = 1},
+				animation = {filename = "__roguef-core__/graphics/empty.png", frame_count = 1, width = 1, height = 1},
 				duration_in_ticks = i * 60 / 2,
 				target_movement_modifier = j / 100
 			}
@@ -733,7 +733,7 @@ data:extend({
 		type = "explosion",
 		name = "rf_no",
 		flags = {"not-on-map", "placeable-off-grid"},
-		animations = {{filename = "__m-roguef__/graphics/entity/noani/no.png", frame_count = 1, width = 1, height = 1}}
+		animations = {{filename = "__roguef-core__/graphics/empty.png", frame_count = 1, width = 1, height = 1}}
 	}, {
 		type = "market",
 		name = "rf_market",
