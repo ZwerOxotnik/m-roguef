@@ -1,5 +1,15 @@
 require("prototypes.entity.demo-gunshot-sounds")
+
+
+ -- TODO: check this
+local fire_blend_mode = "additive"
+local fire_flags = nil
+local fire_tint = {r=1,g=1,b=1,a=1}
+local fire_animation_speed = 0.5
+
+
 data.raw["explosion"]["explosion-gunshot"].flags = {"not-on-map", "placeable-off-grid"}
+
 
 -- weapon
 function weapon(name, cooldown, range, sound)
@@ -136,7 +146,8 @@ function ammo(name, target, source, data)
 								{type = "create-entity", entity_name = "player-fire", trigger_created_entity = "true"}
 						}
 					}
-				}, data
+				},
+				data
 			}
 		},
 		magazine_size = 1000000,
@@ -145,7 +156,6 @@ function ammo(name, target, source, data)
 end
 
 data:extend({
-
 	ammo(1, "direction", "explosion-gunshot", {
 		type = "direct",
 		-- repeat_count = 1,
@@ -590,7 +600,6 @@ data:extend({
 		end_scale = 0.01,
 		color = {r = 1, g = 0.9, b = 0, a = 0.5},
 		damage_per_tick = {amount = 1 / 2, type = "damage-player"},
-		-- spawn_entity = "noani",
 		spread_delay = 300,
 		spread_delay_deviation = 180,
 		maximum_spread_count = 100,

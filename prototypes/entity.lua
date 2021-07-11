@@ -1,3 +1,12 @@
+ -- TODO: check this
+local beam_blend_mode = "additive-soft"
+local fire_blend_mode = "additive"
+local fire_flags = nil
+local fire_tint = {r=1,g=1,b=1,a=1}
+local fire_animation_speed = 0.5
+local fire_scale = 1
+
+
 local player = data.raw["character"]["character"]
 player.max_health = 1000
 player.healing_per_tick = 0
@@ -28,7 +37,6 @@ data:extend({
 		end_scale = 0.01,
 		color = {r = 1, g = 0.9, b = 0, a = 0.5},
 		damage_per_tick = {amount = 0, type = "fire"},
-		-- spawn_entity = "noani",
 		spread_delay = 300,
 		spread_delay_deviation = 180,
 		maximum_spread_count = 100,

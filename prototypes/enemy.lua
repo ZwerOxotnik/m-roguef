@@ -8,6 +8,24 @@ require("prototypes.entity.demo-spawner-animation")
 require("prototypes.entity.demo-biter-animations")
 require("prototypes.entity.spitter-animations")
 
+
+ -- TODO: check this
+local fire_blend_mode = "additive"
+local fire_flags = nil
+local fire_tint = {r=1,g=1,b=1,a=1}
+local fire_animation_speed = 0.5
+local fire_scale = 1
+local capsule_smoke = {{
+	name = "smoke-fast",
+	deviation = {0.15, 0.15},
+	frequency = 1,
+	position = {0, 0},
+	starting_frame = 3,
+	starting_frame_deviation = 5,
+	starting_frame_speed_deviation = 5
+}}
+
+
 data.raw["electric-turret"]["laser-turret"].energy_source = {
 	type = "electric",
 	buffer_capacity = "100000kJ",
@@ -1480,7 +1498,6 @@ data:extend({
 		end_scale = 0.01,
 		color = {r = 1, g = 0.9, b = 0, a = 0.5},
 		damage_per_tick = {amount = 2, type = "damage-enemy"},
-		-- spawn_entity = "noani",
 		spread_delay = 300,
 		spread_delay_deviation = 180,
 		maximum_spread_count = 100,
@@ -2870,7 +2887,6 @@ data:extend({
 		end_scale = 0.01,
 		color = {r = 1, g = 0.9, b = 0, a = 0.5},
 		damage_per_tick = {amount = 2, type = "damage-enemy"},
-		-- spawn_entity = "noani",
 		spread_delay = 300,
 		spread_delay_deviation = 180,
 		maximum_spread_count = 100,
