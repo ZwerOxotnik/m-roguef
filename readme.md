@@ -3,7 +3,7 @@
 https://mods.factorio.com/mod/roguef\
 https://forums.factorio.com/viewtopic.php?f=95&t=40743#p240868
 
-Roguelike Factorio - shooting action roguelike game mode (Currently, singleplayer only)
+Roguelike Factorio - adds new items, bosses, new enemies, skills, special scenario for it and elements of action roguelike (Currently, singleplayer only)
 
 Remember, attack key is 'left mouse button',
 Interaction: Space bar\

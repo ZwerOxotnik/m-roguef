@@ -1,8 +1,6 @@
 function spawner_idle_animation(variation, tint)
-return
-	{
-		layers =
-		{
+	return {
+		layers = {
 			{
 				filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-idle.png",
 				line_length = 8,
@@ -14,10 +12,9 @@ return
 				run_mode = "forward-then-backward",
 				shift = {0.140625 - 0.65, -0.234375},
 				y = variation * 181
-			},
-			{
+			}, {
 				filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-idle-mask.png",
-				flags = { "mask" },
+				flags = {"mask"},
 				width = 166,
 				height = 148,
 				frame_count = 8,
@@ -33,60 +30,52 @@ return
 end
 
 function spawner_die_animation(variation, tint)
-return
-	{
-		layers =
-		{
+	return {
+		layers = {
 			{
 				width = 255,
 				height = 184,
 				frame_count = 20,
 				direction_count = 1,
 				shift = {-0.015625 - 0.65, -0.28125},
-				stripes =
-				{
-				 {
-					filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-die-01.png",
-					width_in_frames = 7,
-					height_in_frames = 4,
-					y = variation * 184
-				 },
-				 {
-					filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-die-02.png",
-					width_in_frames = 7,
-					height_in_frames = 4,
-					y = variation * 184
-				 },
-				 {
-					filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-die-03.png",
-					width_in_frames = 6,
-					height_in_frames = 4,
-					y = variation * 184
-				 }
+				stripes = {
+					{
+						filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-die-01.png",
+						width_in_frames = 7,
+						height_in_frames = 4,
+						y = variation * 184
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-die-02.png",
+						width_in_frames = 7,
+						height_in_frames = 4,
+						y = variation * 184
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-die-03.png",
+						width_in_frames = 6,
+						height_in_frames = 4,
+						y = variation * 184
+					}
 				}
-			},
-			{
-				flags = { "mask" },
+			}, {
+				flags = {"mask"},
 				width = 166,
 				height = 148,
 				frame_count = 20,
 				direction_count = 1,
 				shift = {-0.34375 - 0.65, -0.375},
 				tint = tint,
-				stripes =
-				{
-				 {
-					filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-die-mask-01.png",
-					width_in_frames = 10,
-					height_in_frames = 4,
-					y = variation * 148
-				 },
-				 {
-					filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-die-mask-02.png",
-					width_in_frames = 10,
-					height_in_frames = 4,
-					y = variation * 148
-				 }
+				stripes = {
+					{
+						filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-die-mask-01.png",
+						width_in_frames = 10,
+						height_in_frames = 4,
+						y = variation * 148
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/spawner/spawner-die-mask-02.png",
+						width_in_frames = 10,
+						height_in_frames = 4,
+						y = variation * 148
+					}
 				}
 			}
 		}

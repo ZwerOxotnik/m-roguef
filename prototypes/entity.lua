@@ -13,12 +13,11 @@ player.distance_per_frame = 0.13
 player.maximum_corner_sliding_distance = 0.7
 
 local player_copy = util.table.deepcopy(player)
-player_copy.name = "player-test"
-
+player_copy.name = "player-dummy"
+player_copy.max_health = 10000
 
 data:extend({
-	player_copy,
-	{
+	player_copy, {
 		type = "fire",
 		name = "blaze",
 		flags = {"placeable-off-grid", "not-on-map"},
@@ -27,7 +26,7 @@ data:extend({
 		spread_duration = 600,
 		start_scale = 1,
 		end_scale = 0.01,
-		color = {r=1, g=0.9, b=0, a=0.5},
+		color = {r = 1, g = 0.9, b = 0, a = 0.5},
 		damage_per_tick = {amount = 0, type = "fire"},
 		-- spawn_entity = "noani",
 		spread_delay = 300,
@@ -46,14 +45,11 @@ data:extend({
 		lifetime_increase_cooldown = 10,
 		delay_between_initial_flames = 10,
 		burnt_patch_lifetime = 0,
-		on_fuel_added_action =
-		{
+		on_fuel_added_action = {
 			type = "direct",
-			action_delivery =
-			{
+			action_delivery = {
 				type = "instant",
-				target_effects =
-				{
+				target_effects = {
 					{
 						type = "create-trivial-smoke",
 						smoke_name = "fire-smoke-on-adding-fuel",
@@ -66,8 +62,7 @@ data:extend({
 				}
 			}
 		},
-		pictures =
-		{
+		pictures = {
 			{
 				filename = "__m-roguef__/graphics/entity/explosion/blaze.png",
 				line_length = 8,
@@ -81,63 +76,52 @@ data:extend({
 				scale = fire_scale,
 				tint = fire_tint,
 				flags = fire_flags,
-				shift = { -0.0390625/2, -0.90625/2 }
+				shift = {-0.0390625 / 2, -0.90625 / 2}
 			}
 		},
 		light = {intensity = 1, size = 20},
-		working_sound =
-		{
-			sound = {filename = "__base__/sound/furnace.ogg"},
-			max_sounds_per_type = 3
-		},
-	},
-	{
+		working_sound = {sound = {filename = "__base__/sound/furnace.ogg"}, max_sounds_per_type = 3}
+	}, {
 		type = "combat-robot",
 		name = "robot-1",
 		icon = "__0_16_graphics_revived__/graphics/icons/destroyer.png",
 		icon_size = 32,
 		flags = {"player-creation", "placeable-off-grid", "not-on-map", "not-repairable"},
 		resistances = {{type = "damage-player", percent = 100}},
-		subgroup="capsule",
-		order="e-a-c",
+		subgroup = "capsule",
+		order = "e-a-c",
 		max_health = 1, -- why was 0???
 		alert_when_damaged = false,
-		--collision_box = {{0, 0}, {0, 0}},
+		-- collision_box = {{0, 0}, {0, 0}},
 		selection_box = {{-0.5, -1.5}, {0.5, -0.5}},
-		--selectable_in_game = false,
+		-- selectable_in_game = false,
 		distance_per_frame = 0.13,
-		time_to_live = 60*60*60*24*365,
+		time_to_live = 60 * 60 * 60 * 24 * 365,
 		speed = 0.1,
 		follows_player = true,
 		friction = 0.05,
 		range_from_player = 3.0,
-		attack_parameters =
-		{
+		attack_parameters = {
 			type = "beam",
 			ammo_category = "rf_robot",
 			cooldown = 6,
 			range = 20,
-			ammo_type =
-			{
+			ammo_type = {
 				category = "rf_robot",
-				action =
-				{
+				action = {
 					type = "direct",
-					action_delivery =
-					{
+					action_delivery = {
 						type = "beam",
 						beam = "beam-robot-1",
 						max_length = 20,
 						duration = 6,
-						source_offset = {0.15, -0.5},
+						source_offset = {0.15, -0.5}
 					}
 				}
 			}
 		},
-		idle =
-		{
-			layers =
-			{
+		idle = {
+			layers = {
 				{
 					filename = "__base__/graphics/entity/destroyer-robot/destroyer-robot.png",
 					priority = "high",
@@ -148,9 +132,8 @@ data:extend({
 					frame_count = 1,
 					direction_count = 32,
 					shift = {0.078125, -0.546875},
-					scale=1/2
-				},
-				{
+					scale = 1 / 2
+				}, {
 					filename = "__base__/graphics/entity/destroyer-robot/destroyer-robot-mask.png",
 					priority = "high",
 					line_length = 32,
@@ -161,12 +144,11 @@ data:extend({
 					direction_count = 32,
 					shift = {0.078125, -0.734375},
 					apply_runtime_tint = true,
-					scale=1/2
-				},
+					scale = 1 / 2
+				}
 			}
 		},
-		shadow_idle =
-		{
+		shadow_idle = {
 			filename = "__base__/graphics/entity/destroyer-robot/destroyer-robot-shadow.png",
 			priority = "high",
 			line_length = 32,
@@ -175,12 +157,10 @@ data:extend({
 			frame_count = 1,
 			direction_count = 32,
 			shift = {0.78125, 0},
-				scale=1/2
+			scale = 1 / 2
 		},
-		in_motion =
-		{
-			layers =
-			{
+		in_motion = {
+			layers = {
 				{
 					filename = "__base__/graphics/entity/destroyer-robot/destroyer-robot.png",
 					priority = "high",
@@ -190,9 +170,8 @@ data:extend({
 					frame_count = 1,
 					direction_count = 32,
 					shift = {0.078125, -0.546875},
-					scale=1/2
-				},
-				{
+					scale = 1 / 2
+				}, {
 					filename = "__base__/graphics/entity/destroyer-robot/destroyer-robot-mask.png",
 					priority = "high",
 					line_length = 32,
@@ -202,12 +181,11 @@ data:extend({
 					direction_count = 32,
 					shift = {0.078125, -0.734375},
 					apply_runtime_tint = true,
-					scale=1/2
+					scale = 1 / 2
 				}
 			}
 		},
-		shadow_in_motion =
-		{
+		shadow_in_motion = {
 			filename = "__base__/graphics/entity/destroyer-robot/destroyer-robot-shadow.png",
 			priority = "high",
 			line_length = 32,
@@ -216,158 +194,122 @@ data:extend({
 			frame_count = 1,
 			direction_count = 32,
 			shift = {0.78125, 0},
-			scale=1/2
+			scale = 1 / 2
 		}
-	},
-	{
+	}, {
 		type = "beam",
 		name = "beam-robot-1",
 		flags = {"not-on-map"},
 		width = 0.5,
 		damage_interval = 6,
-		working_sound =
-		{
-			{
-				filename = "__base__/sound/fight/electric-beam.ogg",
-				volume = 0.3
-			}
-		},
-		action =
-		{
+		working_sound = {{filename = "__base__/sound/fight/electric-beam.ogg", volume = 0.3}},
+		action = {
 			type = "direct",
-			action_delivery =
-			{
+			action_delivery = {
 				type = "instant",
-				target_effects =
-				{
-					{
-						type = "damage",
-						damage = {amount = 1, type = "damage-player"}
-					}
-				}
+				target_effects = {{type = "damage", damage = {amount = 1, type = "damage-player"}}}
 			}
 		},
-		head =
-		{
+		head = {
 			filename = "__m-roguef__/graphics/entity/beam/beam-head.png",
 			line_length = 16,
 			width = 45,
 			height = 39,
 			frame_count = 16,
 			animation_speed = 0.5,
-			blend_mode = beam_blend_mode,
+			blend_mode = beam_blend_mode
 		},
-		tail =
-		{
+		tail = {
 			filename = "__m-roguef__/graphics/entity/beam/beam-tail.png",
 			line_length = 16,
 			width = 45,
 			height = 39,
 			frame_count = 16,
-			blend_mode = beam_blend_mode,
+			blend_mode = beam_blend_mode
 		},
-		body =
-		{
+		body = {
 			{
 				filename = "__m-roguef__/graphics/entity/beam/beam-body-1.png",
 				line_length = 16,
 				width = 45,
 				height = 39,
 				frame_count = 16,
-				blend_mode = beam_blend_mode,
-			},
-			{
+				blend_mode = beam_blend_mode
+			}, {
 				filename = "__m-roguef__/graphics/entity/beam/beam-body-2.png",
 				line_length = 16,
 				width = 45,
 				height = 39,
 				frame_count = 16,
-				blend_mode = beam_blend_mode,
-			},
-			{
+				blend_mode = beam_blend_mode
+			}, {
 				filename = "__m-roguef__/graphics/entity/beam/beam-body-3.png",
 				line_length = 16,
 				width = 45,
 				height = 39,
 				frame_count = 16,
-				blend_mode = beam_blend_mode,
-			},
-			{
+				blend_mode = beam_blend_mode
+			}, {
 				filename = "__m-roguef__/graphics/entity/beam/beam-body-4.png",
 				line_length = 16,
 				width = 45,
 				height = 39,
 				frame_count = 16,
-				blend_mode = beam_blend_mode,
-			},
-			{
+				blend_mode = beam_blend_mode
+			}, {
 				filename = "__m-roguef__/graphics/entity/beam/beam-body-5.png",
 				line_length = 16,
 				width = 45,
 				height = 39,
 				frame_count = 16,
-				blend_mode = beam_blend_mode,
-			},
-			{
+				blend_mode = beam_blend_mode
+			}, {
 				filename = "__m-roguef__/graphics/entity/beam/beam-body-6.png",
 				line_length = 16,
 				width = 45,
 				height = 39,
 				frame_count = 16,
-				blend_mode = beam_blend_mode,
-			},
+				blend_mode = beam_blend_mode
+			}
 		}
-	},
-
-	{
+	}, {
 		type = "combat-robot",
 		name = "robot-2",
 		icon = "__0_16_graphics_revived__/graphics/icons/destroyer.png",
 		icon_size = 32,
 		flags = {"player-creation", "placeable-off-grid", "not-on-map", "not-repairable"},
-		resistances = { { type = "damage-player", percent = 100 } },
-		subgroup="capsule",
-		order="e-a-c",
+		resistances = {{type = "damage-player", percent = 100}},
+		subgroup = "capsule",
+		order = "e-a-c",
 		max_health = 1, -- why was 0???
 		alert_when_damaged = false,
-		--collision_box = {{0, 0}, {0, 0}},
+		-- collision_box = {{0, 0}, {0, 0}},
 		selection_box = {{-0.5, -1.5}, {0.5, -0.5}},
-	 --selectable_in_game = false,
+		-- selectable_in_game = false,
 		distance_per_frame = 0.13,
-		time_to_live = 60*60*60*24*365,
+		time_to_live = 60 * 60 * 60 * 24 * 365,
 		speed = 0.1,
 		follows_player = true,
 		friction = 0.05,
 		range_from_player = 3.0,
-		attack_parameters =
-		{
+		attack_parameters = {
 			type = "projectile",
 			ammo_category = "rf_robot",
 			cooldown = 30,
 			range = 30,
-			ammo_type =
-			{
+			ammo_type = {
 				category = "rf_robot",
-			target_type="direction",
-				action =
-			{
-				{
-				 type = "direct",
-				 action_delivery =
-				 {
-					type = "projectile",
-					projectile = "p-robot-2",
-					starting_speed = 0.3,
-					max_range = 30
-				 }
-				},
-			}
+				target_type = "direction",
+				action = {
+					{
+						type = "direct",
+						action_delivery = {type = "projectile", projectile = "p-robot-2", starting_speed = 0.3, max_range = 30}
+					}
+				}
 			}
 		},
-		idle =
-		{
-			layers =
-			{
+		idle = {
+			layers = {
 				{
 					filename = "__base__/graphics/entity/distractor-robot/distractor-robot.png",
 					priority = "high",
@@ -377,8 +319,7 @@ data:extend({
 					frame_count = 1,
 					direction_count = 16,
 					shift = {0, -0.078125}
-				},
-				{
+				}, {
 					filename = "__base__/graphics/entity/distractor-robot/distractor-robot-mask.png",
 					priority = "high",
 					line_length = 16,
@@ -391,8 +332,7 @@ data:extend({
 				}
 			}
 		},
-		shadow_idle =
-		{
+		shadow_idle = {
 			filename = "__base__/graphics/entity/distractor-robot/distractor-robot-shadow.png",
 			priority = "high",
 			line_length = 16,
@@ -402,10 +342,8 @@ data:extend({
 			direction_count = 16,
 			shift = {0.9375, 0.609375}
 		},
-		in_motion =
-		{
-			layers =
-			{
+		in_motion = {
+			layers = {
 				{
 					filename = "__base__/graphics/entity/distractor-robot/distractor-robot.png",
 					priority = "high",
@@ -416,8 +354,7 @@ data:extend({
 					direction_count = 16,
 					shift = {0, -0.078125},
 					y = 33
-				},
-				{
+				}, {
 					filename = "__base__/graphics/entity/distractor-robot/distractor-robot-mask.png",
 					priority = "high",
 					line_length = 16,
@@ -431,8 +368,7 @@ data:extend({
 				}
 			}
 		},
-		shadow_in_motion =
-		{
+		shadow_in_motion = {
 			filename = "__base__/graphics/entity/distractor-robot/distractor-robot-shadow.png",
 			priority = "high",
 			line_length = 16,
@@ -442,109 +378,77 @@ data:extend({
 			direction_count = 16,
 			shift = {0.9375, 0.609375}
 		}
-	},
-	{
+	}, {
 		type = "projectile",
 		name = "p-robot-2",
-		flags = {"not-on-map","placeable-off-grid"},
+		flags = {"not-on-map", "placeable-off-grid"},
 		collision_box = {{-0.3, -0.3}, {0.3, 0.3}},
 		acceleration = 0,
 		direction_only = true,
-		action =
-		{
+		action = {
 			type = "direct",
-			action_delivery =
-			{
+			action_delivery = {
 				type = "instant",
-				target_effects =
-			{
-				{
-				 type = "damage",
-				 damage = {amount = 5, type = "damage-player"}
-				},
-				{
-				 type = "create-entity",
-				 entity_name = "target-melee-2"
-				},
-			}
+				target_effects = {
+					{type = "damage", damage = {amount = 5, type = "damage-player"}},
+						{type = "create-entity", entity_name = "target-melee-2"}
+				}
 			}
 		},
-		animation =
-		{
+		animation = {
 			filename = "__m-roguef__/graphics/entity/explosion/p-1.png",
 			frame_count = 4,
 			width = 16,
 			height = 16,
 			priority = "high",
-		blend_mode = "additive",
-		animation_speed = 10/60,
-		scale=2/3
-		},
-	},
-
-	{
+			blend_mode = "additive",
+			animation_speed = 10 / 60,
+			scale = 2 / 3
+		}
+	}, {
 		type = "combat-robot",
 		name = "robot-3",
 		icon = "__0_16_graphics_revived__/graphics/icons/destroyer.png",
 		icon_size = 32,
 		flags = {"player-creation", "placeable-off-grid", "not-on-map", "not-repairable"},
-		resistances = { { type = "damage-player", percent = 100 } },
-		subgroup="capsule",
-		order="e-a-c",
+		resistances = {{type = "damage-player", percent = 100}},
+		subgroup = "capsule",
+		order = "e-a-c",
 		max_health = 1, -- why was 0???
 		alert_when_damaged = false,
-		--collision_box = {{0, 0}, {0, 0}},
+		-- collision_box = {{0, 0}, {0, 0}},
 		selection_box = {{-0.5, -1.5}, {0.5, -0.5}},
-		--selectable_in_game = false,
+		-- selectable_in_game = false,
 		distance_per_frame = 0.13,
-		time_to_live = 60*60*60*24*365,
+		time_to_live = 60 * 60 * 60 * 24 * 365,
 		speed = 0.1,
 		follows_player = true,
 		friction = 0.05,
 		range_from_player = 3.0,
-		attack_parameters =
-		{
+		attack_parameters = {
 			type = "projectile",
 			ammo_category = "rf_robot",
 			cooldown = 60,
 			range = 25,
-			ammo_type =
-			{
+			ammo_type = {
 				category = "rf_robot",
-			target_type="position",
-				action =
-			{
-				{
-				 type = "direct",
-				 action_delivery =
-				 {
-					type = "projectile",
-					projectile = "p-robot-3",
-					starting_speed = 0.3,
-					max_range = 25
-				 }
-				},
-				{
-				 type = "direct",
-				 action_delivery =
-				 {
-					type = "instant",
-					source_effects =
+				target_type = "position",
+				action = {
 					{
-						{
-						 type = "create-explosion",
-						 entity_name = "explosion-gunshot"
+						type = "direct",
+						action_delivery = {type = "projectile", projectile = "p-robot-3", starting_speed = 0.3, max_range = 25}
+					}, {
+						type = "direct",
+						action_delivery = {
+							type = "instant",
+							source_effects = {{type = "create-explosion", entity_name = "explosion-gunshot"}}
 						}
 					}
-				 }
-				},
-			}
+				}
 			}
 		},
-		idle =
-		{
-			layers =
-			{
+		idle = {
+			layers = {
 				{
 					filename = "__base__/graphics/entity/defender-robot/defender-robot.png",
 					priority = "high",
@@ -554,8 +458,7 @@ data:extend({
 					frame_count = 1,
 					direction_count = 16,
 					shift = {0, 0.015625}
-				},
-				{
+				}, {
 					filename = "__base__/graphics/entity/defender-robot/defender-robot-mask.png",
 					priority = "high",
 					line_length = 16,
@@ -565,11 +468,10 @@ data:extend({
 					direction_count = 16,
 					shift = {0, -0.125},
 					apply_runtime_tint = true
-				},
+				}
 			}
 		},
-		shadow_idle =
-		{
+		shadow_idle = {
 			filename = "__base__/graphics/entity/defender-robot/defender-robot-shadow.png",
 			priority = "high",
 			line_length = 16,
@@ -579,10 +481,8 @@ data:extend({
 			direction_count = 16,
 			shift = {0.859375, 0.609375}
 		},
-		in_motion =
-		{
-			layers =
-			{
+		in_motion = {
+			layers = {
 				{
 					filename = "__base__/graphics/entity/defender-robot/defender-robot.png",
 					priority = "high",
@@ -593,8 +493,7 @@ data:extend({
 					direction_count = 16,
 					shift = {0, 0.015625},
 					y = 33
-				},
-				{
+				}, {
 					filename = "__base__/graphics/entity/defender-robot/defender-robot-mask.png",
 					priority = "high",
 					line_length = 16,
@@ -605,11 +504,10 @@ data:extend({
 					shift = {0, -0.125},
 					apply_runtime_tint = true,
 					y = 16
-				},
+				}
 			}
 		},
-		shadow_in_motion =
-		{
+		shadow_in_motion = {
 			filename = "__base__/graphics/entity/defender-robot/defender-robot-shadow.png",
 			priority = "high",
 			line_length = 16,
@@ -619,172 +517,118 @@ data:extend({
 			direction_count = 16,
 			shift = {0.859375, 0.609375}
 		}
-	},
-	{
+	}, {
 		type = "projectile",
 		name = "p-robot-3",
 		flags = {"not-on-map"},
 		acceleration = 0,
-		action =
-		{
+		action = {
 			{
 				type = "direct",
-				action_delivery =
-				{
-					type = "instant",
-					target_effects =
-					{
-						{
-						type = "create-entity",
-						entity_name = "explosion-1"
-						},
-					}
-				}
-			},
-			{
+				action_delivery = {type = "instant", target_effects = {{type = "create-entity", entity_name = "explosion-1"}}}
+			}, {
 				type = "area",
 				radius = 2,
-				action_delivery =
-				{
+				action_delivery = {
 					type = "instant",
-					target_effects =
-					{
-						{
-						type = "damage",
-						damage = {amount = 10, type = "damage-player"}
-						},
-					}
+					target_effects = {{type = "damage", damage = {amount = 10, type = "damage-player"}}}
 				}
 			}
 		},
 		light = {intensity = 0.5, size = 4},
-		animation =
-		{
+		animation = {
 			filename = "__base__/graphics/entity/grenade/grenade.png",
 			frame_count = 1,
 			width = 24,
 			height = 24,
 			priority = "high"
 		},
-		shadow =
-		{
+		shadow = {
 			filename = "__base__/graphics/entity/grenade/grenade-shadow.png",
 			frame_count = 1,
 			width = 24,
 			height = 24,
 			priority = "high"
 		}
-	},
-
-	{
+	}, {
 		type = "land-mine",
 		name = "mine-6",
 		icon = "__0_16_graphics_revived__/graphics/icons/land-mine.png",
 		icon_size = 32,
-		flags =
-		{
-			"player-creation",
-			"placeable-off-grid"
-		},
+		flags = {"player-creation", "placeable-off-grid"},
 		max_health = 250,
 		alert_when_damaged = false,
 		corpse = "small-remnants",
 		collision_box = {{-0.4, -0.4}, {0.4, 0.4}},
 		selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
 		dying_explosion = "explosion-hit",
-		picture_safe =
-		{
+		picture_safe = {
 			filename = "__base__/graphics/entity/land-mine/land-mine.png",
 			priority = "medium",
 			width = 32,
 			height = 32
 		},
-		picture_set =
-		{
+		picture_set = {
 			filename = "__base__/graphics/entity/land-mine/land-mine-set.png",
 			priority = "medium",
 			width = 32,
 			height = 32
 		},
 		trigger_radius = 2.5,
-		action =
-		{
+		action = {
 			type = "direct",
-			action_delivery =
-			{
+			action_delivery = {
 				type = "instant",
-				source_effects =
-				{
+				source_effects = {
 					{
 						type = "nested-result",
 						affects_target = true,
-						action =
-						{
+						action = {
 							type = "area",
 							radius = 6,
-							collision_mask = { "player-layer" },
-							action_delivery =
-							{
+							collision_mask = {"player-layer"},
+							action_delivery = {
 								type = "instant",
-								target_effects =
-								{
-									type = "damage",
-									damage = {amount = 100, type = "damage-player"}
-								}
+								target_effects = {type = "damage", damage = {amount = 100, type = "damage-player"}}
 							}
-						},
-					},
-					{
-						type = "create-entity",
-						entity_name = "explosion"
-					},
-					{
-						type = "damage",
-						damage = {amount = 1000, type = "damage-player"}
-					}
+						}
+					}, {type = "create-entity", entity_name = "explosion"},
+						{type = "damage", damage = {amount = 1000, type = "damage-player"}}
 				}
 			}
-		},
-	},
-
-	-- TODO: delete flying-text due of https://lua-api.factorio.com/0.17.43/LuaRendering.html#LuaRendering.draw_text
+		}
+	}, -- TODO: delete flying-text due of https://lua-api.factorio.com/0.17.43/LuaRendering.html#LuaRendering.draw_text
 	{
 		type = "flying-text",
 		name = "playertext",
-		flags = {"not-on-map","placeable-off-grid"},
+		flags = {"not-on-map", "placeable-off-grid"},
 		time_to_live = 300,
 		speed = -0.01
-	},
-	{
+	}, {
 		type = "flying-text",
 		name = "flying-text",
-		flags = {"not-on-map","placeable-off-grid"},
+		flags = {"not-on-map", "placeable-off-grid"},
 		time_to_live = 200,
 		speed = 0.05
-	},
-	{
+	}, {
 		type = "flying-text",
 		name = "critical-text",
-		flags = {"not-on-map","placeable-off-grid"},
+		flags = {"not-on-map", "placeable-off-grid"},
 		time_to_live = 300,
 		speed = -0.01
-	},
-	{
+	}, {
 		type = "flying-text",
 		name = "damage-text",
-		flags = {"not-on-map","placeable-off-grid"},
+		flags = {"not-on-map", "placeable-off-grid"},
 		time_to_live = 300,
 		speed = 0.1
-	},
-	{
+	}, {
 		type = "flying-text",
 		name = "weapon-text",
-		flags = {"not-on-map","placeable-off-grid"},
+		flags = {"not-on-map", "placeable-off-grid"},
 		time_to_live = 60,
 		speed = 0
-	},
-
-	--[[npc
+	}, --[[npc
 	{
 		type = "character",
 		name = "scareboy",
@@ -811,65 +655,41 @@ data:extend({
 		mining_with_tool_particles_animation_positions = {28},
 		running_sound_animation_positions = {5, 16}
 	},
-	]]
-
-	--weapon-attack for trigger
+	]] -- weapon-attack for trigger
 	{
 		type = "explosion",
 		name = "weapon-attack",
-		flags = {"not-on-map","placeable-off-grid"},
-		animations =
-		{
-			{
-			filename = "__m-roguef__/graphics/entity/noani/no.png",
-			frame_count = 1,
-			width = 1,
-			height = 1,
-			animation_speed = 1
-			}
+		flags = {"not-on-map", "placeable-off-grid"},
+		animations = {
+			{filename = "__m-roguef__/graphics/entity/noani/no.png", frame_count = 1, width = 1, height = 1, animation_speed = 1}
 		}
-	},
-	{
+	}, {
 		type = "explosion",
 		name = "weapon-attacker",
-		flags = {"not-on-map","placeable-off-grid"},
-		animations =
-		{
-			{
-				filename = "__m-roguef__/graphics/entity/noani/no.png",
-				frame_count = 1,
-				width = 1,
-				height = 1,
-				animation_speed = 1
-			}
+		flags = {"not-on-map", "placeable-off-grid"},
+		animations = {
+			{filename = "__m-roguef__/graphics/entity/noani/no.png", frame_count = 1, width = 1, height = 1, animation_speed = 1}
 		}
-		},
+	}
 })
 
---sticker ( slowdown-i-j ) i : 0.5 sec,   j : movement speed %
-for i=1,10,1 do
-	for j=0,400,10 do
-		data:extend(
-		{
+-- sticker ( slowdown-i-j ) i : 0.5 sec,   j : movement speed %
+for i = 1, 10, 1 do
+	for j = 0, 400, 10 do
+		data:extend({
 			{
 				type = "sticker",
-				name = "slowdown-"..tostring(i).."-"..tostring(j),
+				name = "slowdown-" .. tostring(i) .. "-" .. tostring(j),
 				flags = {"not-on-map"},
-				animation =
-				{
-					filename = "__m-roguef__/graphics/entity/noani/no.png",
-					frame_count = 1,
-					width = 1,
-					height = 1,
-				},
-				duration_in_ticks = i*60/2,
-				target_movement_modifier = j/100
-			},
+				animation = {filename = "__m-roguef__/graphics/entity/noani/no.png", frame_count = 1, width = 1, height = 1},
+				duration_in_ticks = i * 60 / 2,
+				target_movement_modifier = j / 100
+			}
 		})
 	end
 end
 
---etc
+-- etc
 
 data.raw["curved-rail"]["curved-rail"].collision_mask = {"object-layer"}
 data.raw["straight-rail"]["straight-rail"].collision_mask = {"object-layer"}
@@ -878,7 +698,7 @@ data:extend({
 	{
 		type = "optimized-decorative",
 		name = "green-circle",
-		flags = {"placeable-neutral", "not-on-map","placeable-off-grid"},
+		flags = {"placeable-neutral", "not-on-map", "placeable-off-grid"},
 		icon = "__m-roguef__/graphics/entity/green-circle.png",
 		icon_size = 32,
 		subgroup = "rf_raw",
@@ -887,19 +707,11 @@ data:extend({
 		selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
 		collision_mask = {"object-layer"},
 		selectable_in_game = false,
-		pictures =
-		{
-			{
-				filename = "__m-roguef__/graphics/entity/green-circle.png",
-				width = 32,
-				height = 32,
-		 }
-		},
-	},
-	{
+		pictures = {{filename = "__m-roguef__/graphics/entity/green-circle.png", width = 32, height = 32}}
+	}, {
 		type = "optimized-decorative",
 		name = "mark",
-		flags = {"placeable-neutral", "not-on-map","placeable-off-grid"},
+		flags = {"placeable-neutral", "not-on-map", "placeable-off-grid"},
 		icon = "__m-roguef__/graphics/entity/mark.png",
 		icon_size = 32,
 		subgroup = "rf_raw",
@@ -908,53 +720,28 @@ data:extend({
 		selection_box = {{-2, -2}, {2, 2}},
 		collision_mask = {"object-layer"},
 		selectable_in_game = false,
-		pictures =
-		{
-			{
-				filename = "__m-roguef__/graphics/entity/mark.png",
-				width = 128,
-				height = 128,
-			}
-		},
-	},
-	{
+		pictures = {{filename = "__m-roguef__/graphics/entity/mark.png", width = 128, height = 128}}
+	}, {
 		type = "explosion",
 		name = "rf_no",
-		flags = {"not-on-map","placeable-off-grid"},
-		animations =
-		{
-			{
-				filename = "__m-roguef__/graphics/entity/noani/no.png",
-				frame_count = 1,
-				width = 1,
-				height = 1,
-			},
-		}
-	},
-	{
+		flags = {"not-on-map", "placeable-off-grid"},
+		animations = {{filename = "__m-roguef__/graphics/entity/noani/no.png", frame_count = 1, width = 1, height = 1}}
+	}, {
 		type = "market",
 		name = "rf_market",
 		icon = "__0_16_graphics_revived__/graphics/icons/market.png",
 		icon_size = 32,
 		flags = {"placeable-neutral", "player-creation"},
-		subgroup="rf_raw",
-		order="b",
+		subgroup = "rf_raw",
+		order = "b",
 		max_health = 150,
 		corpse = "big-remnants",
 		collision_box = {{-2.5, -0.7}, {2, 0.7}},
 		selection_box = {{-2.5, -0.7}, {2, 0.7}},
 		dying_explosion = "explosion",
 		render_layer = "object",
-		picture =
-		{
-			filename = "__m-roguef__/graphics/entity/console.png",
-			width = 200,
-			height = 114,
-			shift = {0,0.5}
-		}
-	},
-
-	{
+		picture = {filename = "__m-roguef__/graphics/entity/console.png", width = 200, height = 114, shift = {0, 0.5}}
+	}, {
 		type = "simple-entity",
 		name = "rf_consol-tuto",
 		flags = {"placeable-neutral", "player-creation"},
@@ -967,18 +754,8 @@ data:extend({
 		dying_explosion = "explosion",
 		render_layer = "object",
 		max_health = 150,
-		pictures =
-		{
-			{
-				filename = "__m-roguef__/graphics/entity/console.png",
-				width = 200,
-				height = 114,
-				shift = {0,0.5}
-			}
-		}
-	},
-
-	{
+		pictures = {{filename = "__m-roguef__/graphics/entity/console.png", width = 200, height = 114, shift = {0, 0.5}}}
+	}, {
 		type = "simple-entity",
 		name = "rf_consol-stage",
 		flags = {"placeable-neutral", "player-creation"},
@@ -991,18 +768,8 @@ data:extend({
 		dying_explosion = "explosion",
 		render_layer = "object",
 		max_health = 150,
-		pictures =
-		{
-			{
-				filename = "__m-roguef__/graphics/entity/console.png",
-				width = 200,
-				height = 114,
-				shift = {0,0.5}
-			}
-		}
-	},
-
-	{
+		pictures = {{filename = "__m-roguef__/graphics/entity/console.png", width = 200, height = 114, shift = {0, 0.5}}}
+	}, {
 		type = "simple-entity",
 		name = "rf_consol-clear",
 		flags = {"placeable-neutral", "player-creation"},
@@ -1015,16 +782,6 @@ data:extend({
 		dying_explosion = "explosion",
 		render_layer = "object",
 		max_health = 150,
-		pictures =
-		{
-			{
-				filename = "__m-roguef__/graphics/entity/console.png",
-				width = 200,
-				height = 114,
-				shift = {0,0.5}
-			}
-		}
-	},
-
-
+		pictures = {{filename = "__m-roguef__/graphics/entity/console.png", width = 200, height = 114, shift = {0, 0.5}}}
+	}
 })

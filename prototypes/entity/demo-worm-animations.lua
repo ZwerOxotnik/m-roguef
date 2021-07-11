@@ -1,9 +1,6 @@
-
 function worm_folded_animation(scale, tint)
-	return
-	{
-		layers=
-		{
+	return {
+		layers = {
 			{
 				filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-folded.png",
 				run_mode = "forward-then-backward",
@@ -14,10 +11,9 @@ function worm_folded_animation(scale, tint)
 				shift = {scale * 0.09375, scale * -0.046875},
 				direction_count = 1,
 				scale = scale
-			},
-			{
+			}, {
 				filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-folded-mask.png",
-				flags = { "mask" },
+				flags = {"mask"},
 				run_mode = "forward-then-backward",
 				line_length = 5,
 				width = 60,
@@ -33,10 +29,8 @@ function worm_folded_animation(scale, tint)
 end
 
 function worm_preparing_animation(scale, tint, run_mode)
-	return
-	{
-		layers=
-		{
+	return {
+		layers = {
 			{
 				width = 208,
 				height = 148,
@@ -46,23 +40,20 @@ function worm_preparing_animation(scale, tint, run_mode)
 				run_mode = run_mode,
 				scale = scale,
 				direction_count = 1,
-				stripes =
-				{
-				 {
-					filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-preparing-01.png",
-					width_in_frames = 7,
-					height_in_frames = 2,
-				 },
-				 {
-					filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-preparing-02.png",
-					width_in_frames = 6,
-					height_in_frames = 2,
-				 }
+				stripes = {
+					{
+						filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-preparing-01.png",
+						width_in_frames = 7,
+						height_in_frames = 2
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-preparing-02.png",
+						width_in_frames = 6,
+						height_in_frames = 2
+					}
 				}
-			},
-			{
+			}, {
 				filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-preparing-mask.png",
-				flags = { "mask" },
+				flags = {"mask"},
 				line_length = 13,
 				width = 98,
 				height = 121,
@@ -78,10 +69,8 @@ function worm_preparing_animation(scale, tint, run_mode)
 end
 
 function worm_prepared_animation(scale, tint)
-	return
-	{
-		layers=
-		{
+	return {
+		layers = {
 			{
 				filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-prepared.png",
 				run_mode = "forward-then-backward",
@@ -91,11 +80,10 @@ function worm_prepared_animation(scale, tint)
 				frame_count = 10,
 				scale = scale,
 				direction_count = 1,
-				shift = {scale * 0.828125, scale * -0.890625},
-			},
-			{
+				shift = {scale * 0.828125, scale * -0.890625}
+			}, {
 				filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-prepared-mask.png",
-				flags = { "mask" },
+				flags = {"mask"},
 				run_mode = "forward-then-backward",
 				line_length = 10,
 				width = 80,
@@ -105,16 +93,14 @@ function worm_prepared_animation(scale, tint)
 				scale = scale,
 				direction_count = 1,
 				tint = tint
-			},
+			}
 		}
 	}
 end
 
 function worm_attack_animation(scale, tint, run_mode)
-	return
-	{
-		layers=
-		{
+	return {
+		layers = {
 			{
 				width = 248,
 				height = 196,
@@ -123,22 +109,19 @@ function worm_attack_animation(scale, tint, run_mode)
 				shift = {scale * 0.953125, scale * -0.671875},
 				scale = scale,
 				run_mode = run_mode,
-				stripes =
-				{
-				 {
-					filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-attack-01.png",
-					width_in_frames = 8,
-					height_in_frames = 8,
-				 },
-				 {
-					filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-attack-02.png",
-					width_in_frames = 8,
-					height_in_frames = 8,
-				 }
+				stripes = {
+					{
+						filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-attack-01.png",
+						width_in_frames = 8,
+						height_in_frames = 8
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-attack-02.png",
+						width_in_frames = 8,
+						height_in_frames = 8
+					}
 				}
-			},
-			{
-				flags = { "mask" },
+			}, {
+				flags = {"mask"},
 				width = 168,
 				height = 153,
 				frame_count = 8,
@@ -147,18 +130,16 @@ function worm_attack_animation(scale, tint, run_mode)
 				scale = scale,
 				tint = tint,
 				run_mode = run_mode,
-				stripes =
-				{
-				 {
-					filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-attack-mask-01.png",
-					width_in_frames = 8,
-					height_in_frames = 8,
-				 },
-				 {
-					filename = "__0_16_graphics_revived__/graphics/entity//worm/worm-attack-mask-02.png",
-					width_in_frames = 8,
-					height_in_frames = 8,
-				 }
+				stripes = {
+					{
+						filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-attack-mask-01.png",
+						width_in_frames = 8,
+						height_in_frames = 8
+					}, {
+						filename = "__0_16_graphics_revived__/graphics/entity//worm/worm-attack-mask-02.png",
+						width_in_frames = 8,
+						height_in_frames = 8
+					}
 				}
 			}
 		}
@@ -166,10 +147,8 @@ function worm_attack_animation(scale, tint, run_mode)
 end
 
 function worm_die_animation(scale, tint)
-	return
-	{
-		layers=
-		{
+	return {
+		layers = {
 			{
 				filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-die.png",
 				line_length = 6,
@@ -179,10 +158,9 @@ function worm_die_animation(scale, tint)
 				shift = {scale * 0.953125, scale * -0.625},
 				direction_count = 1,
 				scale = scale
-			},
-			{
+			}, {
 				filename = "__0_16_graphics_revived__/graphics/entity/worm/worm-die-mask.png",
-				flags = { "mask" },
+				flags = {"mask"},
 				line_length = 6,
 				width = 143,
 				height = 133,
