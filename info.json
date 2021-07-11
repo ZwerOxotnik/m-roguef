@@ -8,5 +8,9 @@
   "description": "[WIP] Roguelike Factorio - adds new items, bosses, new enemies, skills, special scenario for it and elements of action roguelike.\nAuthor: kij336\nModified by ZwerOxotnik",
   "homepage": "https://forums.factorio.com/viewtopic.php?f=95&t=40743",
   "source": "https://github.com/ZwerOxotnik/m-roguef/",
-  "dependencies": ["base >= 1.1", "0_16_graphics_revived", "! roguef"]
+  "dependencies": [
+		"base >= 1.1",
+		"0_16_graphics_revived",
+		"! roguef"
+	]
 }
