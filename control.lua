@@ -756,7 +756,7 @@ script.on_event(defines.events.on_player_created, function(event)
 	global.stun = {}
 	global.gunnum = 0
 	global.weapons = {}
-	global.active = {false, 0, 0}
+	global.active_items = {false, 0, 0}
 	global.stim = false
 	global.stop = false
 	global.robot = {}
@@ -1002,8 +1002,8 @@ script.on_event("useitem", function(event)
 		character.active = true
 		character.destructible = true
 	end
-	if global.active[1] and global.active[2] == global.active[3] then
-		local n = global.active[1]
+	if global.active_items[1] and global.active_items[2] == global.active_items[3] then
+		local n = global.active_items[1]
 		if n == 1 then
 			character.health = character.health + character.prototype.max_health * 0.4
 			if character.health > character.prototype.max_health then
@@ -1062,7 +1062,7 @@ script.on_event("useitem", function(event)
 			global.stop = event.tick
 
 		end
-		global.active[2] = 0
+		global.active_items[2] = 0
 		-- player.get_quickbar()[6].clear()  -- TODO: FIX THIS
 	end
 end)
@@ -1071,15 +1071,15 @@ end)
 -- do
 -- 	--active item cooldown
 -- 	local function active_cool(d)
--- 		if d==1 then global.active[3]=1
--- 		elseif d==2 then global.active[3]=30
--- 		elseif d==3 then global.active[3]=30
--- 		elseif d==4 then global.active[3]=1
--- 		elseif d==5 then global.active[3]=60
--- 		elseif d==6 then global.active[3]=10
--- 		elseif d==7 then global.active[3]=1
--- 		elseif d==8 then global.active[3]=1
--- 		elseif d==9 then global.active[3]=30
+-- 		if d==1 then global.active_items[3]=1
+-- 		elseif d==2 then global.active_items[3]=30
+-- 		elseif d==3 then global.active_items[3]=30
+-- 		elseif d==4 then global.active_items[3]=1
+-- 		elseif d==5 then global.active_items[3]=60
+-- 		elseif d==6 then global.active_items[3]=10
+-- 		elseif d==7 then global.active_items[3]=1
+-- 		elseif d==8 then global.active_items[3]=1
+-- 		elseif d==9 then global.active_items[3]=30
 -- 		end
 -- 	end
 
@@ -1092,24 +1092,24 @@ end)
 -- 		if b.get_quickbar()[5].valid_for_read then
 -- 			local n=quickbar[5].name
 -- 			local d
--- 			if string.find(n,"active-") and global.active[1]==false then
+-- 			if string.find(n,"active-") and global.active_items[1]==false then
 -- 				d=tonumber(sub(n,8,len(n)))
--- 				global.active[1]=d
+-- 				global.active_items[1]=d
 -- 				active_cool(d)
--- 			elseif string.find(n,"active-") and global.active[1] then
+-- 			elseif string.find(n,"active-") and global.active_items[1] then
 -- 				d=tonumber(sub(n,8,len(n)))
--- 				if global.active[1]~=d then
--- 					global.active[1]=d
+-- 				if global.active_items[1]~=d then
+-- 					global.active_items[1]=d
 -- 					active_cool(d)
--- 					global.active[2]=0
+-- 					global.active_items[2]=0
 -- 					quickbar[6].clear()
 -- 				end
 -- 			else
--- 				global.active={false,0,0}
+-- 				global.active_items={false,0,0}
 -- 				quickbar[6].clear()
 -- 			end
 -- 		else
--- 			global.active={false,0,0}
+-- 			global.active_items={false,0,0}
 -- 			quickbar[6].clear()
 -- 		end
 -- 	--passive item equipe
@@ -1238,8 +1238,8 @@ script.on_event("interaction", function(event)
 		local stage = global.stats.stage
 		if ent.name == "rf_consol-stage" and global.stage.start == false then -- TODO: CHANGE THIS
 			player.zoom = 1000
-			if global.active[1] then
-				global.active[2] = global.active[3]
+			if global.active_items[1] then
+				global.active_items[2] = global.active_items[3]
 			end
 			-- stage select
 			if stage == 1 then
@@ -3455,7 +3455,7 @@ script.on_event(defines.events.on_tick, function(event)
 					a.c = event.tick - a.b
 					if a.c > 300 then
 						character.active = false
-						global.active[2] = 1
+						global.active_items[2] = 1
 					end
 					if a.f then
 						a.g = event.tick - a.f
@@ -3607,12 +3607,12 @@ script.on_event(defines.events.on_tick, function(event)
 		end
 
 		-- active item cooldown
-		if global.active[1] and global.active[2] ~= global.active[3] then
-			if passive(15) and global.active[2] < global.active[3] * 0.2 then
-				global.active[2] = math.ceil(global.active[3] * 0.2)
+		if global.active_items[1] and global.active_items[2] ~= global.active_items[3] then
+			if passive(15) and global.active_items[2] < global.active_items[3] * 0.2 then
+				global.active_items[2] = math.ceil(global.active_items[3] * 0.2)
 			end
-			global.active[2] = global.active[2] + 1
-			if global.active[2] == global.active[3] then
+			global.active_items[2] = global.active_items[2] + 1
+			if global.active_items[2] == global.active_items[3] then
 				surface.create_entity{
 					name = "weapon-text",
 					position = {player.position.x, player.position.y + 0.5},
@@ -3620,12 +3620,12 @@ script.on_event(defines.events.on_tick, function(event)
 					color = {r = 1, g = 1, b = 1}
 				}
 			end
-			if global.active[2] > global.active[3] then
-				global.active[2] = global.active[3]
+			if global.active_items[2] > global.active_items[3] then
+				global.active_items[2] = global.active_items[3]
 			end
 			-- TODO: FIX THIS
-			-- if global.active[2]>0 then
-			-- 	player.get_quickbar()[6].set_stack({name="active",count=math.ceil(100*global.active[2]/global.active[3])})
+			-- if global.active_items[2]>0 then
+			-- 	player.get_quickbar()[6].set_stack({name="active",count=math.ceil(100*global.active_items[2]/global.active_items[3])})
 			-- else player.get_quickbar()[6].clear()
 			-- end
 		end
@@ -3633,7 +3633,8 @@ script.on_event(defines.events.on_tick, function(event)
 	if event.tick % (60 * 60) == 2773 then
 		-- TODO: FIX AND CHECK: or character.prototype.resistances["damage-enemy"]
 		if (event.tick > global.dodge and character.active and character.destructible == false) or
-						character.prototype.max_health ~= 1000 or character.prototype.healing_per_tick > 0 then
+			character.prototype.max_health ~= 1000 or character.prototype.healing_per_tick > 0
+		then
 			c_()
 		end
 	end
@@ -3641,28 +3642,26 @@ end)
 
 -- on fire, on hit
 script.on_event(defines.events.on_trigger_created_entity, function(event)
-	local player = game.get_player(1) -- TODO: FIX THIS
-	if not (player and player.valid) then
-		return
-	end
+	local source = event.source or game.get_player(1)
+	if not (source and source.valid) then return end
 
-	local gun = player.get_inventory(defines.inventory.character_guns)[player.character.selected_gun_index]
-	if gun.valid_for_read == false then
-		return
-	end
+	local gun = source.get_inventory(defines.inventory.character_guns)[source.selected_gun_index]
+	if gun.valid_for_read == false then return end
 
-	local ent = event.entity
-	local n = gun.name
-	if ent.name == "player-fire" then
-		local cooldown = game.item_prototypes[n].attack_parameters.cooldown
+
+	local entity = event.entity
+	local surface = entity.surface
+	local gun_name = gun.name
+	if entity.name == "player-fire" then
+		local cooldown = game.item_prototypes[gun_name].attack_parameters.cooldown
 		-- TODO: CHECK THIS!
 		if passive(19) then
 			if random() < cooldown / 60 * 0.5 then
-				local e = player.surface.find_nearest_enemy{position = player.position, max_distance = 30}
+				local e = surface.find_nearest_enemy{position = source.position, max_distance = 30}
 				if e and e.valid then
-					player.surface.create_entity{
+					surface.create_entity{
 						name = "p-7",
-						position = targetline(player.position, e.position, 1.5),
+						position = targetline(source.position, e.position, 1.5),
 						target = e.position,
 						speed = 0.5,
 						max_range = 10
@@ -3672,38 +3671,38 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 		end
 		if passive(20) then
 			if random() < cooldown / 60 * 0.2 then
-				if global.active[1] then
-					global.active[2] = global.active[2] + 1
-					if global.active[2] > global.active[3] then
-						global.active[2] = global.active[3]
+				if global.active_items[1] then
+					global.active_items[2] = global.active_items[2] + 1
+					if global.active_items[2] > global.active_items[3] then
+						global.active_items[2] = global.active_items[3]
 					end
 				end
 			end
 		end
-		if n == "weapon-13" then
+		if gun_name == "weapon-13" then
 			if global.weapons[13] == nil or global.weapons[13] == 0 then
 				global.weapons[13] = 0.1
 			else
 				global.weapons[13] = global.weapons[13] + 0.1
 				local d = global.weapons[13]
 				if d >= 1 and d < 1.1 then
-					player.surface.create_entity{
+					surface.create_entity{
 						name = "weapon-text",
-						position = {player.position.x, player.position.y + 0.5},
+						position = {source.position.x, source.position.y + 0.5},
 						text = "33%",
 						color = {r = 1, g = 1, b = 1}
 					}
 				elseif d >= 2 and d < 2.1 then
-					player.surface.create_entity{
+					surface.create_entity{
 						name = "weapon-text",
-						position = {player.position.x, player.position.y + 0.5},
+						position = {source.position.x, source.position.y + 0.5},
 						text = "66%",
 						color = {r = 1, g = 1, b = 1}
 					}
 				elseif d >= 3 and d < 3.1 then
-					player.surface.create_entity{
+					surface.create_entity{
 						name = "weapon-text",
-						position = {player.position.x, player.position.y + 0.5},
+						position = {source.position.x, source.position.y + 0.5},
 						text = "100%",
 						color = {r = 1, g = 1, b = 1}
 					}
@@ -3711,24 +3710,24 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 					d = 3
 				end
 			end
-		elseif n == "weapon-19" then
-			player.character.damage(1, "enemy", "damage-enemy")
-		elseif n == "weapon-23" and global.weapons[23] and global.weapons[23].valid then
+		elseif gun_name == "weapon-19" then
+			source.damage(1, "enemy", "damage-enemy")
+		elseif gun_name == "weapon-23" and global.weapons[23] and global.weapons[23].valid then
 			-- TODO: CHECK THIS!
-			player.surface.create_entity{
+			surface.create_entity{
 				name = "p-1",
-				position = targetline(player.position, global.weapons[23].position, 1.5),
+				position = targetline(source.position, global.weapons[23].position, 1.5),
 				target = global.weapons[23].position,
 				speed = 0.5,
 				max_range = 20
 			}
 		end
-	elseif ent.name == "ex-256" then
+	elseif entity.name == "ex-256" then
 		local weapon = global.weapons[10]
 		if weapon and weapon[1] and weapon[1].valid then
 			weapon[1].destroy()
 		end
-		global.weapons[10] = {ent, event.tick}
+		global.weapons[10] = {entity, event.tick}
 		-- TODO: CHECK THIS!
 		game.surfaces[1].create_entity{
 			name = "p-100",
@@ -3737,54 +3736,54 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 			speed = 1,
 			max_range = 20
 		}
-	elseif ent.name == "hit-p-14" then
-		global.weapons[14] = {ent.position, event.tick}
-	elseif ent.name == "hit-p-15" then
-		global.weapons[15] = {ent.position, event.tick}
-	elseif ent.name == "hit-p-18" then
-		global.weapons[18] = {ent.position, event.tick}
-	elseif ent.name == "hit-p-19" then
-		global.weapons[19] = {ent.position, event.tick}
-	elseif ent.name == "hit-p-20" then
-		global.weapons[20] = {ent.position, event.tick}
-	elseif ent.name == "hit-p-24" then
+	elseif entity.name == "hit-p-14" then
+		global.weapons[14] = {entity.position, event.tick}
+	elseif entity.name == "hit-p-15" then
+		global.weapons[15] = {entity.position, event.tick}
+	elseif entity.name == "hit-p-18" then
+		global.weapons[18] = {entity.position, event.tick}
+	elseif entity.name == "hit-p-19" then
+		global.weapons[19] = {entity.position, event.tick}
+	elseif entity.name == "hit-p-20" then
+		global.weapons[20] = {entity.position, event.tick}
+	elseif entity.name == "hit-p-24" then
 		-- TODO: CHECK THIS!
 		local d = random(1, 7)
-		player.surface.create_entity{
+		surface.create_entity{
 			name = "p-24-" .. d,
-			position = targetline(player.position, ent.position, 1.5),
-			target = ent.position,
+			position = targetline(source.position, entity.position, 1.5),
+			target = entity.position,
 			speed = d * 0.1,
 			max_range = 20
 		}
-	elseif ent.name == "hit-p-25" then
+	elseif entity.name == "hit-p-25" then
 		-- TODO: CHECK THIS!
-		local d = player.surface.create_entity{
+		local d = surface.create_entity{
 			name = "p-25-1",
-			position = targetline(player.position, ent.position, 1.5),
-			target = ent.position,
+			position = targetline(source.position, entity.position, 1.5),
+			target = entity.position,
 			speed = 0.5,
 			max_range = 20
 		}
 		global.weapons[25] = d
-	elseif ent.name == "hit-p-29" then
+	elseif entity.name == "hit-p-29" then
 		-- TODO: CHECK THIS!
-		local d = player.surface.create_entity{
+		local d = surface.create_entity{
 			name = "p-29-1",
-			position = targetline(player.position, ent.position, 1.5),
-			target = ent.position,
+			position = targetline(source.position, entity.position, 1.5),
+			target = entity.position,
 			speed = 0.6,
 			max_range = 20
 		}
 		global.weapons[29] = {d, event.tick}
-	elseif ent.name == "hit-p-16-1" then
-		local ents = player.surface.find_entities_filtered{
+	elseif entity.name == "hit-p-16-1" then
+		local ents = surface.find_entities_filtered{
 			force = "enemy",
-			area = {{ent.position.x - 8, ent.position.y - 8}, {ent.position.x + 8, ent.position.y + 8}}
+			area = {{entity.position.x - 8, entity.position.y - 8}, {entity.position.x + 8, entity.position.y + 8}}
 		}
 		if #ents > 0 then
 			for i, j in pairs(ents) do
-				if get_distance(j, ent) == 0 then
+				if get_distance(j, entity) == 0 then
 					table.remove(ents, i)
 				end
 			end
@@ -3792,16 +3791,16 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 		-- TODO: CHECK THIS!
 		if #ents > 0 then
 			local d = random(1, #ents)
-			player.surface.create_entity{name = "p-16-1", position = ent.position, target = ents[d], speed = 0.5, max_range = 20}
+			surface.create_entity{name = "p-16-1", position = entity.position, target = ents[d], speed = 0.5, max_range = 20}
 		end
-	elseif ent.name == "hit-p-16-2" then
-		local ents = player.surface.find_entities_filtered{
+	elseif entity.name == "hit-p-16-2" then
+		local ents = surface.find_entities_filtered{
 			force = "enemy",
-			area = {{ent.position.x - 6, ent.position.y - 6}, {ent.position.x + 6, ent.position.y + 6}}
+			area = {{entity.position.x - 6, entity.position.y - 6}, {entity.position.x + 6, entity.position.y + 6}}
 		}
 		if #ents > 0 then
 			for i, j in pairs(ents) do
-				if get_distance(j, ent) == 0 then
+				if get_distance(j, entity) == 0 then
 					table.remove(ents, i)
 				end
 			end
@@ -3809,16 +3808,16 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 		-- TODO: CHECK THIS!
 		if #ents > 0 then
 			local d = random(1, #ents)
-			player.surface.create_entity{name = "p-16-2", position = ent.position, target = ents[d], speed = 0.4, max_range = 20}
+			surface.create_entity{name = "p-16-2", position = entity.position, target = ents[d], speed = 0.4, max_range = 20}
 		end
-	elseif ent.name == "hit-p-16-3" then
-		local ents = player.surface.find_entities_filtered{
+	elseif entity.name == "hit-p-16-3" then
+		local ents = surface.find_entities_filtered{
 			force = "enemy",
-			area = {{ent.position.x - 4, ent.position.y - 4}, {ent.position.x + 4, ent.position.y + 4}}
+			area = {{entity.position.x - 4, entity.position.y - 4}, {entity.position.x + 4, entity.position.y + 4}}
 		}
 		if #ents > 0 then
 			for i, j in pairs(ents) do
-				if get_distance(j, ent) == 0 then
+				if get_distance(j, entity) == 0 then
 					table.remove(ents, i)
 				end
 			end
@@ -3826,7 +3825,7 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 		-- TODO: CHECK THIS!
 		if #ents > 0 then
 			local d = random(1, #ents)
-			player.surface.create_entity{name = "p-16-3", position = ent.position, target = ents[d], speed = 0.3, max_range = 20}
+			surface.create_entity{name = "p-16-3", position = entity.position, target = ents[d], speed = 0.3, max_range = 20}
 		end
 	end
 end)
