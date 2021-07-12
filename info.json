@@ -1,6 +1,6 @@
 {
   "name": "m-roguef",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "factorio_version": "1.1",
   "title": "Roguelike Factorio [TEST VERSION]",
   "author": "kij336",
@@ -11,7 +11,7 @@
   "dependencies": [
 		"base >= 1.1",
 		"roguef-core >= 0.1.1",
-		"roguef-weapons >= 0.1.0",
+		"roguef-weapons >= 0.1.1",
 		"0_16_graphics_revived",
 		"! roguef"
 	]
