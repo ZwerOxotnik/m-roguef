@@ -508,11 +508,8 @@ local function player_respawn()
 end
 
 local function market_reset()
-	-- TOOD: FIX THIS
-	-- local market = game.get_entity_by_tag("market")
-	-- for i=1,#market.get_market_items() do
-	-- 	market.remove_market_item(1)
-	-- end
+	local entity = game.get_entity_by_tag("market")
+	entity.clear_market_items()
 	local armors = global.market.armor
 	market(10 + global.stats.stage - 2, "heal")
 	market(armors[1], "armor-1")
@@ -1218,11 +1215,8 @@ script.on_event(defines.events.on_pre_player_died, function(event)
 		global.bgm.tick = 0
 		player.gui.top.main.enemy.bar.visible = false
 		global.stats.stage = 1
-		-- TOOD: FIX THIS
-		-- local market = game.get_entity_by_tag("market")
-		-- for i=1,#market.get_market_items() do
-		-- 	market.remove_market_item(1)
-		-- end
+		local entity = game.get_entity_by_tag("market")
+		entity.clear_market_items()
 	end
 end)
 
