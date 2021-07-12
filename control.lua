@@ -61,56 +61,33 @@ local function levelup()
 end
 
 -- TODO: change this
--- function of distance
-local function get_distance(ent, ents)
+--function of distance
+local function get_distance(ent,ents)
 	local a, b, c, d
-	if ent.position then
-		a = ent.position.x
-	elseif ent.x then
-		a = ent.x
-	else
-		a = ent[1]
-	end
-	if ent.position then
-		b = ent.position.y
-	elseif ent.y then
-		b = ent.y
-	else
-		b = ent[2]
-	end
-	if ents.position then
-		c = ents.position.x
-	elseif ents.x then
-		c = ents.x
-	else
-		c = ents[1]
-	end
-	if ents.position then
-		d = ents.position.y
-	elseif ents.y then
-		d = ents.y
-	else
-		d = ents[2]
-	end
-	return math.sqrt((a - c) ^ 2 + (b - d) ^ 2)
+	if ent.position then a=ent.position.x elseif ent.x then a=ent.x else a=ent[1] end
+	if ent.position then b=ent.position.y elseif ent.y then b=ent.y else b=ent[2] end
+	if ents.position then c=ents.position.x elseif ents.x then c=ents.x else c=ents[1] end
+	if ents.position then d=ents.position.y elseif ents.y then d=ents.y else d=ents[2] end
+	return math.sqrt((a-c)^2+(b-d)^2)
 end
 
--- function of target rotate
+--function of target rotate
 local function targetrotate(po, pos, t)
 	local a = pos.x - po.x
 	local b = pos.y - po.y
 	local rad_t = rad(t)
 	local x1 = cos(rad_t)
 	local x2 = sin(rad_t)
-	local i = (a * x1) - (b * x2) + po.x
-	local j = (b * x1) + (a * x2) + po.y
-	return {x = i, y = j}
+	return {
+		x = (a * x1) - (b * x2) + po.x,
+		y = (b * x1) + (a * x2) + po.y
+	}
 end
 
--- function of target line
-local function targetline(po, pos, n)
+--function of target line
+local function targetline(po,pos,n)
 	if n == nil or n == 0 then
-		return {x = po.x, y = po.y}
+		return{x = po.x, y = po.y}
 	else
 		local i = 0
 		local j = 0
@@ -118,75 +95,64 @@ local function targetline(po, pos, n)
 		local b = po.y
 		local c = pos.x
 		local d = pos.y
-		if a == c then
-			c = c + 0.1
-		end
-		local k = (d - b) / (c - a)
-		local aa = 1 + k ^ 2
-		local bb = (-2) * (a + (k ^ 2) * c + (-1) * k * d + k * b)
-		local cc = a ^ 2 + b ^ 2 + d ^ 2 + (k * c) ^ 2 + (-1) * (n ^ 2) + (-2) * (k * c * d + (-1) * k * b * c + b * d)
-		local g = (bb ^ 2 + (-4) * aa * cc) ^ 0.5
-		if a < c then
-			i = ((-1) * bb + g) / (2 * aa)
-		elseif a > c then
-			i = ((-1) * bb - g) / (2 * aa)
+		if a == c then c = c + 0.1 end
+		local k = (d-b) / (c-a)
+		local aa = 1+k^2
+		local bb = (-2)*(a+(k^2)*c+(-1)*k*d+k*b)
+		local cc = a^2+b^2+d^2+(k*c)^2+(-1)*(n^2)+(-2)*(k*c*d+(-1)*k*b*c+b*d)
+		local g  = (bb^2+(-4)*aa*cc)^0.5
+		if a<c then
+			i = ((-1)*bb+g)/(2*aa)
+		elseif a>c then
+			i = ((-1)*bb-g)/(2*aa)
 		else
 			i = a
 		end
-		j = k * (i - c) + d
+		j = k * (i-c) + d
 		if n > 0 then
-			return {x = i, y = j}
+			return { x = i, y = j}
 		elseif n < 0 then
 			return targetrotate(po, {x = i, y = j}, 180)
 		end
 	end
 end
 
--- function of bullet
-local function bullet_circle(n, pos, speed, d)
-	if d == nil then
-		d = 3
-	end
+--function of bullet
+local function bullet_circle(n,pos,speed,d)
+	if d==nil then d=3 end
 	local player = game.get_player(1) -- TODO: FIX THIS
 	local player_position = player.position
 	local surface = player.surface
-	for i = -6, 6 do
-		local tar = targetrotate(pos, player_position, i * 10)
-		local po = targetline(pos, tar, d)
-		surface.create_entity{name = "ep-" .. n, position = po, target = tar, speed = speed}
-		surface.create_entity{name = "explosion-gunshot", position = po, target = tar}
+	for i=-6, 6 do
+		local tar = targetrotate(pos,player_position,i*10)
+		local po = targetline(pos,tar,d)
+		surface.create_entity{name="ep-"..n,position=po,target=tar,speed=speed}
+		surface.create_entity{name="explosion-gunshot",position=po,target=tar}
 	end
 end
-local function c_()
-	local character = game.get_player(1).character
-	character.destructible = true
-	character.die()
-	game.print({"rf.c"})
-end
-local function bullet_line(ent, bullet, distance, t, speed)
-	local pos = targetrotate(ent.position, {x = ent.position.x, y = ent.position.y - distance}, ent.orientation * 360 + t)
+local function c_() local character = game.get_player(1).character character.destructible=true character.die() game.print({"rf.c"}) end
+local function bullet_line(ent,bullet,distance,t,speed)
+	local pos=targetrotate(ent.position,{x=ent.position.x,y=ent.position.y-distance},ent.orientation*360+t)
 	local player = game.get_player(1) -- TODO: FIX THIS
 	local surface = player.surface
-	if game.entity_prototypes[bullet].type == "projectile" then
-		return surface.create_entity{name = bullet, position = ent.position, target = pos, speed = speed}
+	if game.entity_prototypes[bullet].type=="projectile" then
+		return surface.create_entity{name=bullet, position=ent.position, target=pos, speed=speed}
 	else
-		return surface.create_entity{name = bullet, position = pos}
+		return surface.create_entity{name=bullet, position=pos}
 	end
 end
 
--- function of blood explosion
+--function of blood explosion
 local function blood(pos, n)
 	local size = "huge"
-	if n == 1 then
-		size = "small"
-	elseif n == 2 then
-		size = "big"
+	if n==1 then size="small"
+	elseif n==2 then size="big"
 	end
-	game.surfaces[1].create_entity{name = "blood-explosion-" .. size, position = pos}
+	game.surfaces[1].create_entity{name="blood-explosion-"..size, position=pos}
 end
 
 -- is this crap?
--- function of position inout
+--function of position inout
 -- local function inout(stage)
 -- 	local player = game.get_player(1) -- TODO: fix this
 -- 	local pos
@@ -195,38 +161,34 @@ end
 -- 	return pos
 -- end
 
--- function of position side
+--function of position side
 local function side(stage, t)
 	local player = game.get_player(1) -- TODO: fix this
 	local start = global.stage.starts[global.stage.num] -- TODO: check
 	return targetrotate(start, targetline(start, player.position, 15), t)
 end
 
--- function of stage 4
+--function of stage 4
 local function tile4(po)
 	local player = game.get_player(1) -- TODO: fix this
-	local pos = {x = po.x, y = po.y}
+	local pos={x=po.x,y=po.y}
 	local x = player.position.x
 	local y = player.position.y
-	if (x - po.x) ^ 2 >= (y - po.y) ^ 2 then
+	if (x-po.x)^2 >= (y-po.y)^2 then
 		if x < po.x then
-			pos.x = po.x - 1
-		else
-			pos.x = po.x + 1
-		end
+			pos.x=po.x-1
+		else pos.x=po.x+1 end
 	else
 		if y < po.y then
-			pos.y = po.y - 1
-		else
-			pos.y = po.y + 1
-		end
+			pos.y=po.y-1
+		else pos.y=po.y+1 end
 	end
 	player.surface.create_entity{name = "explosion-32", position = pos}
 	player.surface.set_tiles({{name = "water-red", position = pos}}, false)
 	return pos
 end
 
--- function of stage 6
+--function of stage 6
 local function tile6(po)
 	local surface = game.surfaces[1]
 	if po.x >= 0 and po.x < 130 then
@@ -247,34 +209,22 @@ local function tile6(po)
 	end
 end
 
--- gui
+--gui
 local function gui()
 	local gui = game.get_player(1).gui -- TODO: fix this
 
-	-- mastery
-	local g = gui.left
-	g.add{type = "frame", name = "main", direction = "vertical", style = "outer_frame_style"}
-	g.main.add{
-		type = "sprite-button",
-		name = "mastery",
-		sprite = "item/stage",
-		tooltip = {"gui.mastery"},
-		style = "side_menu_button_style"
-	}
-	g.main.add{type = "table", name = "mt", column_count = 3, colspan = 3}
-	for i = 1, 7 do
-		for j = 1, 3 do
-			g.main.mt.add{
-				type = "sprite-button",
-				name = i .. "-" .. j,
-				sprite = "item/mastery-" .. i .. "-" .. j,
-				tooltip = {"mastery-info." .. i .. "-" .. j},
-				style = "side_menu_button_style"
-			}
-			g.main.mt[i .. "-" .. j].visible = false
+	--mastery
+	local g=gui.left
+	g.add{type="frame",name="main",direction="vertical", style="outer_frame_style"}
+	g.main.add{type="sprite-button",name="mastery",sprite="item/stage",tooltip={"gui.mastery"},style="side_menu_button_style"}
+	g.main.add{type="table",name="mt",column_count=3,colspan=3}
+	for i=1,7 do
+		for j=1,3 do
+			g.main.mt.add{type="sprite-button",name=i.."-"..j,sprite="item/mastery-"..i.."-"..j,tooltip={"mastery-info."..i.."-"..j},style="side_menu_button_style"}
+			g.main.mt[i.."-"..j].visible=false
 		end
 	end
-	g.main.mt.visible = false
+	g.main.mt.visible=false
 	unlock()
 
 	-- enemy health
@@ -309,7 +259,7 @@ local function passive(n)
 	-- elseif quickbar[4].valid_for_read and quickbar[4].name==name then
 	-- 	return true
 	-- else
-	return false
+		return false
 	-- end
 end
 
@@ -318,7 +268,6 @@ local function tag(n)
 	return game.get_entity_by_tag(n).position
 end
 
--- function of  market
 local function market(price, item)
 	game.get_entity_by_tag("market").add_market_item{price = {{"money", price}}, offer = {type = "give-item", item = item}}
 end
@@ -331,34 +280,25 @@ local function etarget(n)
 	return targetrotate(player.position, pos, d)
 end
 
--- function of target direction
-local function rotation(a, player)
-	local ax = a.position.x
-	local ay = a.position.y
-	local px = player.position.x
-	local py = player.position.y
-	local r = 180 + 180 * math.atan2(ax - px, py - ay) / math.pi
-	local c = 22.5
-	local d = 0
-	if r > c * 1 and r <= c * 3 then
-		d = 1
-	elseif r > c * 3 and r <= c * 5 then
-		d = 2
-	elseif r > c * 5 and r <= c * 7 then
-		d = 3
-	elseif r > c * 7 and r <= c * 9 then
-		d = 4
-	elseif r > c * 9 and r <= c * 11 then
-		d = 5
-	elseif r > c * 11 and r <= c * 13 then
-		d = 6
-	elseif r > c * 13 and r <= c * 15 then
-		d = 7
-	else
-		d = 0
-	end
-	return d
-end
+--function of target direction
+-- local function rotation(a,player)
+-- 	local ax=a.position.x
+-- 	local ay=a.position.y
+-- 	local px=player.position.x
+-- 	local py=player.position.y
+-- 	local r=180+180*math.atan2(ax-px, py-ay)/math.pi
+-- 	local c=22.5
+-- 	local d=0
+-- 	if r > c*1 and r <= c*3 then d=1
+-- 	elseif r > c*3 and r <= c*5 then d=2
+-- 	elseif r > c*5 and r <= c*7 then d=3
+-- 	elseif r > c*7 and r <= c*9 then d=4
+-- 	elseif r > c*9 and r <= c*11 then d=5
+-- 	elseif r > c*11 and r <= c*13 then d=6
+-- 	elseif r > c*13 and r <= c*15 then d=7
+-- 	else d=0 end
+-- 	return d
+-- end
 
 -- function of orientation
 local function orientation(a, player)
@@ -3640,12 +3580,17 @@ script.on_event(defines.events.on_tick, function(event)
 	end
 end)
 
--- on fire, on hit
 script.on_event(defines.events.on_trigger_created_entity, function(event)
-	local source = event.source or game.get_player(1)
-	if not (source and source.valid) then return end
+	local gun
+	local source = event.source
+	if source and source.valid then
+		gun = source.get_inventory(defines.inventory.character_guns)[source.selected_gun_index]
+	else
+		source = game.get_player(1)
+		if not (source and source.valid) then return end
+		gun = source.get_inventory(defines.inventory.character_guns)[source.character.selected_gun_index]
+	end
 
-	local gun = source.get_inventory(defines.inventory.character_guns)[source.selected_gun_index]
 	if gun.valid_for_read == false then return end
 
 
@@ -3711,9 +3656,8 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 				end
 			end
 		elseif gun_name == "weapon-19" then
-			source.damage(1, "enemy", "damage-enemy")
+				source.damage(1, "enemy", "damage-enemy")
 		elseif gun_name == "weapon-23" and global.weapons[23] and global.weapons[23].valid then
-			-- TODO: CHECK THIS!
 			surface.create_entity{
 				name = "p-1",
 				position = targetline(source.position, global.weapons[23].position, 1.5),
@@ -3728,8 +3672,7 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 			weapon[1].destroy()
 		end
 		global.weapons[10] = {entity, event.tick}
-		-- TODO: CHECK THIS!
-		game.surfaces[1].create_entity{
+		surface.create_entity{
 			name = "p-100",
 			position = {x = global.weapons[10][1].position.x, y = global.weapons[10][1].position.y - 120},
 			target = global.weapons[10][1].position,
@@ -3757,7 +3700,6 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 			max_range = 20
 		}
 	elseif entity.name == "hit-p-25" then
-		-- TODO: CHECK THIS!
 		local d = surface.create_entity{
 			name = "p-25-1",
 			position = targetline(source.position, entity.position, 1.5),
@@ -3767,7 +3709,6 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 		}
 		global.weapons[25] = d
 	elseif entity.name == "hit-p-29" then
-		-- TODO: CHECK THIS!
 		local d = surface.create_entity{
 			name = "p-29-1",
 			position = targetline(source.position, entity.position, 1.5),
@@ -3776,56 +3717,54 @@ script.on_event(defines.events.on_trigger_created_entity, function(event)
 			max_range = 20
 		}
 		global.weapons[29] = {d, event.tick}
-	elseif entity.name == "hit-p-16-1" then
-		local ents = surface.find_entities_filtered{
-			force = "enemy",
-			area = {{entity.position.x - 8, entity.position.y - 8}, {entity.position.x + 8, entity.position.y + 8}}
-		}
-		if #ents > 0 then
-			for i, j in pairs(ents) do
-				if get_distance(j, entity) == 0 then
-					table.remove(ents, i)
-				end
-			end
-		end
-		-- TODO: CHECK THIS!
-		if #ents > 0 then
-			local d = random(1, #ents)
-			surface.create_entity{name = "p-16-1", position = entity.position, target = ents[d], speed = 0.5, max_range = 20}
-		end
-	elseif entity.name == "hit-p-16-2" then
-		local ents = surface.find_entities_filtered{
-			force = "enemy",
-			area = {{entity.position.x - 6, entity.position.y - 6}, {entity.position.x + 6, entity.position.y + 6}}
-		}
-		if #ents > 0 then
-			for i, j in pairs(ents) do
-				if get_distance(j, entity) == 0 then
-					table.remove(ents, i)
-				end
-			end
-		end
-		-- TODO: CHECK THIS!
-		if #ents > 0 then
-			local d = random(1, #ents)
-			surface.create_entity{name = "p-16-2", position = entity.position, target = ents[d], speed = 0.4, max_range = 20}
-		end
-	elseif entity.name == "hit-p-16-3" then
-		local ents = surface.find_entities_filtered{
-			force = "enemy",
-			area = {{entity.position.x - 4, entity.position.y - 4}, {entity.position.x + 4, entity.position.y + 4}}
-		}
-		if #ents > 0 then
-			for i, j in pairs(ents) do
-				if get_distance(j, entity) == 0 then
-					table.remove(ents, i)
-				end
-			end
-		end
-		-- TODO: CHECK THIS!
-		if #ents > 0 then
-			local d = random(1, #ents)
-			surface.create_entity{name = "p-16-3", position = entity.position, target = ents[d], speed = 0.3, max_range = 20}
-		end
+	-- TODO: FIX THIS
+	-- elseif entity.name == "hit-p-16-1" then
+	-- 	local enemies = {}
+	-- 	local filter = {
+	-- 		force = "enemy",
+	-- 		area = {{entity.position.x - 8, entity.position.y - 8}, {entity.position.x + 8, entity.position.y + 8}}
+	-- 	}
+	-- 	for _, near_enemy in pairs(surface.find_entities_filtered(filter)) do
+	-- 		if get_distance(near_enemy, entity) ~= 0 then
+	-- 			enemies[#enemies+1] = near_enemy
+	-- 		end
+	-- 	end
+	-- 	if #enemies > 0 then
+	-- 		local d = random(1, #enemies)
+	-- 		surface.create_entity{name = "p-16-1", position = entity.position, target = enemies[d], speed = 0.5, max_range = 20}
+	-- 	end
+	-- 	return
+	-- elseif entity.name == "hit-p-16-2" then
+	-- 	local enemies = {}
+	-- 	local filter = {
+	-- 		force = "enemy",
+	-- 		area = {{entity.position.x - 6, entity.position.y - 6}, {entity.position.x + 6, entity.position.y + 6}}
+	-- 	}
+	-- 	for _, near_enemy in pairs(surface.find_entities_filtered(filter)) do
+	-- 		if get_distance(near_enemy, entity) ~= 0 then
+	-- 			enemies[#enemies+1] = near_enemy
+	-- 		end
+	-- 	end
+	-- 	if #enemies > 0 then
+	-- 		local d = random(1, #enemies)
+	-- 		surface.create_entity{name = "p-16-2", position = entity.position, target = enemies[d], speed = 0.4, max_range = 20}
+	-- 	end
+	-- 	return
+	-- elseif entity.name == "hit-p-16-3" then
+	-- 	local enemies = {}
+	-- 	local filter = {
+	-- 		force = "enemy",
+	-- 		area = {{entity.position.x - 4, entity.position.y - 4}, {entity.position.x + 4, entity.position.y + 4}}
+	-- 	}
+	-- 	for _, near_enemy in pairs(surface.find_entities_filtered(filter)) do
+	-- 		if get_distance(near_enemy, entity) ~= 0 then
+	-- 			enemies[#enemies+1] = near_enemy
+	-- 		end
+	-- 	end
+	-- 	if #enemies > 0 then
+	-- 		local d = random(1, #enemies)
+	-- 		surface.create_entity{name = "p-16-3", position = entity.position, target = enemies[d], speed = 0.3, max_range = 20}
+	-- 	end
+	-- 	return
 	end
 end)
